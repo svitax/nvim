@@ -1,3 +1,11 @@
 -- Autocmds are automatically loaded on the VeryLazy event
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
+
+-- TODO: performance hit with TermEnter? it doesn't get set on :BufTermEnter without it
+-- vim.api.nvim_create_autocmd({ "TermOpen" }, {
+--   group = vim.api.nvim_create_augroup("BufTermOptions", { clear = true }),
+--   callback = function()
+--     vim.cmd([[setlocal nonumber norelativenumber | startinsert | tnoremap <buffer> <Esc> <c-\><c-n>]])
+--   end,
+-- })
