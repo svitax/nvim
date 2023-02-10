@@ -41,6 +41,8 @@ return {
       -- { "<leader>cR", "<cmd>lua require('genghis').renameFile()<cr>", desc = "Rename file" },
     },
   },
+  -- { "ellisonleao/dotenv.nvim", opts = { enable_on_load = true, verbose = true } },
+  -- {"LinArcX/telescope-env.nvim"}
   -- {
   --   "is0n/tui-nvim",
   --   config = function(_, opts)

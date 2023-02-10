@@ -1,6 +1,22 @@
 -- TODO: replace syntax-tree-surfer and tree-climber.nvim with my fork of nvim-treeclimber
 return {
   {
+    "ggandor/leap.nvim",
+    config = function(_, opts)
+      local leap = require("leap")
+      for k, v in pairs(opts) do
+        leap.opts[k] = v
+      end
+      leap.add_default_mappings(true)
+      vim.keymap.del({ "x", "o" }, "x")
+      vim.keymap.del({ "x", "o" }, "X")
+      vim.keymap.del({ "n", "x", "o" }, "S")
+      vim.keymap.set({ "n", "x", "o" }, "s", function()
+        require("leap").leap({ target_windows = { vim.fn.win_getid() } })
+      end, { desc = "Leap" })
+    end,
+  },
+  {
     "ziontee113/syntax-tree-surfer",
     config = true,
     dependencies = { "nvim-treesitter" },
@@ -48,36 +64,6 @@ return {
     --     { buffer = true, desc = "Jump to parent node" }
     --   )
     -- end,
-    keys = {
-      {
-        "<A-l>",
-        "<cmd>lua require('jump-tag').jumpParent()<cr>",
-        -- mode = { "n", "i" },
-        buffer = true,
-        desc = "Jump to parent node",
-      },
-      {
-        "<A-;>",
-        "<cmd>lua require('jump-tag').jumpChild()<cr>",
-        -- mode = { "n", "i" },
-        buffer = true,
-        desc = "Jump to child node",
-      },
-      {
-        "<A-j>",
-        "<cmd>lua require('jump-tag').jumpNextSibling()<cr>",
-        -- mode = { "n", "i" },
-        buffer = true,
-        desc = "Jump to next node",
-      },
-      {
-        "<A-k>",
-        "<cmd>lua require('jump-tag').jumpPrevSibling()<cr>",
-        -- mode = { "n", "i" },
-        buffer = true,
-        desc = "Jump to prev node",
-      },
-    },
   },
   -- {
   --   -- TODO: don't need goto actions

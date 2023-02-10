@@ -164,12 +164,12 @@ return {
       neotest.output.open({ short = true })
     end, { desc = "Open test output" })
     -- TODO: extract the mapping to after/ftplugin/neotest-output.lua and neotest-summary.lua
-    vim.api.nvim_create_autocmd({ "FileType" }, {
-      group = vim.api.nvim_create_augroup("NeotestCloseMappings", { clear = true }),
-      pattern = { "neotest-output", "neotest-summary" },
-      callback = function()
-        vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
-      end,
-    })
+    -- vim.api.nvim_create_autocmd({ "FileType" }, {
+    --   group = vim.api.nvim_create_augroup("NeotestCloseMappings", { clear = true }),
+    --   pattern = { "neotest-output", "neotest-summary" },
+    --   callback = function()
+    --     vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
+    --   end,
+    -- })
   end,
 }

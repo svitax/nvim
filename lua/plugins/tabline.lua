@@ -5,8 +5,8 @@ return {
     keys = {
       { "<leader><tab>d", "<cmd>tabclose<cr>", desc = "Delete tab" },
       { "<leader><tab>N", "<cmd>$tabnew<cr>", desc = "New tab" },
-      { "<leader><tab>;", "<cmd>tabn<cr>", desc = "Next tab" },
-      { "<leader><tab>l", "<cmd>tabp<cr>", desc = "Previous tab" },
+      { "<leader><tab>n", "<cmd>tabnext<cr>", desc = "Next tab" },
+      { "<leader><tab>p", "<cmd>tabprevious<cr>", desc = "Previous tab" },
       -- { "<leader><tab>n", "<cmd>tabn<cr>", desc = "Next tab" },
       -- { "<leader><tab>p", "<cmd>tabp<cr>", desc = "Previous tab" },
       { "<leader><tab>:", "<cmd>+tabmove<cr>", desc = "Move tab right" },

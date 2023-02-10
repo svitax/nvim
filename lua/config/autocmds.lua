@@ -2,10 +2,23 @@
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
 
--- TODO: performance hit with TermEnter? it doesn't get set on :BufTermEnter without it
--- vim.api.nvim_create_autocmd({ "TermOpen" }, {
---   group = vim.api.nvim_create_augroup("BufTermOptions", { clear = true }),
---   callback = function()
---     vim.cmd([[setlocal nonumber norelativenumber | startinsert | tnoremap <buffer> <Esc> <c-\><c-n>]])
---   end,
--- })
+-- local autocmd = vim.api.nvim_create_autocmd
+-- local augroup = vim.api.nvim_create_augroup
+-- local function augroup(name)
+--   return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
+-- end
+
+-- close some filetypes with <q>
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("close_with_q", { clear = true }),
+  pattern = {
+    "noice",
+    "toggleterm",
+    "neotest-output",
+    "neotest-summary",
+  },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+  end,
+})

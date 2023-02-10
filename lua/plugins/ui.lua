@@ -75,7 +75,7 @@ return {
       presets = {
         bottom_search = true,
         long_message_to_split = true,
-        inc_rename = true,
+        inc_rename = false,
         lsp_doc_border = true,
         command_palette = false,
       },
@@ -116,6 +116,17 @@ return {
   {
     "stevearc/dressing.nvim",
     opts = {
+      input = {
+        border = "rounded",
+        relative = "cursor",
+        max_width = 50,
+        min_width = 50,
+        win_options = {
+          sidescrolloff = 0,
+          winblend = 0,
+        },
+        insert_only = false,
+      },
       select = {
         telescope = require("telescope.themes").get_ivy({ ... }),
       },

@@ -2,23 +2,16 @@ return {
   {
     "kylechui/nvim-surround",
     opts = {
-      highlight = {
-        duration = 1000,
-      },
+      aliases = { ["b"] = { ")", "]", "}" } },
+      highlight = { duration = 1000 },
       -- I just don't want this to conflict with visual S for leap backward
-      keymaps = {
-        visual = "gz",
-        visual_line = "gZ",
-      },
+      keymaps = { visual = "gz", visual_line = "gZ" },
       surrounds = {
         -- markdown link surrounding (uses default register for link)
         ["l"] = {
           add = function()
             local clipboard = vim.fn.getreg("+"):gsub("\n", "")
-            return {
-              { "[" },
-              { "](" .. clipboard .. ")" },
-            }
+            return { { "[" }, { "](" .. clipboard .. ")" } }
           end,
           find = "%b[]%b()",
           delete = "^(%[)().-(%]%b())()$",
@@ -26,10 +19,7 @@ return {
             target = "^()()%b[]%((.-)()%)$",
             replacement = function()
               local clipboard = vim.fn.getreg("+"):gsub("\n", "")
-              return {
-                { "" },
-                { clipboard },
-              }
+              return { { "" }, { clipboard } }
             end,
           },
         },

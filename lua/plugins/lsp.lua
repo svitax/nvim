@@ -4,7 +4,9 @@ return {
     init = function()
       -- change/add/delete lazyvim lsp keymaps
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
+      keys[#keys + 1] = { "<leader>ca", false }
       keys[#keys + 1] = { "<leader>cd", false }
+      keys[#keys + 1] = { "<leader>cA", vim.lsp.codelens.run, desc = "Codelens" }
     end,
     opts = {
       autoformat = false,
@@ -31,6 +33,8 @@ return {
           filetypes = {
             "javascript",
             "javascriptreact",
+            "typescript",
+            "typescriptreact",
           },
         },
       },
@@ -44,8 +48,9 @@ return {
         -- "xo",
         "prettierd",
         "eslint-lsp",
+        -- "eslint_d",
         "css-lsp",
-        "cssmodules-language-server",
+        -- "cssmodules-language-server",
         -- "stylelint-lsp",
         "tailwindcss-language-server",
         "stylua",
@@ -53,11 +58,10 @@ return {
         -- "yamlfmt"
         -- "yamllint"
         -- "bash-language-server"
-        -- "commitlint"
         -- "editorconfig-checker"
         -- "fixjson"
         -- "jsonlint"
-        "commitlint",
+        -- "commitlint",
       }, 0, #opts.ensure_installed)
     end,
   },
@@ -67,10 +71,13 @@ return {
       local nls = require("null-ls")
       return {
         sources = {
+          -- nls.builtins.diagnostics.xo,
+          -- nls.builtins.code_actions.xo,
           nls.builtins.formatting.prettierd,
+          -- nls.builtins.diagnostics.eslint_d,
           nls.builtins.formatting.stylua,
           nls.builtins.diagnostics.selene,
-          nls.builtins.diagnostics.commitlint,
+          -- nls.builtins.diagnostics.commitlint,
         },
       }
     end,
@@ -84,4 +91,19 @@ return {
       { "<leader>cD", "<cmd>Glance references<cr>", desc = "Jump to references" },
     },
   },
+  -- {
+  --   -- TODO: preview doesn't work and won't override lazyvim <leader>ca for some reason
+  --   "aznhe21/actions-preview.nvim",
+  --   opts = {
+  --     diff = {
+  --       algorithm = "patience",
+  --       ignore_whitespace = true,
+  --     },
+  --     telescope = require("telescope.themes").get_ivy(),
+  --   },
+  --   keys = {
+  --     { "<leader>ca", "<cmd>lua require('actions-preview').code_actions()<cr>", desc = "Code actions" },
+  --     -- { "<leader>ca", desc = "Code actions ()" },
+  --   },
+  -- },
 }

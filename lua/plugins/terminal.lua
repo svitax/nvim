@@ -18,12 +18,12 @@ return {
       start_in_insert = true,
       shade_filetypes = { "none" },
       on_create = function(t)
-        vim.keymap.set(
-          "n",
-          "q",
-          "<cmd>close<cr>",
-          { buffer = true, noremap = true, silent = true, desc = "Close terminal" }
-        )
+        -- vim.keymap.set(
+        --   "n",
+        --   "q",
+        --   "<cmd>close<cr>",
+        --   { buffer = true, noremap = true, silent = true, desc = "Close terminal" }
+        -- )
         vim.keymap.set("t", "<c-j>", [[<Cmd>wincmd j<CR>]], { buffer = true, desc = "Switch window down" })
         vim.keymap.set("t", "<c-k>", [[<Cmd>wincmd k<CR>]], { buffer = true, desc = "Switch window up" })
         vim.keymap.set("t", "<c-l>", [[<Cmd>wincmd h<CR>]], { buffer = true, desc = "Switch window left" })
@@ -31,7 +31,7 @@ return {
         vim.keymap.set("t", "<ESC>", [[<c-\><c-n>]], { buffer = true, desc = "Exit terminal mode" })
       end,
     },
-    config = true,
+    cmd = { "ToggleTerm", "ToggleTermSendVisualSelection" },
     keys = {
       { "<c-t>", "<cmd>ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal" },
       { "<A-1>", "<cmd>ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal" },

@@ -1,11 +1,40 @@
 return {
-  -- TODO: add gruvbox
   {
     "EdenEast/nightfox.nvim",
-    -- lazy = true,
     opts = function()
+      -- local C = require("nightfox.lib.color")
+      local Shade = require("nightfox.lib.shade")
       return {
         palettes = {
+          terafox = {
+            -- Shade.new(base, bright, dim, light)
+            black = Shade.new("#0d0e0f", "#4e5157", "#282a30"),
+            red = Shade.new("#ea6962", "#eb746b", "#c54e45"),
+            green = Shade.new("#a9b665", "#8eb2af", "#688b89"),
+            yellow = Shade.new("#d8a657", "#fdb292", "#d78b6c"),
+            blue = Shade.new("#7daea3", "#73a3b7", "#4d7d90"),
+            magenta = Shade.new("#d4879c", "#b97490", "#934e69"),
+            cyan = Shade.new("#83a598", "#afd4de", "#89aeb8"),
+            white = Shade.new("#e7d7ad", "#eeeeee", "#c8c8c8"),
+            orange = Shade.new("#e78a4e", "#ff9664", "#d96f3e"),
+            pink = Shade.new("#d38d97", "#d38d97", "#ad6771"),
+
+            comment = "#665c54",
+
+            bg0 = "#171a1a", -- Dark bg (status line and float)
+            bg1 = "#1d2021", -- Default bg
+            bg2 = "#252323", -- Lighter bg (colorcolm folds)
+            bg3 = "#32302f", -- Lighter bg (cursor line)
+            bg4 = "#504945", -- Conceal, border fg
+
+            fg0 = "#dcc9aa", -- Lighter fg
+            fg1 = "#d4be98", -- Default fg
+            fg2 = "#ccb386", -- Darker fg (status line)
+            fg3 = "#c5a774", -- Darker fg (line numbers, fold colums)
+
+            sel0 = "#2F3132", -- Popup bg, visual selection bg
+            sel1 = "#C7B68A", -- Popup sel bg, search bg
+          },
           carbonfox = {
             -- cyan = "#08bdba",
             -- blue = "#78a9ff",
@@ -13,7 +42,47 @@ return {
             green = "#5ac778",
           },
         },
+        specs = {
+          terafox = {
+            syntax = {
+              bracket = "fg0", -- Brackets and Punctuation
+              builtin0 = "red", -- Builtin variable
+              builtin1 = "cyan", -- Builtin type
+              builtin2 = "orange", -- Builtin const
+              builtin3 = "red", -- Not used
+              comment = "comment", -- Comment
+              conditional = "magenta", -- Conditional and loop
+              const = "orange", -- Constants, imports and booleans
+              dep = "fg3", -- Deprecated
+              field = "blue", -- Field
+              func = "blue", -- Functions and Titles
+              ident = "cyan", -- Identifiers
+              keyword = "magenta", -- Keywords
+              number = "orange", -- Numbers
+              operator = "fg2", -- Operators
+              preproc = "pink", -- PreProc
+              regex = "yellow", -- Regex
+              statement = "magenta", -- Statements
+              string = "green", -- Strings
+              type = "yellow", -- Types
+              variable = "white", -- Variables
+            },
+          },
+        },
         groups = {
+          terafox = {
+            Pmenu = { fg = "palette.fg1", bg = "palette.bg2" }, -- Popup menu: normal item.
+            PmenuSel = { bg = "palette.bg4" }, -- Popup menu: selected item.
+            PmenuThumb = { bg = "palette.bg3" }, -- Popup menu: Thumb of the scrollbar.
+            LineNr = { fg = "palette.bg4" }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
+            CursorLineNr = { fg = "palette.comment" }, -- Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
+            MatchParen = { fg = "palette.magenta" }, -- The character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
+            Search = { fg = "palette.fg1", bg = "palette.bg4" }, -- Last search pattern highlighting (see 'hlsearch').  Also used for similar items that need to stand out.
+
+            TabLineFill = { bg = "palette.bg1" },
+            TabLine = { fg = "palette.fg2", bg = "palette.bg1" },
+            TabLineSel = { fg = "palette.fg2", bg = "palette.bg3" },
+          },
           all = {
             AlphaButtons = { fg = "palette.blue" },
             AlphaHeader = { link = "Comment" },
@@ -28,22 +97,16 @@ return {
 
             TabLineFill = { bg = "palette.bg0" },
             TabLine = { fg = "palette.fg2", bg = "palette.bg0" },
-            TabLineSel = { fg = "palette.bg0", bg = "palette.magenta.dim" },
+            TabLineSel = { fg = "palette.bg0", bg = "palette.magenta" },
 
-            NvimSurroundHighlight = { fg = "palette.bg0", bg = "palette.magenta.dim" },
+            NvimSurroundHighlight = { fg = "palette.bg0", bg = "palette.magenta" },
           },
         },
       }
     end,
   },
-  -- { "nyoom-engineering/oxocarbon.nvim" },
   -- Configure LazyVim to load gruvbox
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "carbonfox",
-    },
-  },
+  { "LazyVim/LazyVim", opts = { colorscheme = "terafox" } },
   {
     "brenoprata10/nvim-highlight-colors",
     opts = { render = "background", enable_named_colors = true, enable_tailwind = true },

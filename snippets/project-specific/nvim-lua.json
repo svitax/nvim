@@ -1,0 +1,62 @@
+{
+  "keymap": {
+    "prefix": "keymap",
+    "body": "vim.keymap.set(\"n\", \"${1:LHS}\", ${2:RHS}, { desc = \"$3\" })"
+  },
+  "keymap (multi mode)": {
+    "prefix": "keymap (multi-mode)",
+    "body": "vim.keymap.set({ \"n\", \"x\" }, \"${1:LHS}\", ${2:RHS}, { desc = \"$3\" })"
+  },
+  "keymap (buffer)": {
+    "prefix": "keymap (buffer)",
+    "body": "vim.keymap.set(\"n\", \"${1:LHS}\", ${2:RHS}, { desc = \"$3\", buffer = true })"
+  },
+  "buffer arg for keymap": {
+    "prefix": "buffer arg",
+    "body": "buffer = true"
+  },
+  "input (vim.ui)": {
+    "prefix": "input (vim.ui)",
+    "body": [
+      "vim.ui.input({ prompt = \"${1:prompt_msg}\"}, function (input)",
+      "\tif not(input) then return end",
+      "\t$2",
+      "end)"
+    ]
+  },
+  "select (vim.ui)": {
+    "prefix": "select (vim.ui)",
+    "body": [
+      "local ${1:list} = {}",
+      "vim.ui.select(${1:list}, { prompt = \"${2:prompt_msg}\" }, function (choice)",
+      "\tif not choice then return end",
+      "\t$3",
+      "end)"
+    ]
+  },
+  "autocmd & augroup": {
+    "prefix": ["autocmd & augroup"],
+    "body": [
+      "vim.api.nvim_create_augroup (\"${1:groupname}\", {})",
+      "vim.api.nvim_create_autocmd (\"${2:event}\", {",
+      "\tgroup = \"${1:groupname}\",",
+      "\tcallback = function()",
+      "\t\t$3",
+      "\tend,",
+      "})"
+    ]
+  },
+  "autocmd (FileType)": {
+    "prefix": ["autocmd", "FileType autocmd"],
+    "body": [
+      "vim.api.nvim_create_augroup (\"${1:groupname}\", {})",
+      "vim.api.nvim_create_autocmd (\"FileType\", {",
+      "\tgroup = \"${1:groupname}\",",
+      "\tpattern = \"${2:ft}\",",
+      "\tcallback = function()",
+      "\t\t$3",
+      "\tend,",
+      "})"
+    ]
+  }
+}

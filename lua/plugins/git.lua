@@ -3,9 +3,7 @@ return {
   {
     "sindrets/diffview.nvim",
     dependencies = "nvim-lua/plenary.nvim",
-    keys = {
-      { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Diffview" },
-    },
+    cmd = { "DiffviewFileHistory", "DiffviewOpen" },
     opts = {
       keymaps = {
         view = {
@@ -47,6 +45,9 @@ return {
           { "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close diffview" } },
         },
       },
+    },
+    keys = {
+      { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Diffview" },
     },
   },
 }

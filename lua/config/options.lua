@@ -3,3 +3,4 @@
 -- Add any additional options here
 vim.o.fillchars = [[diff:╱]]
 vim.o.showtabline = 2
+vim.o.conceallevel = 1

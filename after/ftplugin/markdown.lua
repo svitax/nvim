@@ -32,3 +32,13 @@ if require("zk.util").notebook_root(vim.fn.expand("%:p")) ~= nil then
 else
   vim.notify("zk-nvim not found")
 end
+
+local ok, _ = pcall(require, "toggle-checkbox")
+if ok then
+  vim.keymap.set(
+    "n",
+    "<A-cr>",
+    "<cmd>lua require('toggle-checkbox').toggle()<cr>",
+    { desc = "Toggle checkbox", buffer = true, noremap = true, silent = true }
+  )
+end

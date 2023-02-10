@@ -13,6 +13,10 @@ return {
     keys = function()
       return {}
     end,
+    config = function()
+      require("luasnip.loaders.from_vscode").lazy_load({ paths = "./snippets" })
+      require("luasnip.loaders.from_lua").lazy_load({ paths = "./snippets/luasnippets" })
+    end,
   },
   -- then: setup supertab in cmp
   {
@@ -25,6 +29,8 @@ return {
       "PaterJason/cmp-conjure",
       "jcha0713/cmp-tw2css",
       "bydlw98/cmp-env",
+      "tamago324/cmp-zsh",
+      { "petertriho/cmp-git", dependencies = "nvim-lua/plenary.nvim", opts = { github = { pull_requests = 10 } } },
       { "dcampos/cmp-emmet-vim", dependencies = "mattn/emmet-vim" },
       { "David-Kunz/cmp-npm", opts = { only_semantic_versions = true } },
     },
@@ -47,7 +53,6 @@ return {
       local cmp_source_names = {
         -- ["markdown-link"] = "(markdown)",
         -- nvim_lsp_document_symbol = "(symbol)",
-        zsh = "(zsh)",
         nvim_lsp = "(lsp)",
         buffer = "(buffer)",
         path = "(path)",
@@ -55,6 +60,8 @@ return {
         conjure = "(conjure)",
         ["cmp-tw2css"] = "(tailwindcss)",
         env = "(env)",
+        zsh = "(zsh)",
+        git = "(git)",
         emmet_vim = "(emmet)",
         npm = "(npm)",
       }
@@ -73,15 +80,19 @@ return {
       })
 
       -- TODO: should i have this in all other filetypes too?
-      cmp.setup.filetype("sh", {
-        sources = cmp.config.sources({ { name = "env" } }),
+      cmp.setup.filetype({ "sh", "zsh" }, {
+        sources = cmp.config.sources({ { name = "env" }, { name = "zsh" } }),
+      })
+
+      cmp.setup.filetype({ "gitcommit" }, {
+        sources = cmp.config.sources({ { name = "git" } }),
       })
 
       opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-        { name = "npm", keyword_length = 4 },
         { name = "conjure" },
         { name = "cmp-tw2css" },
         { name = "emmet_vim" },
+        { name = "npm", keyword_length = 4 },
         -- TODO: don't insert closing pairs ')', ']' if they already exist
         -- {
         --   name = "markdown-link",

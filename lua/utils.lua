@@ -200,12 +200,12 @@ M.float_term = function(cmd, opts)
           "<cmd>close<cr>",
           { buffer = true, noremap = true, silent = true, desc = "Close terminal" }
         )
-        vim.keymap.set(
-          "n",
-          "q",
-          "<cmd>close<cr>",
-          { buffer = true, noremap = true, silent = true, desc = "Close terminal" }
-        )
+        -- vim.keymap.set(
+        --   "n",
+        --   "q",
+        --   "<cmd>close<cr>",
+        --   { buffer = true, noremap = true, silent = true, desc = "Close terminal" }
+        -- )
       end,
     }, opts or {})
     local term = require("toggleterm.terminal").Terminal:new(opts)

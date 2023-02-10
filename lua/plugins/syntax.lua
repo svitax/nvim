@@ -12,9 +12,15 @@ return {
       { "nvim-treesitter/nvim-treesitter-context", config = true },
       {
         "andymass/vim-matchup",
-        config = function()
+        event = "BufReadPost", -- other lazyloading methods do not seem to work
+        init = function()
           vim.g.matchup_matchparen_offscreen = { method = "status_manual" }
+          vim.g.matchup_text_obj_enabled = 0
+          vim.g.matchup_matchparen_enabled = 1
         end,
+        -- config = function()
+        --   vim.g.matchup_matchparen_offscreen = { method = "status_manual" }
+        -- end,
       },
     },
     opts = {
@@ -73,7 +79,36 @@ return {
     event = "BufReadPost",
     opts = { paint_arg_declarations = false },
   },
-  { "folke/todo-comments.nvim", opts = { highlight = { after = "" }, signs = false } },
+  {
+    "folke/todo-comments.nvim",
+    opts = { highlight = { after = "" }, signs = false },
+    keys = {
+      {
+        "<leader>xt",
+        function()
+          local command = "TodoTrouble cwd=" .. vim.fn.expand("%:p:h")
+          vim.api.nvim_command(command)
+        end,
+        desc = "Todo trouble (cwd)",
+      },
+      {
+        "<leader>xT",
+        function()
+          local command = "TodoTrouble keywords=TODO,FIX,FIXME cwd=" .. vim.fn.expand("%:p:h")
+          vim.api.nvim_command(command)
+        end,
+        desc = "Todo/Fix/Fixme (cwd)",
+      },
+      {
+        "<leader>st",
+        function()
+          local command = "TodoTelescope cwd=" .. vim.fn.expand("%:p:h")
+          vim.api.nvim_command(command)
+        end,
+        desc = "Search todo (cwd)",
+      },
+    },
+  },
   -- { "MTDL9/vim-log-highlighting", ft = "log" },
   { "NMAC427/guess-indent.nvim", event = "BufReadPost", config = true },
 }
