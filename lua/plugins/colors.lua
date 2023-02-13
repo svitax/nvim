@@ -1,4 +1,5 @@
 return {
+  { "luisiacc/gruvbox-baby", config = function() end },
   {
     "EdenEast/nightfox.nvim",
     opts = function()
@@ -9,8 +10,8 @@ return {
           terafox = {
             -- Shade.new(base, bright, dim, light)
             black = Shade.new("#0d0e0f", "#4e5157", "#282a30"),
-            red = Shade.new("#ea6962", "#eb746b", "#c54e45"),
-            green = Shade.new("#a9b665", "#8eb2af", "#688b89"),
+            red = Shade.new("#ea6962", "#eb746b", "#543834"),
+            green = Shade.new("#a9b665", "#8eb2af", "#3f3f29"),
             yellow = Shade.new("#d8a657", "#fdb292", "#d78b6c"),
             blue = Shade.new("#7daea3", "#73a3b7", "#4d7d90"),
             magenta = Shade.new("#d4879c", "#b97490", "#934e69"),
@@ -35,12 +36,12 @@ return {
             sel0 = "#2F3132", -- Popup bg, visual selection bg
             sel1 = "#C7B68A", -- Popup sel bg, search bg
           },
-          carbonfox = {
-            -- cyan = "#08bdba",
-            -- blue = "#78a9ff",
-            red = "#ee5396",
-            green = "#5ac778",
-          },
+          -- carbonfox = {
+          --   -- cyan = "#08bdba",
+          --   -- blue = "#78a9ff",
+          --   red = "#ee5396",
+          --   green = "#5ac778",
+          -- },
         },
         specs = {
           terafox = {
@@ -56,8 +57,10 @@ return {
               dep = "fg3", -- Deprecated
               field = "blue", -- Field
               func = "blue", -- Functions and Titles
+              -- func = "yellow", -- Functions and Titles
               ident = "cyan", -- Identifiers
-              keyword = "magenta", -- Keywords
+              -- keyword = "magenta", -- Keywords
+              keyword = "red", -- Keywords
               number = "orange", -- Numbers
               operator = "fg2", -- Operators
               preproc = "pink", -- PreProc
@@ -79,27 +82,38 @@ return {
             MatchParen = { fg = "palette.magenta" }, -- The character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
             Search = { fg = "palette.fg1", bg = "palette.bg4" }, -- Last search pattern highlighting (see 'hlsearch').  Also used for similar items that need to stand out.
 
+            Function = { fg = "palette.yellow" },
+
             TabLineFill = { bg = "palette.bg1" },
-            TabLine = { fg = "palette.fg2", bg = "palette.bg1" },
+            TabLine = { fg = "palette.comment", bg = "palette.bg1" },
             TabLineSel = { fg = "palette.fg2", bg = "palette.bg3" },
-          },
-          all = {
+
             AlphaButtons = { fg = "palette.blue" },
             AlphaHeader = { link = "Comment" },
             AlphaFooter = { link = "Comment" },
             AlphaShortcut = { fg = "palette.magenta" },
 
+            -- FIX: Leap highlight groups not being applied.
             LeapBackdrop = { link = "Comment" },
             LeapMatch = { bg = "palette.blue" },
 
             TreesitterContext = { bg = "palette.bg2" },
+
             Hlargs = { link = "@parameter" },
 
-            TabLineFill = { bg = "palette.bg0" },
-            TabLine = { fg = "palette.fg2", bg = "palette.bg0" },
-            TabLineSel = { fg = "palette.bg0", bg = "palette.magenta" },
+            CmpItemAbbrMatch = { fg = "palette.blue" },
+            CmpItemAbbrMatchFuzzy = { fg = "palette.blue" },
 
             NvimSurroundHighlight = { fg = "palette.bg0", bg = "palette.magenta" },
+
+            FloatBorder = { fg = "palette.comment" },
+
+            -- FIX: Portal highlight groups not being applied.
+            -- PortalBorderForward = { fg = "#fab387" },
+            -- PortalBorderBackward = { fg = "#89b4fa" },
+            -- PortalBorder = { fg = "#fab387" },
+            -- PortalBorderNone = { fg = "#89b4fa" },
+            -- PortalLabel = { bg = "palette.blue", fg = "palette.bg0" },
           },
         },
       }

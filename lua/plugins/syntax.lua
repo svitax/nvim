@@ -77,6 +77,7 @@ return {
     "m-demare/hlargs.nvim",
     dependencies = { "nvim-treesitter" },
     event = "BufReadPost",
+    -- event = "VeryLazy",
     opts = { paint_arg_declarations = false },
   },
   {

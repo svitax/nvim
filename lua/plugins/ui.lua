@@ -1,4 +1,5 @@
 return {
+  -- { "ldelossa/buffertag", event = "BufReadPost", opts = {} },
   {
     "folke/which-key.nvim",
     config = function(_, opts)
@@ -24,6 +25,7 @@ return {
         ["<leader>p"] = { name = "+project" },
         ["<leader>q"] = { name = "+quit/session" },
         ["<leader>s"] = { name = "+search" },
+        ["<leader>so"] = { name = "+online" },
         ["<leader>t"] = { name = "+test" },
         ["<leader>u"] = { name = "+ui" },
         ["<leader>w"] = { name = "+windows" },
@@ -116,17 +118,19 @@ return {
   {
     "stevearc/dressing.nvim",
     opts = {
-      input = {
-        border = "rounded",
-        relative = "cursor",
-        max_width = 50,
-        min_width = 50,
-        win_options = {
-          sidescrolloff = 0,
-          winblend = 0,
-        },
-        insert_only = false,
-      },
+      -- input = {
+      --   -- enabled = false,
+      --   border = "rounded",
+      --   relative = "editor",
+      --   max_width = 50,
+      --   min_width = 50,
+      --   insert_only = false,
+      --   start_in_insert = true,
+      --   win_options = {
+      --     sidescrolloff = 0,
+      --     winblend = 0,
+      --   },
+      -- },
       select = {
         telescope = require("telescope.themes").get_ivy({ ... }),
       },

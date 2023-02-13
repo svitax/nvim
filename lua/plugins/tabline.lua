@@ -7,10 +7,11 @@ return {
       { "<leader><tab>N", "<cmd>$tabnew<cr>", desc = "New tab" },
       { "<leader><tab>n", "<cmd>tabnext<cr>", desc = "Next tab" },
       { "<leader><tab>p", "<cmd>tabprevious<cr>", desc = "Previous tab" },
-      -- { "<leader><tab>n", "<cmd>tabn<cr>", desc = "Next tab" },
-      -- { "<leader><tab>p", "<cmd>tabp<cr>", desc = "Previous tab" },
       { "<leader><tab>:", "<cmd>+tabmove<cr>", desc = "Move tab right" },
       { "<leader><tab>L", "<cmd>-tabmove<cr>", desc = "Move tab left" },
+      { "<leader><tab>r", ":TabRename ", desc = "Rename tab" },
+      { "<C-n>", "<cmd>tabnext<cr>", desc = "Next tab" },
+      { "<C-p>", "<cmd>tabprevious<cr>", desc = "Previous tab" },
     },
     config = function()
       local function tab_name(tab)
@@ -73,4 +74,9 @@ return {
     end,
   },
   { "tiagovla/scope.nvim", event = "VeryLazy", config = true },
+  {
+    "LukasPietzschmann/telescope-tabs",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    keys = { { "<leader><tab><tab>", "<cmd>Telescope telescope-tabs list_tabs<cr>", desc = "Switch tab" } },
+  },
 }

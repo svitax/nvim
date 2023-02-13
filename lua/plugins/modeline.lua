@@ -21,6 +21,10 @@ local function get_spec(spec)
   return vim.tbl_get(specs, unpack(spec))
 end
 
+local function hide_in_width()
+  return vim.fn.winwidth(0) > 90
+end
+
 local modeline_icons = shared.modeline_icons
 local git_icons = shared.git_icons
 local diagnostic_icons = shared.diagnostic_icons
@@ -86,7 +90,7 @@ local components = {
     end,
     cond = function()
       -- not a toggleterm buf
-      return not utils.is_buf_filetype("toggleterm")
+      return (not utils.is_buf_filetype("toggleterm")) and hide_in_width()
     end,
   },
   toggleterm = {
@@ -199,6 +203,7 @@ local components = {
       modified = git_icons.bold_modified .. " ",
       removed = git_icons.bold_removed .. " ",
     },
+    cond = hide_in_width,
   },
   diagnostics = {
     "diagnostics",
@@ -209,28 +214,38 @@ local components = {
       info = diagnostic_icons.bold_info .. " ",
       hint = diagnostic_icons.bold_hint .. " ",
     },
+    cond = hide_in_width,
   },
   lsp = {
     function(msg)
       local active_clients = vim.lsp.get_active_clients()
       if vim.tbl_isempty(active_clients) then
         if type(msg) == "boolean" or string.len(msg) == 0 then
-          return "LS Inactive"
+          return "[LS Inactive]"
         end
         return msg
       end
 
-      if next(active_clients) == nil then
-        if type(msg) == "boolean" or string.len(msg) == 0 then
-          return "LS Inactive"
+      -- if next(active_clients) == nil then
+      --   if type(msg) == "boolean" or string.len(msg) == 0 then
+      --     return "LS Inactive"
+      --   end
+      --   return msg
+      -- end
+
+      -- trims a client name if window too small
+      local function trim(client_name)
+        if vim.fn.winwidth(0) < 100 then
+          return string.sub(client_name, 1, 4)
         end
-        return msg
+        return client_name
       end
 
       local buf_client_names = {}
       vim.lsp.for_each_buffer_client(0, function(client, _, _)
         if client.name ~= "null-ls" and client.name ~= "copilot" then
-          table.insert(buf_client_names, client.name)
+          local client_name = trim(client.name)
+          table.insert(buf_client_names, client_name)
         end
       end)
 
@@ -241,7 +256,8 @@ local components = {
         for _, source in ipairs(available_sources) do
           for method in pairs(source.methods) do
             registered[method] = registered[method] or {}
-            table.insert(registered[method], source.name)
+            local source_name = trim(source.name)
+            table.insert(registered[method], source_name)
           end
         end
         return registered
@@ -256,8 +272,9 @@ local components = {
       local supported_formatters = list_registered(buf_ft, "NULL_LS_FORMATTING")
       local supported_linters = list_registered(buf_ft, "NULL_LS_DIAGNOSTICS")
 
-      vim.list_extend(buf_client_names, supported_formatters, 0, #buf_client_names)
-      vim.list_extend(buf_client_names, supported_linters, 0, #buf_client_names)
+
+      vim.list_extend(buf_client_names, supported_formatters)
+      vim.list_extend(buf_client_names, supported_linters)
 
       if vim.tbl_isempty(buf_client_names) then
         buf_client_names = { "LS Inactive" }
@@ -291,7 +308,7 @@ local components = {
     "location",
     cond = function()
       -- not a toggleterm buf
-      return not utils.is_buf_filetype("toggleterm")
+      return (not utils.is_buf_filetype("toggleterm")) and hide_in_width()
     end,
   },
   progress = {
@@ -302,7 +319,7 @@ local components = {
     end,
     cond = function()
       -- not a toggleterm buf
-      return not utils.is_buf_filetype("toggleterm")
+      return (not utils.is_buf_filetype("toggleterm")) and hide_in_width()
     end,
   },
   showmode = {

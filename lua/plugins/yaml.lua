@@ -28,7 +28,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "cuducos/yaml.nvim",
+      -- "cuducos/yaml.nvim",
       {
         "someone-stole-my-name/yaml-companion.nvim",
         config = function()
@@ -59,32 +59,32 @@ return {
                 -- "<cmd>Telescope yaml_schema<cr>",
                 { desc = "Switch yaml schema", buffer = buffer }
               )
-              vim.keymap.set("n", "<leader>mv", "<cmd>YAMLView<cr>", { desc = "Show key/value path", buffer = buffer })
-              vim.keymap.set(
-                "n",
-                "<leader>mp",
-                "<cmd>YAMLYank +<cr>",
-                { desc = "Yank key/value path", buffer = buffer }
-              )
-              vim.keymap.set("n", "<leader>mk", "<cmd>YAMLYankKey +<cr>", { desc = "Yank key path", buffer = buffer })
-              vim.keymap.set(
-                "n",
-                "<leader>mk",
-                "<cmd>YAMLYankValue +<cr>",
-                { desc = "Yank value path", buffer = buffer }
-              )
-              vim.keymap.set(
-                "n",
-                "<leader>mq",
-                "<cmd>YAMLQuickfix<cr>",
-                { desc = "Quickfix with key/values", buffer = buffer }
-              )
-              vim.keymap.set(
-                "n",
-                "<leader>mf",
-                "<cmd>YAMLTelescope<cr>",
-                { desc = "Find key/value paths", buffer = buffer }
-              )
+              -- vim.keymap.set("n", "<leader>mv", "<cmd>YAMLView<cr>", { desc = "Show key/value path", buffer = buffer })
+              -- vim.keymap.set(
+              --   "n",
+              --   "<leader>mp",
+              --   "<cmd>YAMLYank +<cr>",
+              --   { desc = "Yank key/value path", buffer = buffer }
+              -- )
+              -- vim.keymap.set("n", "<leader>mk", "<cmd>YAMLYankKey +<cr>", { desc = "Yank key path", buffer = buffer })
+              -- vim.keymap.set(
+              --   "n",
+              --   "<leader>mk",
+              --   "<cmd>YAMLYankValue +<cr>",
+              --   { desc = "Yank value path", buffer = buffer }
+              -- )
+              -- vim.keymap.set(
+              --   "n",
+              --   "<leader>mq",
+              --   "<cmd>YAMLQuickfix<cr>",
+              --   { desc = "Quickfix with key/values", buffer = buffer }
+              -- )
+              -- vim.keymap.set(
+              --   "n",
+              --   "<leader>mf",
+              --   "<cmd>YAMLTelescope<cr>",
+              --   { desc = "Find key/value paths", buffer = buffer }
+              -- )
             end
           end)
           local cfg = require("yaml-companion").setup({

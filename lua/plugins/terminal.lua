@@ -29,6 +29,8 @@ return {
         vim.keymap.set("t", "<c-l>", [[<Cmd>wincmd h<CR>]], { buffer = true, desc = "Switch window left" })
         vim.keymap.set("t", "<c-h>", [[<Cmd>wincmd l<CR>]], { buffer = true, desc = "Switch window right" })
         vim.keymap.set("t", "<ESC>", [[<c-\><c-n>]], { buffer = true, desc = "Exit terminal mode" })
+        vim.keymap.set("t", "<C-h>", "<C-w>", { buffer = true, desc = "Delete previous word (<C-bs>)" })
+        vim.keymap.set("t", "<C-bs>", "<C-w>", { buffer = true, desc = "Delete previous word (<C-bs>)" })
       end,
     },
     cmd = { "ToggleTerm", "ToggleTermSendVisualSelection" },
@@ -42,8 +44,9 @@ return {
       { "<A-6>", "<cmd>6ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 6" },
       -- { "<leader>gt", "<cmd>lua _lazygit_toggle()<CR>", mode = { "n" }, desc = "Toggle lazygit" },
       -- { "<leader>hn", "<cmd>lua _navi_toggle()<CR>", mode = { "n" }, desc = "Toggle navi" },
-      { "<leader>hn", utils.float_term("navi"), mode = { "n" }, desc = "navi" },
-      { "<leader>gU", utils.float_term("ugit"), mode = { "n" }, desc = "ugit" },
+      { "<leader>hn", utils.float_term("navi", { count = 4 }), mode = { "n" }, desc = "Navi" },
+      { "<leader>ht", utils.float_term("btop", { count = 5 }), mode = { "n" }, desc = "Btop" },
+      { "<leader>gU", utils.float_term("ugit", { count = 6 }), mode = { "n" }, desc = "Ugit" },
 
       -- { "<leader>tt", "<cmd>ToggleTerm direction='horizontal'<cr>", desc = "Toggle terminal" },
       -- { "<leader>tv", "<cmd>ToggleTerm direction='vertical'<cr>", desc = "Toggle terminal vertical" },

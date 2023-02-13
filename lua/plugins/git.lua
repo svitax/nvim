@@ -1,5 +1,20 @@
 -- TODO: {"<leader>gb", "<cmd>Gitsigns toggle_current_line_blame<cr>", desc = "Toggle blame"}
 return {
+  -- {
+  --   "TimUntersberger/neogit",
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   cmd = "Neogit",
+  --   -- opts = { kind = "replace" },
+  --   keys = {
+  --     {
+  --       "<leader>gn",
+  --       function()
+  --         return require("neogit").open({ cwd = vim.fn.expand("%:p:h") })
+  --       end,
+  --       desc = "Neogit",
+  --     },
+  --   },
+  -- },
   {
     "sindrets/diffview.nvim",
     dependencies = "nvim-lua/plenary.nvim",

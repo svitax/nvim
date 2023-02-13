@@ -1,4 +1,5 @@
 return {
+  -- TODO: When entering and leaving diffview, my folds get messed up
   "kevinhwang91/nvim-ufo",
   dependencies = "kevinhwang91/promise-async",
   event = "BufReadPost",

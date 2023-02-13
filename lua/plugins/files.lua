@@ -1,4 +1,5 @@
 return {
+  -- { "SidOfc/carbon.nvim", event = "VeryLazy", config = true, opts = { auto_open = false } },
   {
     "is0n/fm-nvim",
     config = true,

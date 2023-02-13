@@ -2,7 +2,7 @@ return {
   { "rcarriga/nvim-notify", enabled = false },
   { "akinsho/bufferline.nvim", enabled = false },
   { "windwp/nvim-spectre", enabled = false },
-  -- { "folke/persistence.nvim", enabled = false },
+  { "folke/persistence.nvim", enabled = false },
   { "echasnovski/mini.surround", enabled = false },
   { "echasnovski/mini.surround", enabled = false },
   {

@@ -30,13 +30,9 @@ return {
       },
       servers = {
         tailwindcss = {
-          filetypes = {
-            "javascript",
-            "javascriptreact",
-            "typescript",
-            "typescriptreact",
-          },
+          filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
         },
+        bashls = { filetypes = { "sh", "zsh", "bash" } },
       },
     },
   },
@@ -48,20 +44,21 @@ return {
         -- "xo",
         "prettierd",
         "eslint-lsp",
-        -- "eslint_d",
         "css-lsp",
         -- "cssmodules-language-server",
         -- "stylelint-lsp",
-        "tailwindcss-language-server",
+        -- "tailwindcss-language-server",
         "stylua",
         "selene",
         -- "yamlfmt"
         -- "yamllint"
-        -- "bash-language-server"
         -- "editorconfig-checker"
         -- "fixjson"
         -- "jsonlint"
         -- "commitlint",
+        -- "beautysh",
+        "shfmt",
+        "shellharden",
       }, 0, #opts.ensure_installed)
     end,
   },
@@ -74,10 +71,13 @@ return {
           -- nls.builtins.diagnostics.xo,
           -- nls.builtins.code_actions.xo,
           nls.builtins.formatting.prettierd,
-          -- nls.builtins.diagnostics.eslint_d,
           nls.builtins.formatting.stylua,
           nls.builtins.diagnostics.selene,
           -- nls.builtins.diagnostics.commitlint,
+          nls.builtins.diagnostics.zsh,
+          nls.builtins.formatting.shfmt,
+          nls.builtins.formatting.shellharden,
+          nls.builtins.formatting.beautysh,
         },
       }
     end,

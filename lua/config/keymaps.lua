@@ -20,15 +20,15 @@ map({ "n", "v" }, "h", ":", { desc = "Command" })
 map({ "n", "v" }, "<S-Left>", "_", { desc = "First non-whitespace character" })
 map({ "n", "v" }, "<S-Right>", "$", { desc = "End of line" })
 -- <C-Bs> maps to <C-h> in terminals, but I like to have <C-bs> delete the previous word.
-map({ "i" }, "<C-h>", "<C-w>", { desc = "Delete previous word (<C-bs>)" })
-map({ "i" }, "<C-bs>", "<C-w>", { desc = "Delete previous word (<C-bs>)" })
+map({ "i", "c" }, "<C-h>", "<C-w>", { desc = "Delete previous word (<C-bs>)" })
+map({ "i", "c" }, "<C-bs>", "<C-w>", { desc = "Delete previous word (<C-bs>)" })
 -- <A-bs> is mapped to delete previous word on my keyboard (macos), make that consistent inside nvim
 map({ "i" }, "<A-bs>", "<C-w>", { desc = "Delete previous word" })
 -- select all
 map({ "i" }, "<A-a>", "<esc>ggVG$", { desc = "Select all" })
 map({ "n", "v" }, "<A-a>", "ggVG$", { desc = "Select all" })
--- toggle folds with <tab>
-map("n", "<tab>", "za", { desc = "Fold cycle" })
+-- toggle folds with <s-tab>
+map("n", "<s-tab>", "za", { desc = "Fold cycle" })
 -- Move lines with <C-a-j/k> because I'm already using <A-j/k> and <S-A-j/k> for treeclimber
 map("n", "<C-A-j>", "<cmd>m .+1<cr>==", { desc = "Move down" })
 map("n", "<C-A-k>", "<cmd>m .-2<cr>==", { desc = "Move up" })
@@ -36,6 +36,8 @@ map("i", "<C-A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
 map("i", "<C-A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
 map("v", "<C-A-j>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
 map("v", "<C-A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
+-- use V in visual mode to expand selection downwards. saves a few keystrokes compared to V + mashing j
+map("x", "V", "j", { desc = "Expand selection downwards" })
 
 -- delete some LazyVim mappings I don't use
 vim.keymap.del("n", "<leader>w-")
