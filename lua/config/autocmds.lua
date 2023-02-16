@@ -20,8 +20,8 @@ autocmd("FileType", {
     "neotest-summary",
     "fugitive",
     "floggraph",
-    "git",
-    "gitcommit",
+    -- "git",
+    -- "gitcommit",
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
