@@ -20,7 +20,6 @@ autocmd("FileType", {
     "neotest-summary",
     "fugitive",
     "floggraph",
-    "gitcommit",
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
@@ -31,8 +30,6 @@ autocmd("FileType", {
         "<cmd>Twiggy<cr><cmd>close<cr><cmd>G<cr><cmd>close<cr>",
         { buffer = event.buf, silent = true }
       )
-    elseif vim.bo.buftype == "gitcommit" then
-      vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf })
     else
       vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
     end
