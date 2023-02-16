@@ -150,10 +150,10 @@ return {
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
         "zk",
-        -- "cbfmt",
         "markdownlint",
+        -- "cbfmt",
         -- "codespell",
-        "vale",
+        -- "vale",
       }, 0, #opts.ensure_installed)
     end,
   },
@@ -161,20 +161,20 @@ return {
     "jose-elias-alvarez/null-ls.nvim",
     opts = function(_, opts)
       local nls = require("null-ls")
-      -- table.insert(opts.sources, nls.builtins.formatting.cbfmt)
-      -- table.insert(opts.sources, nls.builtins.diagnostics.codespell.with({ filetypes = { "text", "markdown" } }))
-      table.insert(
-        opts.sources,
-        nls.builtins.diagnostics.vale.with({
-          extra_args = { "--config", vim.fn.expand("$HOME") .. "/.config/vale/.vale.ini" },
-        })
-      )
       table.insert(
         opts.sources,
         nls.builtins.diagnostics.markdownlint.with({
           extra_args = { "--disable", "trailing-spaces", "no-multiple-blanks", "line-length" },
         })
       )
+      -- table.insert(opts.sources, nls.builtins.formatting.cbfmt)
+      -- table.insert(opts.sources, nls.builtins.diagnostics.codespell.with({ filetypes = { "text", "markdown" } }))
+      -- table.insert(
+      --   opts.sources,
+      --   nls.builtins.diagnostics.vale.with({
+      --     extra_args = { "--config", vim.fn.expand("$HOME") .. "/.config/vale/.vale.ini" },
+      --   })
+      -- )
       -- table.insert(
       --   opts.sources,
       --   nls.builtins.formatting.markdownlint.with({

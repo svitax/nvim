@@ -32,7 +32,8 @@ return {
   },
   {
     "axelvc/template-string.nvim",
-    ft = { "javascript", "typescript", "python", "javascriptreact", "typescriptreact" },
+    event = "InsertEnter",
+    ft = { "javascript", "typescript", "python", "javascriptreact", "typescriptreact", "python" },
     config = true,
   },
   {

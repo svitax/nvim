@@ -12,19 +12,42 @@ return {
       telescope.setup(opts)
       telescope.load_extension("fzf")
 
-      local previewers = require("telescope.previewers")
-      local delta = previewers.new_termopen_previewer({
+      local preview_height = 0.80
+      local preview_width = 0.75
+
+      local delta_previewer = require("telescope.previewers").new_termopen_previewer({
         get_command = function(entry)
           if (entry.status == "M ") or (entry.status == "A ") then
-            return { "git", "-c", "core.pager=delta", "-c", "delta.side-by-side=false", "diff", "--staged", entry.value }
+            return {
+              "git",
+              "-c",
+              "core.pager=delta",
+              "-c",
+              "delta.side-by-side=false",
+              "diff",
+              "--staged",
+              -- entry.value,
+              "--",
+              entry.path,
+            }
           end
           if entry.status == "??" then
             return { "bat", entry.value }
           end
-          return { "git", "-c", "core.pager=delta", "-c", "delta.side-by-side=false", "diff", entry.value }
+          return {
+            "git",
+            "-c",
+            "core.pager=delta",
+            "-c",
+            "delta.side-by-side=false",
+            "diff",
+            -- entry.value,
+            "--",
+            entry.path,
+          }
         end,
       })
-      local delta_bcommits = require("telescope.previewers").new_termopen_previewer({
+      local delta_bcommits_previewer = require("telescope.previewers").new_termopen_previewer({
         get_command = function(entry)
           return {
             "git",
@@ -40,59 +63,59 @@ return {
         end,
       })
 
-      vim.keymap.set(
-        "n",
-        "<leader>gb",
-        lv_utils.telescope("git_branches", {
-          attach_mappings = function(_, map)
-            -- map("i", "<c-f>", require("telescope.extensions").changed_files.actions.find_changed_files)
-            map("i", "<CR>", function(prompt_bufnr)
-              local entry = require("telescope.actions.state").get_selected_entry()
-              require("telescope.actions").close(prompt_bufnr)
-              vim.cmd("DiffviewOpen " .. entry.name)
-            end)
-            return true
-          end,
-          previewer = delta,
-          layout_config = { height = 0.8, preview_width = 0.8 },
-        })
-      )
-      vim.keymap.set(
-        "n",
-        "<leader>gc",
-        lv_utils.telescope("git_commits", {
-          attach_mappings = function(_, map)
-            -- map("i", "<c-f>", require("telescope.extensions").changed_files.actions.find_changed_files)
-            map("i", "<CR>", function(prompt_bufnr)
-              local entry = require("telescope.actions.state").get_selected_entry()
-              require("telescope.actions").close(prompt_bufnr)
-              vim.cmd("DiffviewOpen " .. entry.value)
-            end)
-            return true
-          end,
-          previewer = { delta, previewers.git_commit_message.new({}), previewers.git_commit_diff_as_was.new({}) },
-          layout_config = { height = 0.8, preview_width = 0.8 },
-        })
-      )
-      vim.keymap.set(
-        "n",
-        "<leader>gC",
-        lv_utils.telescope("git_bcommits", {
-          previewer = {
-            delta_bcommits,
-            previewers.git_commit_message.new({}),
-            previewers.git_commit_diff_as_was.new({}),
-          },
-          layout_config = { height = 0.8, preview_width = 0.8 },
-        })
-      )
-      vim.keymap.set(
-        "n",
-        "<leader>gs",
-        lv_utils.telescope("git_status", { previewer = delta, layout_config = { height = 0.8, preview_width = 0.8 } })
-      )
-    end,
+      local delta_branches_picker = lv_utils.telescope("git_branches", {
+        attach_mappings = function(_, map)
+          -- map("i", "<c-f>", require("telescope.extensions").changed_files.actions.find_changed_files)
+          map("i", "<CR>", function(prompt_bufnr)
+            local entry = require("telescope.actions.state").get_selected_entry()
+            require("telescope.actions").close(prompt_bufnr)
+            vim.cmd("DiffviewOpen " .. entry.name)
+          end)
+          return true
+        end,
+        previewer = delta_previewer,
+        layout_config = { height = preview_height, preview_width = preview_width },
+      })
+      local delta_commits_picker = lv_utils.telescope("git_commits", {
+        attach_mappings = function(_, map)
+          -- map("i", "<c-f>", require("telescope.extensions").changed_files.actions.find_changed_files)
+          map("i", "<CR>", function(prompt_bufnr)
+            local entry = require("telescope.actions.state").get_selected_entry()
+            require("telescope.actions").close(prompt_bufnr)
+            vim.cmd("DiffviewOpen " .. entry.value)
+          end)
+          return true
+        end,
+        previewer = {
+          delta_previewer,
+          require("telescope.previewers").git_commit_message.new({}),
+          require("telescope.previewers").git_commit_diff_as_was.new({}),
+        },
+        layout_config = { height = preview_height, preview_width = preview_width },
+      })
+      local delta_bcommits_picker = lv_utils.telescope("git_bcommits", {
+        previewer = {
+          delta_bcommits_previewer,
+          require("telescope.previewers").git_commit_message.new({}),
+          require("telescope.previewers").git_commit_diff_as_was.new({}),
+        },
+        layout_config = { height = preview_height, preview_width = preview_width },
+      })
+      local delta_status_picker = lv_utils.telescope("git_status", {
+        previewer = delta_previewer,
+        layout_config = { height = preview_height, preview_width = preview_width },
+      })
+      local delta_stash_picker = lv_utils.telescope("git_stash", {
+        previewer = delta_previewer,
+        layout_config = { height = preview_height, preview_width = preview_width },
+      })
 
+      vim.keymap.set("n", "<leader>gb", delta_branches_picker, { desc = "Git branches" })
+      vim.keymap.set("n", "<leader>gc", delta_commits_picker, { desc = "Git commits" })
+      vim.keymap.set("n", "<leader>gC", delta_bcommits_picker, { desc = "Git bcommits" })
+      vim.keymap.set("n", "<leader>gs", delta_status_picker, { desc = "Git status" })
+      vim.keymap.set("n", "<leader>gS", delta_stash_picker, { desc = "Git stash" })
+    end,
     keys = {
       { "<leader>'", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
       {
@@ -209,10 +232,11 @@ return {
       -- { "<leader>fp", "<cmd>Telescope projections<cr>", desc = "Find project" },
       { "<leader>fT", false },
 
-      { "<leader>gb", desc = "Git branches" },
-      { "<leader>gc", desc = "Git commits" },
-      { "<leader>gC", desc = "Git bcommits" },
-      { "<leader>gs", desc = "Git status" },
+      { "<leader>gb" },
+      { "<leader>gc" },
+      { "<leader>gC" },
+      { "<leader>gs" },
+      { "<leader>gS" },
 
       { "<leader>ha", "<cmd>Telescope autocommands<cr>", desc = "Autocommands" },
       { "<leader>hc", "<cmd>Telescope command_history<cr>", desc = "Command history" },
@@ -282,6 +306,12 @@ return {
             ["<c-f>"] = function(...)
               return require("telescope.actions").to_fuzzy_refine(...)
             end,
+            ["<C-s>"] = function(...)
+              return require("telescope.actions").cycle_previewers_next(...)
+            end,
+            ["<C-a>"] = function(...)
+              return require("telescope.actions").cycle_previewers_prev(...)
+            end,
           },
         },
       }),
@@ -319,6 +349,14 @@ return {
   --   -- TODO: make dir-telescope not search .git and node_modules folders
   --   -- choose a dir to grep in
   --   keys = { { "<leader>sD", "<cmd>Telescope dir live_grep<cr>", desc = "Search other directory" } },
+  -- },
+  -- {
+  --   "marcuscaisey/olddirs.nvim",
+  --   dependencies = { "nvim-telescope/telescope.nvim" },
+  --   config = function()
+  --     require("telescope").load_extension("olddirs")
+  --   end,
+  --   keys = { { "<leader>fo", "<cmd>Telescope olddirs picker<cr>", desc = "Recent dirs" } },
   -- },
   {
     "smartpde/telescope-recent-files",
@@ -375,14 +413,7 @@ return {
   {
     "lalitmee/browse.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
-    -- cmd = {
-    --   "Browse",
-    --   "BrowseBookmarks",
-    --   "BrowseInputSearch",
-    --   "BrowseDevdocsSearch",
-    --   "BrowseDevdocsFiletypeSearch",
-    --   "BrowseMdnSearch",
-    -- },
+    cmd = { "Browse", "BrowseBookmarks", "BrowseInputSearch", "BrowseDevdocsSearch", "BrowseDevdocsFiletypeSearch" },
     opts = {
       bookmarks = {
         ["npm-search"] = "https://npmjs.com/search?q=%s",

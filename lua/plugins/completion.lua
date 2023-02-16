@@ -1,11 +1,4 @@
 return {
-  {
-    "Olical/conjure",
-    config = function()
-      vim.g["conjure#mapping#prefix"] = "<leader>m"
-    end,
-    lazy = true,
-  },
   -- Use <tab> for completion and snippets (supertab)
   -- first: disable default <tab> and <s-tab> behavior in LuaSnip
   {
@@ -30,9 +23,11 @@ return {
       "jcha0713/cmp-tw2css",
       "bydlw98/cmp-env",
       "tamago324/cmp-zsh",
+      "chrisgrieser/cmp-nerdfont",
       { "petertriho/cmp-git", dependencies = "nvim-lua/plenary.nvim", opts = { github = { pull_requests = 10 } } },
       { "dcampos/cmp-emmet-vim", dependencies = "mattn/emmet-vim" },
       { "David-Kunz/cmp-npm", opts = { only_semantic_versions = true } },
+      { "roobert/tailwindcss-colorizer-cmp.nvim", config = true },
     },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
@@ -61,6 +56,7 @@ return {
         ["cmp-tw2css"] = "(tailwindcss)",
         env = "(env)",
         zsh = "(zsh)",
+        nerdfont = "(nerdfont)",
         git = "(git)",
         emmet_vim = "(emmet)",
         npm = "(npm)",
@@ -91,6 +87,7 @@ return {
       opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
         { name = "conjure" },
         { name = "cmp-tw2css" },
+        { name = "nerdfont" },
         { name = "emmet_vim" },
         { name = "npm", keyword_length = 4 },
         -- TODO: don't insert closing pairs ')', ']' if they already exist
@@ -124,7 +121,8 @@ return {
             item.menu = "(" .. entry.source.source.client.name .. ")"
           end
 
-          return item
+          -- return item
+          return require("tailwindcss-colorizer-cmp").formatter(entry, item)
         end,
       }
 

@@ -44,9 +44,9 @@ return {
       { "<A-6>", "<cmd>6ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 6" },
       -- { "<leader>gt", "<cmd>lua _lazygit_toggle()<CR>", mode = { "n" }, desc = "Toggle lazygit" },
       -- { "<leader>hn", "<cmd>lua _navi_toggle()<CR>", mode = { "n" }, desc = "Toggle navi" },
-      { "<leader>hn", utils.float_term("navi", { count = 4 }), mode = { "n" }, desc = "Navi" },
-      { "<leader>ht", utils.float_term("btop", { count = 5 }), mode = { "n" }, desc = "Btop" },
-      { "<leader>gU", utils.float_term("ugit", { count = 6 }), mode = { "n" }, desc = "Ugit" },
+      { "<leader>hn", utils.float_term("navi", { count = 4 }), mode = { "n" }, desc = "Cheatsheet (navi)" },
+      { "<leader>ht", utils.float_term("btop", { count = 5 }), mode = { "n" }, desc = "Resource monitor (btop)" },
+      { "<leader>gu", utils.float_term("ugit", { count = 6 }), mode = { "n" }, desc = "Undo git commands (ugit)" },
 
       -- { "<leader>tt", "<cmd>ToggleTerm direction='horizontal'<cr>", desc = "Toggle terminal" },
       -- { "<leader>tv", "<cmd>ToggleTerm direction='vertical'<cr>", desc = "Toggle terminal vertical" },

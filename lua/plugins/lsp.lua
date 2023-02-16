@@ -40,21 +40,9 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
-        -- TODO: use xo instead of eslint and prettier
-        -- "xo",
-        "prettierd",
-        "eslint-lsp",
-        "css-lsp",
-        -- "cssmodules-language-server",
-        -- "stylelint-lsp",
-        -- "tailwindcss-language-server",
         "stylua",
         "selene",
-        -- "yamlfmt"
-        -- "yamllint"
         -- "editorconfig-checker"
-        -- "fixjson"
-        -- "jsonlint"
         -- "commitlint",
         -- "beautysh",
         "shfmt",
@@ -70,7 +58,7 @@ return {
         sources = {
           -- nls.builtins.diagnostics.xo,
           -- nls.builtins.code_actions.xo,
-          nls.builtins.formatting.prettierd,
+          -- nls.builtins.formatting.prettierd,
           nls.builtins.formatting.stylua,
           nls.builtins.diagnostics.selene,
           -- nls.builtins.diagnostics.commitlint,

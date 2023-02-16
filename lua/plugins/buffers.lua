@@ -27,7 +27,7 @@ return {
       labels = { "j", "k", "l", ";" },
       escape = { ["<esc>"] = true, ["q"] = true },
       portal = {
-        title = { options = { relative = "editor", width = 60 }, render_empty = false },
+        title = { render_empty = false, options = { relative = "editor", width = 60 } },
         body = { options = { relative = "editor", width = 60 } },
       },
     },
@@ -53,13 +53,13 @@ return {
       {
         "<C-o>",
         function()
-          require("portal").jump_backward({ query = { "valid", "valid", "valid", "valid" } })
+          require("portal").jump_backward({ query = { "valid", "valid", "valid" } })
         end,
       },
       {
         "<C-i>",
         function()
-          require("portal").jump_forward({ query = { "valid", "valid", "valid", "valid" } })
+          require("portal").jump_forward({ query = { "valid", "valid", "valid" } })
         end,
       },
     },

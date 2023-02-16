@@ -102,7 +102,7 @@ local components = {
       return utils.is_buf_filetype("toggleterm")
     end,
     color = function(_)
-      return { fg = get_spec("syntax.keyword") }
+      return { fg = get_spec("syntax.ident") }
     end,
   },
   buf_modified = {
@@ -271,7 +271,6 @@ local components = {
       local buf_ft = vim.bo.filetype
       local supported_formatters = list_registered(buf_ft, "NULL_LS_FORMATTING")
       local supported_linters = list_registered(buf_ft, "NULL_LS_DIAGNOSTICS")
-
 
       vim.list_extend(buf_client_names, supported_formatters)
       vim.list_extend(buf_client_names, supported_linters)
