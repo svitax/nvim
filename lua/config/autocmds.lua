@@ -9,6 +9,7 @@ local augroup = vim.api.nvim_create_augroup
 -- end
 
 -- close some filetypes with <q>
+-- test
 augroup("close_with_q", { clear = true })
 autocmd("FileType", {
   group = "close_with_q",
