@@ -21,22 +21,22 @@ autocmd("FileType", {
     "fugitive",
     "floggraph",
     "git",
+    "gitcommit",
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
-    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+    if vim.bo.filetype == "fugitive" then
+      vim.keymap.set(
+        "n",
+        "q",
+        "<cmd>Twiggy<cr><cmd>close<cr><cmd>G<cr><cmd>close<cr>",
+        { buffer = event.buf, silent = true }
+      )
+    else
+      vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+    end
   end,
 })
-augroup("quit_with_q", { clear = true })
-autocmd("FileType", {
-  group = "quit_with_q",
-  pattern = { "gitcommit" },
-  callback = function(event)
-    vim.bo[event.buf].buflisted = false
-    vim.keymap.set("n", "q", "<cmd>quit<cr>", { buffer = event.buf, silent = true })
-  end,
-})
-
 augroup("zsh_as_bash", {})
 autocmd("BufWinEnter", {
   group = "zsh_as_bash",
