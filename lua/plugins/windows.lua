@@ -2,6 +2,7 @@ vim.keymap.set("n", "<leader>wd", "<cmd>try | close | catch | endtry<CR>", { des
 vim.keymap.set("n", "<leader>wo", "<cmd>try | only | catch | endtry<CR>", { desc = "Delete other windows" })
 vim.keymap.set("n", "<leader>ws", "<cmd>split<CR>", { desc = "Split window" })
 vim.keymap.set("n", "<leader>wv", "<cmd>vsplit<CR>", { desc = "Vsplit window" })
+
 return {
   {
     "declancm/windex.nvim",

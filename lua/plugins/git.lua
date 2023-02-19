@@ -1,5 +1,6 @@
--- TODO: {"<leader>gL", "<cmd>Gitsigns toggle_current_line_blame<cr>", desc = "Current line blame"}
--- TODO: {"<leader>gl", "<cmd>Gitsigns blame_line<cr>", desc = "Blame line popup"}
+vim.keymap.set("n", "<leader>gB", "<cmd>Gitsigns toggle_current_line_blame<cr>", { desc = "Current line blame" })
+vim.keymap.set("n", "<leader>gL", "<cmd>Gitsigns blame_line<cr>", { desc = "Blame line popup" })
+
 return {
   -- { "idanarye/vim-merginal", dependencies = { "tpope/vim-fugitive" }, cmd = { "Merginal", "MerginalToggle" } },
   {
@@ -9,8 +10,14 @@ return {
     config = function()
       vim.cmd([[let g:twiggy_close_on_fugitive_command = 1]])
     end,
+    keys = { { "<leader>gt", "<cmd>Twiggy<cr>", desc = "Git branches" } },
   },
-  { "rbong/vim-flog", dependencies = { "tpope/vim-fugitive" }, cmd = "Flog" },
+  {
+    "rbong/vim-flog",
+    dependencies = { "tpope/vim-fugitive" },
+    cmd = { "Flog", "Flogsplit" },
+    keys = { { "<leader>gl", "<cmd>Flogsplit<cr>", desc = "Git log" } },
+  },
   {
     "tpope/vim-fugitive",
     cmd = { "G", "Git" },
@@ -41,9 +48,9 @@ return {
       {
         "<leader>gg",
         function()
+          local utils = require("utils")
           vim.cmd([[tab Git]])
           vim.cmd([[Twiggy]])
-          local utils = require("utils")
           vim.api.nvim_feedkeys(utils.termcodes("<c-l>"), "i", true)
           -- "<cmd>Git<cr><cmd>Twiggy<cr><cmd>G<cr>"
         end,

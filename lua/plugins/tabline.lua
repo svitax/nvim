@@ -73,7 +73,7 @@ return {
       end)
     end,
   },
-  { "tiagovla/scope.nvim", event = "VeryLazy", config = true },
+  -- { "tiagovla/scope.nvim", event = "VeryLazy", config = true },
   {
     "LukasPietzschmann/telescope-tabs",
     dependencies = { "nvim-telescope/telescope.nvim" },

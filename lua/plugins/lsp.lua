@@ -7,6 +7,7 @@ return {
       keys[#keys + 1] = { "<leader>ca", false }
       keys[#keys + 1] = { "<leader>cd", false }
       keys[#keys + 1] = { "<leader>cA", vim.lsp.codelens.run, desc = "Codelens" }
+      keys[#keys + 1] = { "gl", vim.diagnostic.open_float, desc = "Line diagnostics" }
     end,
     opts = {
       autoformat = false,
@@ -42,6 +43,7 @@ return {
       vim.list_extend(opts.ensure_installed, {
         "stylua",
         "selene",
+        -- "luacheck",
         -- "editorconfig-checker"
         -- "commitlint",
         -- "beautysh",
@@ -89,9 +91,6 @@ return {
   --     },
   --     telescope = require("telescope.themes").get_ivy(),
   --   },
-  --   keys = {
-  --     { "<leader>ca", "<cmd>lua require('actions-preview').code_actions()<cr>", desc = "Code actions" },
-  --     -- { "<leader>ca", desc = "Code actions ()" },
-  --   },
+  --   keys = { { "<leader>ca", ":lua require('actions-preview').code_actions()<cr>", desc = "Lol" } },
   -- },
 }

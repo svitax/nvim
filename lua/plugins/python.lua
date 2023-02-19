@@ -1,4 +1,18 @@
 return {
+  {
+    "AckslD/swenv.nvim",
+    opts = {
+      venvs_path = vim.fn.expand("~/.conda/envs"),
+      post_set_venv = function()
+        vim.cmd("LspRestart")
+      end,
+    },
+    keys = {
+      { "<leader>pv", "<cmd>lua require('swenv.api').pick_venv()<cr>", desc = "Switch venv" },
+    },
+  },
+  -- TODO: requirements file format syntax
+  -- { "raimon49/requirements.txt.vim", event = "VeryLazy" },
   -- add python to treesitter
   {
     "nvim-treesitter/nvim-treesitter",
@@ -45,17 +59,5 @@ return {
       table.insert(opts.sources, nls.builtins.formatting.black)
       table.insert(opts.sources, nls.builtins.diagnostics.pydocstyle)
     end,
-  },
-  {
-    "AckslD/swenv.nvim",
-    opts = {
-      venvs_path = vim.fn.expand("~/.conda/envs"),
-      post_set_venv = function()
-        vim.cmd("LspRestart")
-      end,
-    },
-    keys = {
-      { "<leader>pv", "<cmd>lua require('swenv.api').pick_venv()<cr>", desc = "Switch venv" },
-    },
   },
 }

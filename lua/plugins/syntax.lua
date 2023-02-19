@@ -70,7 +70,6 @@ return {
       },
     },
   },
-
   { "zbirenbaum/neodim", event = "LspAttach", opts = { alpha = 0.60, update_in_insert = { enable = false } } },
   -- highlight arguments' definitions and usages
   {

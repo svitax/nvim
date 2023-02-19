@@ -1,6 +1,10 @@
 return {
   -- { "ldelossa/buffertag", event = "BufReadPost", opts = {} },
   {
+    "stevearc/dressing.nvim",
+    opts = { input = { enabled = false }, select = { telescope = require("telescope.themes").get_ivy({ ... }) } },
+  },
+  {
     "folke/which-key.nvim",
     config = function(_, opts)
       local wk = require("which-key")
@@ -55,6 +59,12 @@ return {
             },
           },
         },
+      },
+      routes = {
+        -- tries to hide Twiggy branch detail echo messages by trying to match a SHA1 of 7 chars and a space
+        { filter = { event = "msg_show", kind = "echo", find = "%w%w%w%w%w%w%w " }, opts = { skip = true } },
+        -- { filter = { event = "msg_show", kind = "", find = "written" }, opts = { skip = true } },
+        -- { view = "notify", filter = { event = "msg_showmode" } },
       },
       lsp = {
         progress = { enabled = true },
@@ -113,27 +123,6 @@ return {
           end
         end,
         desc = "Scroll up",
-      },
-    },
-  },
-  {
-    "stevearc/dressing.nvim",
-    opts = {
-      -- input = {
-      --   -- enabled = false,
-      --   border = "rounded",
-      --   relative = "editor",
-      --   max_width = 50,
-      --   min_width = 50,
-      --   insert_only = false,
-      --   start_in_insert = true,
-      --   win_options = {
-      --     sidescrolloff = 0,
-      --     winblend = 0,
-      --   },
-      -- },
-      select = {
-        telescope = require("telescope.themes").get_ivy({ ... }),
       },
     },
   },

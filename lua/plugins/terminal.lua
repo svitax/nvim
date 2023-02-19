@@ -1,6 +1,7 @@
 local utils = require("utils")
 
 return {
+  { "chomosuke/term-edit.nvim", ft = { "toggleterm" }, opts = { prompt_end = "%$ " } },
   {
     "akinsho/toggleterm.nvim",
     opts = {
@@ -47,12 +48,12 @@ return {
       { "<leader>hn", utils.float_term("navi", { count = 4 }), mode = { "n" }, desc = "Cheatsheet (navi)" },
       { "<leader>ht", utils.float_term("btop", { count = 5 }), mode = { "n" }, desc = "Resource monitor (btop)" },
       { "<leader>gu", utils.float_term("ugit", { count = 6 }), mode = { "n" }, desc = "Undo git commands (ugit)" },
+      { "<leader>gD", utils.float_term("ghpoi", { count = 7 }), mode = { "n" }, desc = "Clean branches (poi)" },
 
       -- { "<leader>tt", "<cmd>ToggleTerm direction='horizontal'<cr>", desc = "Toggle terminal" },
       -- { "<leader>tv", "<cmd>ToggleTerm direction='vertical'<cr>", desc = "Toggle terminal vertical" },
     },
   },
-  { "chomosuke/term-edit.nvim", ft = { "toggleterm" }, opts = { prompt_end = "%$ " } },
   -- {
   --   "airblade/vim-rooter",
   --   event = "VeryLazy",

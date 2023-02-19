@@ -18,13 +18,7 @@ return {
       -- "Refresh zk index"
       { "<leader>ni", "<cmd>ZkIndex<cr>", desc = "Refresh index" },
       -- Create a new note after asking for its title.
-      {
-        "<leader>nN",
-        function()
-          return require("zk.commands").get("ZkNew")({ title = vim.fn.input("Title: ") })
-        end,
-        desc = "New note",
-      },
+      { "<leader>nN", "<Cmd>ZkNew { title = vim.fn.input('Title: ') }<CR>", desc = "New note", silent = false },
       -- Open notes linked by the current buffer.
       { "<leader>nl", "<cmd>ZkLinks<cr>", desc = "Find links" },
       -- Open notes linking to the current buffer.
@@ -66,7 +60,7 @@ return {
         function()
           local actions = require("telescope.actions")
           local action_state = require("telescope.actions.state")
-          local Path = require("plenary.path")
+          -- local Path = require("plenary.path")
           local Job = require("plenary.job")
           require("telescope._extensions.bibtex").exports.bibtex({
             attach_mappings = function(prompt_bufnr, map)
@@ -149,7 +143,8 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
-        "zk",
+        -- NOTE: installing zk through mason breaks ZkNew functionality
+        -- "zk",
         "markdownlint",
         -- "cbfmt",
         -- "codespell",

@@ -13,17 +13,20 @@ return {
 ]]
       dashboard.section.header.val = vim.split(logo, "\n")
       dashboard.section.buttons.val = {
-        dashboard.button("f", " " .. " Find file", "<cmd>Telescope find_files<cr>"),
+        -- dashboard.button("f", " " .. " Find file", "<cmd>Telescope find_files<cr>"),
+        -- dashboard.button("s", "勒" .. " Restore Session", [[:lua require("persistence").load()<cr>]]),
+        -- dashboard.button("z", " " .. " Zshrc", ":e ~/.zshrc | :cd %:p:h<CR>"),
+        dashboard.button("f", " " .. " Find file", [[:lua require('lazyvim.util').telescope('files')()<cr>]]),
         dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert<cr>"),
+        dashboard.button("p", " " .. " Projects", [[:lua require('telescope').extensions.repo.list()<cr>]]),
         dashboard.button(
           "r",
           " " .. " Recent files",
-          "<cmd>lua require('telescope').extensions.recent_files.pick()<cr>"
+          [[:lua require('telescope').extensions.recent_files.pick()<cr>]]
         ),
-        dashboard.button("g", " " .. " Find text", "<cmd>Telescope live_grep<cr>"),
-        dashboard.button("c", " " .. " Config", ":e $MYVIMRC<cr>"),
-        dashboard.button("s", "勒" .. " Restore Session", [[:lua require("persistence").load()<cr>]]),
-        dashboard.button("l", "鈴" .. " Lazy", ":Lazy<cr>"),
+        dashboard.button("g", " " .. " Find text", [[:lua require('lazyvim.util').telescope('live_grep')()<cr>]]),
+        dashboard.button("l", "鈴" .. " Plugins", ":Lazy<cr>"),
+        dashboard.button("c", " " .. " Configuration", ":e $MYVIMRC<cr>"),
         dashboard.button("q", " " .. " Quit", ":qa<cr>"),
       }
       for _, button in ipairs(dashboard.section.buttons.val) do

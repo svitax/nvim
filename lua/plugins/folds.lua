@@ -1,3 +1,6 @@
+-- toggle folds with <s-tab>
+vim.keymap.set("n", "<s-tab>", "za", { desc = "Fold cycle" })
+
 return {
   -- TODO: When entering and leaving diffview, my folds get messed up
   "kevinhwang91/nvim-ufo",

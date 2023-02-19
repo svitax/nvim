@@ -1,5 +1,6 @@
 -- TODO: replace syntax-tree-surfer and tree-climber.nvim with my fork of nvim-treeclimber
 return {
+  { "chaoren/vim-wordmotion", event = "BufReadPost" },
   {
     "ggandor/leap.nvim",
     config = function(_, opts)

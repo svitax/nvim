@@ -12,109 +12,13 @@ return {
       telescope.setup(opts)
       telescope.load_extension("fzf")
 
-      local preview_height = 0.80
-      local preview_width = 0.75
-
-      local delta_previewer = require("telescope.previewers").new_termopen_previewer({
-        get_command = function(entry)
-          if (entry.status == "M ") or (entry.status == "A ") then
-            return {
-              "git",
-              "-c",
-              "core.pager=delta",
-              "-c",
-              "delta.side-by-side=false",
-              "diff",
-              "--staged",
-              -- entry.value,
-              "--",
-              entry.path,
-            }
-          end
-          if entry.status == "??" then
-            return { "bat", entry.value }
-          end
-          return {
-            "git",
-            "-c",
-            "core.pager=delta",
-            "-c",
-            "delta.side-by-side=false",
-            "diff",
-            -- entry.value,
-            "--",
-            entry.path,
-          }
-        end,
-      })
-      local delta_bcommits_previewer = require("telescope.previewers").new_termopen_previewer({
-        get_command = function(entry)
-          return {
-            "git",
-            "-c",
-            "core.pager=delta",
-            "-c",
-            "delta.side-by-side=false",
-            "diff",
-            entry.value .. "^!",
-            "--",
-            entry.current_file,
-          }
-        end,
-      })
-
-      local delta_branches_picker = lv_utils.telescope("git_branches", {
-        attach_mappings = function(_, map)
-          -- map("i", "<c-f>", require("telescope.extensions").changed_files.actions.find_changed_files)
-          map("i", "<CR>", function(prompt_bufnr)
-            local entry = require("telescope.actions.state").get_selected_entry()
-            require("telescope.actions").close(prompt_bufnr)
-            vim.cmd("DiffviewOpen " .. entry.name)
-          end)
-          return true
-        end,
-        previewer = delta_previewer,
-        layout_config = { height = preview_height, preview_width = preview_width },
-      })
-      local delta_commits_picker = lv_utils.telescope("git_commits", {
-        attach_mappings = function(_, map)
-          -- map("i", "<c-f>", require("telescope.extensions").changed_files.actions.find_changed_files)
-          map("i", "<CR>", function(prompt_bufnr)
-            local entry = require("telescope.actions.state").get_selected_entry()
-            require("telescope.actions").close(prompt_bufnr)
-            vim.cmd("DiffviewOpen " .. entry.value)
-          end)
-          return true
-        end,
-        previewer = {
-          delta_previewer,
-          require("telescope.previewers").git_commit_message.new({}),
-          require("telescope.previewers").git_commit_diff_as_was.new({}),
-        },
-        layout_config = { height = preview_height, preview_width = preview_width },
-      })
-      local delta_bcommits_picker = lv_utils.telescope("git_bcommits", {
-        previewer = {
-          delta_bcommits_previewer,
-          require("telescope.previewers").git_commit_message.new({}),
-          require("telescope.previewers").git_commit_diff_as_was.new({}),
-        },
-        layout_config = { height = preview_height, preview_width = preview_width },
-      })
-      local delta_status_picker = lv_utils.telescope("git_status", {
-        previewer = delta_previewer,
-        layout_config = { height = preview_height, preview_width = preview_width },
-      })
-      local delta_stash_picker = lv_utils.telescope("git_stash", {
-        previewer = delta_previewer,
-        layout_config = { height = preview_height, preview_width = preview_width },
-      })
-
-      vim.keymap.set("n", "<leader>gb", delta_branches_picker, { desc = "Git branches" })
-      vim.keymap.set("n", "<leader>gc", delta_commits_picker, { desc = "Git commits" })
-      vim.keymap.set("n", "<leader>gC", delta_bcommits_picker, { desc = "Git bcommits" })
-      vim.keymap.set("n", "<leader>gs", delta_status_picker, { desc = "Git status" })
-      vim.keymap.set("n", "<leader>gS", delta_stash_picker, { desc = "Git stash" })
+      -- Custom picker
+      local custom = require("plugins.telescope.pickers")
+      vim.keymap.set("n", "<leader>gb", custom.delta_branches_picker, { desc = "Find git branches" })
+      vim.keymap.set("n", "<leader>gc", custom.delta_commits_picker, { desc = "Find git commits" })
+      vim.keymap.set("n", "<leader>gC", custom.delta_bcommits_picker, { desc = "Find Git bcommits" })
+      vim.keymap.set("n", "<leader>gs", custom.delta_status_picker, { desc = "Git status" })
+      vim.keymap.set("n", "<leader>gS", custom.delta_stash_picker, { desc = "Git stash" })
     end,
     keys = {
       { "<leader>'", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
@@ -250,13 +154,14 @@ return {
       { "<leader>ho", "<cmd>Telescope vim_options<cr>", desc = "Options" },
 
       { "<leader>sa", false },
-      { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Search buffer" }, -- or grep current buffer
+      { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Fuzzy search buffer" }, -- or grep current buffer
       -- TODO: search all open buffers
       -- { "<leader>sB", desc = "Search all open buffers" }, -- buffer (fuzzy) find / or grep only open buffers
       { "<leader>sc", false },
       { "<leader>sC", false },
       -- TODO: search only current dir
       { "<leader>sd", lv_utils.telescope("live_grep"), desc = "Search current directory" }, -- grep project (default telescope grep)
+      { "<leader>se", lv_utils.telescope("live_grep", { cwd = "~/.config/nvim" }), desc = "Search .config/nvim" }, -- grep nvim config
       { "<leader>sf", false },
       { "<leader>sg", false },
       { "<leader>sG", false },
@@ -266,7 +171,6 @@ return {
       { "<leader>sk", false },
       { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to mark" },
       { "<leader>sM", false },
-      { "<leader>sn", lv_utils.telescope("live_grep", { cwd = "~/.config/nvim" }), desc = "Search .config/nvim" }, -- grep nvim config
       { "<leader>sp", lv_utils.telescope("live_grep"), desc = "Search project" }, -- grep project (default telescope grep)
       -- TODO: search other project
       -- { "<leader>sP", desc = "Search other project" }, -- prompt a project to search in
@@ -281,8 +185,9 @@ return {
       -- TODO: dictionary and thesaurus
       -- { "<leader>st", desc = "Dictionary" },
       -- { "<leader>sT", desc = "Thesaurus" },
-      { "<leader>sw", lv_utils.telescope("grep_string"), desc = "Search word (root)" },
-      { "<leader>sW", lv_utils.telescope("grep_string", { cwd = false }), desc = "Search word (cwd)" },
+      -- TODO: search word
+      -- { "<leader>sw", lv_utils.telescope("grep_string"), desc = "Search word (root)" },
+      -- { "<leader>sW", lv_utils.telescope("grep_string", { cwd = false }), desc = "Search word (cwd)" },
     },
     opts = {
       extensions = {

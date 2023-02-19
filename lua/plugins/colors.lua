@@ -1,5 +1,11 @@
 return {
-  { "luisiacc/gruvbox-baby", config = function() end },
+  -- Configure LazyVim to load gruvbox
+  { "LazyVim/LazyVim", opts = { colorscheme = "terafox" } },
+  {
+    "brenoprata10/nvim-highlight-colors",
+    opts = { render = "background", enable_named_colors = true, enable_tailwind = true },
+    event = "BufReadPost",
+  },
   {
     "EdenEast/nightfox.nvim",
     opts = function()
@@ -114,16 +120,15 @@ return {
             -- PortalBorder = { fg = "#fab387" },
             -- PortalBorderNone = { fg = "#89b4fa" },
             -- PortalLabel = { bg = "palette.blue", fg = "palette.bg0" },
+
+            flogHash = { fg = "palette.blue" },
+            flogAuthor = { link = "Comment" },
+            flogRef = { fg = "palette.yellow" },
+            flogRefHeadBranch = { fg = "palette.yellow" },
+            flogDate = { link = "Comment" },
           },
         },
       }
     end,
-  },
-  -- Configure LazyVim to load gruvbox
-  { "LazyVim/LazyVim", opts = { colorscheme = "terafox" } },
-  {
-    "brenoprata10/nvim-highlight-colors",
-    opts = { render = "background", enable_named_colors = true, enable_tailwind = true },
-    event = "BufReadPost",
   },
 }
