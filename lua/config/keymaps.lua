@@ -34,6 +34,18 @@ map("i", "<C-A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
 map("i", "<C-A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
 map("v", "<C-A-j>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
 map("v", "<C-A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
+-- TODO: check if default in lazyvim
+-- keep cursor centered when using n(next) and N(previous)
+-- map({ "n", "v" }, "n", "nzzzv", { description = "Go to next match (centered)" })
+-- map({ "n", "v" }, "N", "Nzzzv", { description = "Go to previous match (centered)" })
+-- TODO: check if default in lazyvim
+-- Undo break points (for a finer-grained undo command)
+-- map({ "i" }, ",", ",<c-g>u", { description = "" })
+-- map({ "i" }, ".", ".<c-g>u", { description = "" })
+-- map({ "i" }, "!", "!<c-g>u", { description = "" })
+-- map({ "i" }, "?", "?<c-g>u", { description = "" })
+-- map({ "i" }, "<cr>", "<cr>c-g>u", { description = "" })
+-- map({ "i" }, "<space>", "<space><c-g>u", { description = "" })
 
 -- delete some LazyVim mappings I don't use
 vim.keymap.del("n", "<leader>w-")
@@ -54,3 +66,5 @@ vim.keymap.del("n", "<leader>gG")
 -- { "<leader>pt", desc = "List project todos" }, -- trouble
 -- { "<leader>px", desc = "Pop up scratch buffer" },
 -- { "<leader>pX", desc = "Switch to scratch buffer" },
+
+-- vim.cmd "colorscheme terafox"

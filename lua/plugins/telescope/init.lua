@@ -14,9 +14,9 @@ return {
 
       -- Custom picker
       local custom = require("plugins.telescope.pickers")
-      vim.keymap.set("n", "<leader>gb", custom.delta_branches_picker, { desc = "Find git branches" })
-      vim.keymap.set("n", "<leader>gc", custom.delta_commits_picker, { desc = "Find git commits" })
-      vim.keymap.set("n", "<leader>gC", custom.delta_bcommits_picker, { desc = "Find Git bcommits" })
+      vim.keymap.set("n", "<leader>gb", custom.delta_branches_picker, { desc = "Git branches" })
+      vim.keymap.set("n", "<leader>gc", custom.delta_commits_picker, { desc = "Git commits" })
+      vim.keymap.set("n", "<leader>gC", custom.delta_bcommits_picker, { desc = "Git bcommits" })
       vim.keymap.set("n", "<leader>gs", custom.delta_status_picker, { desc = "Git status" })
       vim.keymap.set("n", "<leader>gS", custom.delta_stash_picker, { desc = "Git stash" })
     end,
@@ -24,7 +24,7 @@ return {
       { "<leader>'", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
       {
         "<leader>*",
-        lv_utils.telescope("lsp_workspace_symbols", {
+        lv_utils.telescope("lsp_document_symbols", {
           symbols = {
             "Class",
             "Function",
@@ -43,9 +43,11 @@ return {
       {
         "<leader>,",
         lv_utils.telescope("buffers", {
+          -- NOTE: override default lv_utils.telescope cwd opt
+          cwd = "",
           initial_mode = "normal",
-          sort_lastused = false,
-          sort_mru = true,
+          -- sort_lastused = false,
+          -- sort_mru = true,
           attach_mappings = function(_, map)
             map("i", "<c-x>", require("telescope.actions").delete_buffer)
             map("n", "d", require("telescope.actions").delete_buffer)
@@ -59,15 +61,17 @@ return {
       { "<leader>/", lv_utils.telescope("live_grep"), desc = "Search project" },
       { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command history" },
       -- { "<leader>`", "", desc = "Switch other" },
-      { "<leader><space>", lv_utils.telescope("files"), desc = "Find file (root)" },
+      { "<leader><space>", lv_utils.telescope("files"), desc = "Find file (cwd)" },
       { "<leader>l", "<cmd>Lazy<cr>", desc = "Plugins" },
 
       {
         "<leader>bb",
         lv_utils.telescope("buffers", {
+          -- NOTE: override default lv_utils.telescope cwd opt
+          cwd = "",
           initial_mode = "normal",
-          sort_lastused = false,
-          sort_mru = true,
+          -- sort_lastused = false,
+          -- sort_mru = true,
           attach_mappings = function(_, map)
             map("i", "<c-x>", require("telescope.actions").delete_buffer)
             map("n", "d", require("telescope.actions").delete_buffer)
@@ -122,6 +126,7 @@ return {
         -- { cwd = "~/", find_command = { "rg", "--hidden", "--files", "--follow", "--glob=!.git" } }
         desc = "Find file in dotfiles",
       },
+      { "<leader>fb", false },
       -- TODO: open project editorconfig
       -- { "<leader>fc", desc = "Open project editorconfig" },
       {
@@ -129,13 +134,13 @@ return {
         lv_utils.telescope("git_files", { cwd = "~/.config/nvim/", show_untracked = true }),
         desc = "Find file in .config/nvim",
       },
-
       { "<leader>ff", lv_utils.telescope("files"), desc = "Find file (cwd)" },
       { "<leader>fF", false },
       -- { "<leader>fn", lv_utils.telescope("git_files", { cwd = "~/Desktop/notes" }), desc = "Find notes" },
       -- { "<leader>fp", "<cmd>Telescope projections<cr>", desc = "Find project" },
       { "<leader>fT", false },
 
+      -- { "<leader>g" },
       { "<leader>gb" },
       { "<leader>gc" },
       { "<leader>gC" },
@@ -191,8 +196,8 @@ return {
     },
     opts = {
       extensions = {
-        howdoi = { pager_command = "bat" },
-        bibtex = { global_files = { "~/Desktop/docs/lib.bib" }, search_keys = { "title", "author", "year" } },
+        -- howdoi = { pager_command = "bat --color=always --theme=gruvbox-dark" },
+        bibtex = { global_files = { "~/Dropbox/docs/lib.bib" }, search_keys = { "title", "author", "year" } },
         repo = { list = { search_dirs = { "~/projects", "~/.config/nvim" } } },
       },
       defaults = require("telescope.themes").get_ivy({
@@ -222,8 +227,7 @@ return {
       }),
     },
   },
-  { "prochri/telescope-all-recent.nvim", dependencies = { "kkharji/sqlite.lua" }, opts = {}, cmd = "Telescope" },
-
+  -- { "prochri/telescope-all-recent.nvim", dependencies = { "kkharji/sqlite.lua" }, opts = {}, cmd = "Telescope" },
   -- {
   --   "nvim-telescope/telescope-file-browser.nvim",
   --   dependencies = { "nvim-telescope/telescope.nvim" },
@@ -264,6 +268,8 @@ return {
   --   keys = { { "<leader>fo", "<cmd>Telescope olddirs picker<cr>", desc = "Recent dirs" } },
   -- },
   {
+    -- NOTE: oldfiles are only saved when the program is closed. so if you open a file you haven't
+    -- worked on before, the builtin telescope oldfiles picker will not show it.
     "smartpde/telescope-recent-files",
     dependencies = { "nvim-telescope/telescope.nvim" },
     config = function()
@@ -304,17 +310,17 @@ return {
     end,
     keys = { { "<leader>sS", "<cmd>Telescope luasnip<cr>", desc = "Search snippets" } },
   },
-  {
-    "zane-/howdoi.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    config = function()
-      require("telescope").load_extension("howdoi")
-    end,
-    keys = {
-      -- NOTE: telescope-howdoi previewer shows no colors
-      { "<leader>hd", "<cmd>Telescope howdoi<cr>", desc = "Howdoi" },
-    },
-  },
+  -- {
+  --   "zane-/howdoi.nvim",
+  --   dependencies = { "nvim-telescope/telescope.nvim" },
+  --   config = function()
+  --     require("telescope").load_extension("howdoi")
+  --   end,
+  --   keys = {
+  --     -- NOTE: telescope-howdoi previewer shows no colors
+  --     { "<leader>hd", "<cmd>Telescope howdoi<cr>", desc = "Howdoi" },
+  --   },
+  -- },
   {
     "lalitmee/browse.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },

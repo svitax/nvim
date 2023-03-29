@@ -253,4 +253,30 @@ function M.get_root()
   return root
 end
 
+function M.env_cleanup(venv)
+  if string.find(venv, "/") then
+    local final_venv = venv
+    for w in venv:gmatch("([^/]+)") do
+      final_venv = w
+    end
+    venv = final_venv
+  end
+  return venv
+end
+
+--- Add a source to cmp
+-- @param source the cmp source string or table to add (see cmp documentation for source table format)
+function M.add_cmp_source(source)
+  -- load cmp if available
+  local cmp_avail, cmp = pcall(require, "cmp")
+  if cmp_avail then
+    -- get the current cmp config
+    local config = cmp.get_config()
+    -- add the source to the list of sources
+    table.insert(config.sources, source)
+    -- call the setup function again
+    cmp.setup(config)
+  end
+end
+
 return M

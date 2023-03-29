@@ -303,6 +303,24 @@ local components = {
       return filetype
     end,
   },
+  python_env = {
+    function()
+      -- local venv = os.getenv("CONDA_DEFAULT_ENV") or os.getenv("VIRTUAL_ENV")
+      local venv = require("swenv.api").get_current_venv()
+      if venv then
+        local icons = require("nvim-web-devicons")
+        local py_icon, _ = icons.get_icon(".py")
+        return string.format(py_icon .. " (%s)", utils.env_cleanup(venv.name))
+      end
+      return ""
+    end,
+    color = function(_)
+      return { fg = get_spec("syntax.comment") }
+    end,
+    cond = function()
+      return (utils.is_buf_filetype("python") and hide_in_width())
+    end,
+  },
   location = {
     "location",
     cond = function()
@@ -426,6 +444,7 @@ end
 return {
   {
     "nvim-lualine/lualine.nvim",
+    dependencies = { "AckslD/swenv.nvim" },
     event = "VeryLazy",
     opts = function(plugin)
       if plugin.override then
@@ -472,6 +491,7 @@ return {
           },
           lualine_y = {
             components.filetype,
+            components.python_env,
             -- { "progress", separator = "", padding = { left = 1, right = 0 } },
             -- { "location", padding = { left = 0, right = 1 } },
           },

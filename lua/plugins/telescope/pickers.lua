@@ -4,37 +4,35 @@ local lv_utils = require("lazyvim.util")
 local preview_height = 0.80
 local preview_width = 0.75
 
+local git_icons = {
+  added = "A",
+  changed = "M",
+  copied = "C",
+  deleted = "-",
+  renamed = "R",
+  unmerged = "U",
+  untracked = "?",
+}
+
 local M = {}
 
 M.delta_previewer = require("telescope.previewers").new_termopen_previewer({
   get_command = function(entry)
-    if (entry.status == "M ") or (entry.status == "A ") then
-      return {
-        "git",
-        "-c",
-        "core.pager=delta",
-        "-c",
-        "delta.side-by-side=false",
-        "diff",
-        "--staged",
-        -- entry.value,
-        "--",
-        entry.path,
-      }
-    end
     if entry.status == "??" then
-      return { "bat", entry.value }
+      return { "bat", "--style=plain", entry.value }
     end
     return {
       "git",
       "-c",
       "core.pager=delta",
       "-c",
-      "delta.side-by-side=false",
+      "delta.paging=always",
+      "-c",
+      "delta.pager=less -R",
       "diff",
-      -- entry.value,
+      "HEAD",
       "--",
-      entry.path,
+      entry.value,
     }
   end,
 })
@@ -79,7 +77,7 @@ M.delta_commits_picker = lv_utils.telescope("git_commits", {
     return true
   end,
   previewer = {
-    M.delta_previewer,
+    M.delta_bcommits_previewer,
     require("telescope.previewers").git_commit_message.new({}),
     require("telescope.previewers").git_commit_diff_as_was.new({}),
   },
@@ -96,6 +94,7 @@ M.delta_bcommits_picker = lv_utils.telescope("git_bcommits", {
 })
 
 M.delta_status_picker = lv_utils.telescope("git_status", {
+  git_icons = git_icons,
   previewer = M.delta_previewer,
   layout_config = { height = preview_height, preview_width = preview_width },
 })

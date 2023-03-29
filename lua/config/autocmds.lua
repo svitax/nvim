@@ -8,38 +8,26 @@ local augroup = vim.api.nvim_create_augroup
 --   return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
 -- end
 
--- close some filetypes with <q>
--- test
+-- close some filetypes with q
 augroup("close_with_q", { clear = true })
 autocmd("FileType", {
   group = "close_with_q",
-  pattern = {
-    "noice",
-    "toggleterm",
-    "neotest-output",
-    "neotest-summary",
-    "fugitive",
-    "floggraph",
-  },
+  pattern = { "noice", "toggleterm", "neotest-output", "neotest-summary", "git", "dap-float" },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
-    if vim.bo.filetype == "fugitive" then
-      vim.keymap.set(
-        "n",
-        "q",
-        "<cmd>Twiggy<cr><cmd>close<cr><cmd>G<cr><cmd>close<cr>",
-        { buffer = event.buf, silent = true }
-      )
-    else
-      vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
-    end
+    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
   end,
 })
-augroup("zsh_as_bash", {})
-autocmd("BufWinEnter", {
-  group = "zsh_as_bash",
-  pattern = { "*.sh", "*.zsh", ".zshrc" },
-  command = "silent! set filetype=sh",
+
+-- close some filetypes with <Esc>
+augroup("close_with_esc", { clear = true })
+autocmd("FileType", {
+  group = "close_with_esc",
+  pattern = { "OverseerForm" },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.keymap.set("n", "<Esc>", "<cmd>close!<cr>", { buffer = event.buf, silent = true })
+  end,
 })
 
 -- wrap and check for spell in text filetypes

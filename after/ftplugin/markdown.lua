@@ -1,12 +1,12 @@
 -- Add the key mappings only for Markdown files in a zk notebook.
 if require("zk.util").notebook_root(vim.fn.expand("%:p")) ~= nil then
   -- Open the link under the caret.
-  vim.keymap.set(
-    "n",
-    "<CR>",
-    "<Cmd>lua vim.lsp.buf.definition()<CR>",
-    { buffer = true, noremap = true, silent = false, desc = "Follow link" }
-  )
+  -- vim.keymap.set(
+  --   "n",
+  --   "<CR>",
+  --   "<Cmd>lua vim.lsp.buf.definition()<CR>",
+  --   { buffer = true, silent = false, desc = "Follow link" }
+  -- )
   -- Create a new note after asking for its title.
   -- This overrides the global `<leader>nN` mapping to create the note in the same directory as the current buffer.
   vim.keymap.set(

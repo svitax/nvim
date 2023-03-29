@@ -1,7 +1,7 @@
 return {
   {
     "is0n/fm-nvim",
-    config = true,
+    opts = { mappings = { q = ":q<CR>" } },
     keys = {
       {
         "<leader>e",
@@ -10,7 +10,7 @@ return {
           local filename = vim.fn.expand("%")
           vim.cmd([[Lf ]] .. filename)
         end,
-        desc = "Files",
+        desc = "File manager",
       },
     },
   },

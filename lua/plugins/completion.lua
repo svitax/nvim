@@ -19,15 +19,15 @@ return {
       -- "hrsh7th/cmp-omni",
       -- "hrsh7th/cmp-nvim-lsp-document-symbol",
       "hrsh7th/cmp-cmdline",
-      "PaterJason/cmp-conjure",
-      "jcha0713/cmp-tw2css",
+      -- "PaterJason/cmp-conjure",
+      -- "jcha0713/cmp-tw2css",
       "bydlw98/cmp-env",
-      "tamago324/cmp-zsh",
+      -- "tamago324/cmp-zsh",
       "chrisgrieser/cmp-nerdfont",
+      "rcarriga/cmp-dap",
       { "petertriho/cmp-git", dependencies = "nvim-lua/plenary.nvim", opts = { github = { pull_requests = 10 } } },
       { "dcampos/cmp-emmet-vim", dependencies = "mattn/emmet-vim" },
       { "David-Kunz/cmp-npm", opts = { only_semantic_versions = true } },
-      { "roobert/tailwindcss-colorizer-cmp.nvim", config = true },
     },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
@@ -45,18 +45,19 @@ return {
       --   return string.match(path, ".*%.png") or string.match(path, ".*%.md")
       -- end
 
-      local cmp_source_names = {
+      -- local cmp_source_names = {
+      opts.cmp_source_names = {
         -- ["markdown-link"] = "(markdown)",
         -- nvim_lsp_document_symbol = "(symbol)",
         nvim_lsp = "(lsp)",
         buffer = "(buffer)",
         path = "(path)",
         luasnip = "(snippet)",
-        conjure = "(conjure)",
-        ["cmp-tw2css"] = "(tailwindcss)",
+        -- conjure = "(conjure)",
         env = "(env)",
-        zsh = "(zsh)",
+        -- zsh = "(zsh)",
         nerdfont = "(nerdfont)",
+        dap = "(dap)",
         git = "(git)",
         emmet_vim = "(emmet)",
         npm = "(npm)",
@@ -76,17 +77,25 @@ return {
       })
 
       -- TODO: should i have this in all other filetypes too?
-      cmp.setup.filetype({ "sh", "zsh" }, {
-        sources = cmp.config.sources({ { name = "env" }, { name = "zsh" } }),
-      })
+      -- cmp.setup.filetype({ "sh", "zsh" }, {
+      --   sources = cmp.config.sources({ { name = "env" }, { name = "zsh" } }),
+      -- })
 
       cmp.setup.filetype({ "gitcommit" }, {
         sources = cmp.config.sources({ { name = "git" } }),
       })
 
+      cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+        sources = cmp.config.sources({ { name = "dap" } }),
+      })
+
+      -- needed for cmp_dap
+      opts.enabled = function()
+        return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
+      end
+
       opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-        { name = "conjure" },
-        { name = "cmp-tw2css" },
+        -- { name = "conjure" },
         { name = "nerdfont" },
         { name = "emmet_vim" },
         { name = "npm", keyword_length = 4 },
@@ -114,15 +123,14 @@ return {
           local icons = require("lazyvim.config").icons.kinds
           if icons[item.kind] then
             item.kind = icons[item.kind]
-            item.menu = cmp_source_names[entry.source.name]
+            item.menu = opts.cmp_source_names[entry.source.name]
           end
 
           if entry.source.name == "nvim_lsp" then
             item.menu = "(" .. entry.source.source.client.name .. ")"
           end
 
-          -- return item
-          return require("tailwindcss-colorizer-cmp").formatter(entry, item)
+          return item
         end,
       }
 
@@ -176,6 +184,7 @@ return {
     "danymat/neogen",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = { snippet_engine = "luasnip" },
+    cmd = { "Neogen" },
     keys = { { "<leader>cg", "<cmd>Neogen<cr>", desc = "Generate doc" } },
   },
 }

@@ -1,16 +1,13 @@
 return {
-  name = "rewriter single test",
+  name = "rewriter all tests",
   builder = function()
     -- Full path to current file (see :help expand())
     local file = vim.fn.expand("%:p")
     local test_file = "unit_" .. vim.fn.expand("%:p:t")
-    return {
-      cmd = { "rewriter" },
-      -- TODO:
-      args = { "-r", file, "-t", test_file },
-    }
+    return {}
   end,
   condition = {
-    filetype = { "txt" },
+    filetype = { "text" },
+    dir = { "~/projects/hydra-fe-resources/" },
   },
 }

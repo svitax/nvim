@@ -2,16 +2,26 @@ local utils = require("utils")
 
 return {
   { "chomosuke/term-edit.nvim", ft = { "toggleterm" }, opts = { prompt_end = "%$ " } },
+  -- BUG: my cwd gets stuck whenever I look at a file in my .config/nvim, and none of these autoroot plugins fix it
+  -- {
+  --   "notjedi/nvim-rooter.lua",
+  --   lazy = false,
+  --   config = function(_, opts)
+  --     require("nvim-rooter").setup(opts)
+  --     vim.cmd([[RooterToggle]])
+  --   end,
+  -- },
+  { "ahmedkhalf/project.nvim", name = "project_nvim", lazy = false, config = true },
   {
     "akinsho/toggleterm.nvim",
     opts = {
-      -- open_mapping = [[<c-t>]],
+      open_mapping = [[<c-t>]],
       -- autochdir = true,
       size = function(term)
         if term.direction == "horizontal" then
-          return 13
+          return math.floor(vim.opt.lines:get() * 0.25)
         elseif term.direction == "vertical" then
-          return math.floor(vim.o.columns * 0.25)
+          return math.floor(vim.opt.columns:get() * 0.25)
         end
       end,
       direction = "horizontal",
@@ -37,7 +47,7 @@ return {
     cmd = { "ToggleTerm", "ToggleTermSendVisualSelection" },
     keys = {
       { "<c-t>", "<cmd>ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal" },
-      { "<A-1>", "<cmd>ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal" },
+      { "<A-1>", "<cmd>1ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal" },
       { "<A-2>", "<cmd>2ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 2" },
       { "<A-3>", "<cmd>3ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 3" },
       { "<A-4>", "<cmd>4ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 4" },
@@ -45,10 +55,16 @@ return {
       { "<A-6>", "<cmd>6ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 6" },
       -- { "<leader>gt", "<cmd>lua _lazygit_toggle()<CR>", mode = { "n" }, desc = "Toggle lazygit" },
       -- { "<leader>hn", "<cmd>lua _navi_toggle()<CR>", mode = { "n" }, desc = "Toggle navi" },
-      { "<leader>hn", utils.float_term("navi", { count = 4 }), mode = { "n" }, desc = "Cheatsheet (navi)" },
-      { "<leader>ht", utils.float_term("btop", { count = 5 }), mode = { "n" }, desc = "Resource monitor (btop)" },
-      { "<leader>gu", utils.float_term("ugit", { count = 6 }), mode = { "n" }, desc = "Undo git commands (ugit)" },
-      { "<leader>gD", utils.float_term("ghpoi", { count = 7 }), mode = { "n" }, desc = "Clean branches (poi)" },
+      { "<leader>hn", utils.float_term("navi", { count = 7 }), mode = { "n" }, desc = "Cheatsheet (navi)" },
+      { "<leader>ht", utils.float_term("btop", { count = 8 }), mode = { "n" }, desc = "Resource monitor (btop)" },
+      { "<leader>gu", utils.float_term("ugit", { count = 9 }), mode = { "n" }, desc = "Undo git commands (ugit)" },
+      { "<leader>ga", utils.float_term("git-absorb", { count = 10 }), mode = { "n" }, desc = "git-absorb" },
+      {
+        "<leader>gD",
+        utils.float_term("gh poi --dry-run", { count = 11 }),
+        mode = { "n" },
+        desc = "Clean branches (poi)",
+      },
 
       -- { "<leader>tt", "<cmd>ToggleTerm direction='horizontal'<cr>", desc = "Toggle terminal" },
       -- { "<leader>tv", "<cmd>ToggleTerm direction='vertical'<cr>", desc = "Toggle terminal vertical" },
@@ -56,7 +72,6 @@ return {
   },
   -- {
   --   "airblade/vim-rooter",
-  --   event = "VeryLazy",
   --   init = function()
   --     vim.g["rooter_cd_cmd"] = "lcd"
   --   end,

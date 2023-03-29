@@ -15,6 +15,8 @@ return {
       vim.keymap.set({ "n", "x", "o" }, "s", function()
         require("leap").leap({ target_windows = { vim.fn.win_getid() } })
       end, { desc = "Leap" })
+      -- override any colorschemes highlights for leap (nightfox doesn't let me change it for some reason)
+      leap.init_highlight(true)
     end,
   },
   {

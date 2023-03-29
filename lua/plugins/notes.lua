@@ -54,7 +54,7 @@ return {
     end,
     keys = {
       -- { "<leader>nb", "<cmd>Telescope bibtex<cr>", desc = "Bibliography" },
-      { "<leader>nB", "<cmd>e ~/Desktop/docs/lib.bib<cr>", desc = "Edit bib file" },
+      { "<leader>nB", "<cmd>e ~/Dropbox/docs/lib.bib<cr>", desc = "Edit bib file" },
       {
         "<leader>fb",
         function()
@@ -76,7 +76,7 @@ return {
                     or line:match("%s*books/[^\n]+")
                   if s ~= nil then
                     -- s = s:match("%b{}") or s:match('%b""') or s:match("%d+")
-                    s = "/home/svitax/Desktop/docs/" .. (s:match("%{(.-)%}") or s:match("(books/[^\n]+)"))
+                    s = "/home/svitax/Dropbox/docs/" .. (s:match("%{(.-)%}") or s:match("(books/[^\n]+)"))
                     -- print(s)
                     Job:new({
                       command = cmd,
@@ -191,6 +191,14 @@ return {
         desc = "Regexplainer",
       },
     },
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function(_, opts)
+      if type(opts.ensure_installed) == "table" then
+        vim.list_extend(opts.ensure_installed, { "regex" })
+      end
+    end,
   },
   { "AckslD/nvim-FeMaco.lua", config = true, keys = { { "<leader>ne", "<cmd>FeMaco<cr>", desc = "Edit codeblock" } } },
   -- { "lukas-reineke/headlines.nvim", ft = { "markdown" }, config = true },

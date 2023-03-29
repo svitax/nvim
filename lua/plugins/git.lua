@@ -2,77 +2,14 @@ vim.keymap.set("n", "<leader>gB", "<cmd>Gitsigns toggle_current_line_blame<cr>",
 vim.keymap.set("n", "<leader>gL", "<cmd>Gitsigns blame_line<cr>", { desc = "Blame line popup" })
 
 return {
-  -- { "idanarye/vim-merginal", dependencies = { "tpope/vim-fugitive" }, cmd = { "Merginal", "MerginalToggle" } },
   {
-    "sodapopcan/vim-twiggy",
-    dependencies = { "tpope/vim-fugitive" },
-    cmd = "Twiggy",
-    config = function()
-      vim.cmd([[let g:twiggy_close_on_fugitive_command = 1]])
+    "kdheepak/lazygit.nvim",
+    init = function()
+      vim.g.lazygit_floating_window_winblend = 5
     end,
-    keys = { { "<leader>gt", "<cmd>Twiggy<cr>", desc = "Git branches" } },
+    cmd = { "LazyGit", "LazyGitFilter", "LazyGitFilterCurrentFile" },
+    keys = { { "<leader>gg", "<cmd>LazyGitCurrentFile<cr>", desc = "Lazygit" } },
   },
-  {
-    "rbong/vim-flog",
-    dependencies = { "tpope/vim-fugitive" },
-    cmd = { "Flog", "Flogsplit" },
-    keys = { { "<leader>gl", "<cmd>Flogsplit<cr>", desc = "Git log" } },
-  },
-  {
-    "tpope/vim-fugitive",
-    cmd = { "G", "Git" },
-    -- cc (create a commit)
-    -- ca (amend last commit)
-    -- cw (reword last commit)
-    -- cf (create a fixup! commit for the commit under cursor)
-    -- cF (create fixup! and immediately rebase it)
-    -- cs (create a squash! commit for the commit under cursor)
-    -- cS (create squash! and immediately rebase it)
-    -- crc (revert commit under cursor)
-    -- coo (checkout commit under cursor)
-    -- czz (push stash)
-    -- cza (apply topmost stash)
-    -- czp (pop topmost stash)
-    -- ri (interactive rebase)
-    -- rf (autosquash rebase)
-    -- ru (interactive rebase against upstream)
-    -- rp (interactive rebase against push)
-    -- rr (continue rebase)
-    -- rs (skip current commit and continue rebase)
-    -- re (edit current rebase todo list)
-    -- rw (rebase commit under word set to reword)
-    -- rm (rebase commit under word set to edit)
-    -- rd (rebase commit under word set to drop)
-    -- gq (close status buffer)
-    keys = {
-      {
-        "<leader>gg",
-        function()
-          local utils = require("utils")
-          vim.cmd([[tab Git]])
-          vim.cmd([[Twiggy]])
-          vim.api.nvim_feedkeys(utils.termcodes("<c-l>"), "i", true)
-          -- "<cmd>Git<cr><cmd>Twiggy<cr><cmd>G<cr>"
-        end,
-        desc = "Fugitive",
-      },
-    },
-  },
-  -- {
-  --   "TimUntersberger/neogit",
-  --   dependencies = { "nvim-lua/plenary.nvim" },
-  --   cmd = "Neogit",
-  --   -- opts = { kind = "replace" },
-  --   keys = {
-  --     {
-  --       "<leader>gn",
-  --       function()
-  --         return require("neogit").open({ cwd = vim.fn.expand("%:p:h") })
-  --       end,
-  --       desc = "Neogit",
-  --     },
-  --   },
-  -- },
   {
     "sindrets/diffview.nvim",
     dependencies = "nvim-lua/plenary.nvim",
@@ -114,13 +51,78 @@ return {
             { desc = "Choose all versions of a conflict" },
           },
         },
-        file_panel = {
-          { "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close diffview" } },
-        },
+        file_panel = { { "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close diffview" } } },
       },
     },
-    keys = {
-      { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Diffview" },
-    },
-  },
+    keys = { { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Diffview" } },
+  }, -- {
+  --   "sodapopcan/vim-twiggy",
+  --   dependencies = { "tpope/vim-fugitive" },
+  --   cmd = "Twiggy",
+  --   config = function()
+  --     vim.cmd([[let g:twiggy_close_on_fugitive_command = 1]])
+  --   end,
+  --   keys = { { "<leader>gt", "<cmd>Twiggy<cr>", desc = "Git branches" } },
+  -- },
+  -- {
+  --   "rbong/vim-flog",
+  --   dependencies = { "tpope/vim-fugitive" },
+  --   cmd = { "Flog", "Flogsplit" },
+  --   keys = { { "<leader>gl", "<cmd>Flogsplit<cr>", desc = "Git log" } },
+  -- },
+  -- {
+  --   "tpope/vim-fugitive",
+  --   cmd = { "G", "Git" },
+  --   -- cc (create a commit)
+  --   -- ca (amend last commit)
+  --   -- cw (reword last commit)
+  --   -- cf (create a fixup! commit for the commit under cursor)
+  --   -- cF (create fixup! and immediately rebase it)
+  --   -- cs (create a squash! commit for the commit under cursor)
+  --   -- cS (create squash! and immediately rebase it)
+  --   -- crc (revert commit under cursor)
+  --   -- coo (checkout commit under cursor)
+  --   -- czz (push stash)
+  --   -- cza (apply topmost stash)
+  --   -- czp (pop topmost stash)
+  --   -- ri (interactive rebase)
+  --   -- rf (autosquash rebase)
+  --   -- ru (interactive rebase against upstream)
+  --   -- rp (interactive rebase against push)
+  --   -- rr (continue rebase)
+  --   -- rs (skip current commit and continue rebase)
+  --   -- re (edit current rebase todo list)
+  --   -- rw (rebase commit under word set to reword)
+  --   -- rm (rebase commit under word set to edit)
+  --   -- rd (rebase commit under word set to drop)
+  --   -- gq (close status buffer)
+  --   keys = {
+  --     {
+  --       "<leader>gg",
+  --       function()
+  --         local utils = require("utils")
+  --         vim.cmd([[tab Git]])
+  --         vim.cmd([[Twiggy]])
+  --         vim.api.nvim_feedkeys(utils.termcodes("<c-l>"), "i", true)
+  --         -- "<cmd>Git<cr><cmd>Twiggy<cr><cmd>G<cr>"
+  --       end,
+  --       desc = "Fugitive",
+  --     },
+  --   },
+  -- },
+  -- {
+  --   "TimUntersberger/neogit",
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   cmd = "Neogit",
+  --   -- opts = { kind = "replace" },
+  --   keys = {
+  --     {
+  --       "<leader>gg",
+  --       function()
+  --         return require("neogit").open({ cwd = vim.fn.expand("%:p:h") })
+  --       end,
+  --       desc = "Neogit",
+  --     },
+  --   },
+  -- },
 }

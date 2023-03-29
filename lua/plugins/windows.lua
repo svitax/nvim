@@ -4,6 +4,15 @@ vim.keymap.set("n", "<leader>ws", "<cmd>split<CR>", { desc = "Split window" })
 vim.keymap.set("n", "<leader>wv", "<cmd>vsplit<CR>", { desc = "Vsplit window" })
 
 return {
+  -- {
+  --   "Lilja/zellij.nvim",
+  --   event = "VeryLazy",
+  --   opts = {
+  --     replaceVimWindowNavigationKeybinds = false, -- Will set keybinds like <C-w>h to left
+  --     vimTmuxNavigatorKeybinds = true, -- Will set keybinds like <C-h> to left
+  --     debug = true,
+  --   },
+  -- },
   {
     "declancm/windex.nvim",
     opts = { default_keymaps = false },
@@ -12,7 +21,7 @@ return {
       { "<C-l>", "<cmd>lua require('windex').switch_window('left')<cr>", desc = "Switch window left" },
       { "<C-j>", "<cmd>lua require('windex').switch_window('down')<cr>", desc = "Switch window down" },
       { "<C-k>", "<cmd>lua require('windex').switch_window('up')<cr>", desc = "Switch window up" },
-      { "<C-h>", "<cmd>lua require('windex').switch_window('right')<cr>", desc = "Switch window right" },
+      { "<C-;>", "<cmd>lua require('windex').switch_window('right')<cr>", desc = "Switch window right" },
 
       { "<leader>wl", "<cmd>lua require('windex').switch_window('left')<cr>", desc = "Switch window left" },
       { "<leader>wj", "<cmd>lua require('windex').switch_window('down')<cr>", desc = "Switch window down" },

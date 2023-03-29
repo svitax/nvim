@@ -14,6 +14,7 @@ return {
       vim.list_extend(opts.ensure_installed, {
         -- "yamlfmt",
         "yamllint",
+        -- "yamlls", -- yamlls will be automatically installed with mason and loaded with lspconfig
       }, 0, #opts.ensure_installed)
     end,
   },
@@ -39,10 +40,8 @@ return {
     ---@class PluginLspOpts
     opts = {
       ---@type lspconfig.options
-      servers = {
-        -- yamlls will be automatically installed with mason and loaded with lspconfig
-        yamlls = {},
-      },
+      -- yamlls will be automatically installed with mason and loaded with lspconfig
+      servers = { yamlls = {} },
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be setup with lspconfig
       ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>

@@ -1,13 +1,14 @@
 return {
+  {
+    "brenoprata10/nvim-highlight-colors",
+    opts = { render = "background", enable_named_colors = true },
+    event = "BufReadPost",
+  },
   -- Configure LazyVim to load gruvbox
   { "LazyVim/LazyVim", opts = { colorscheme = "terafox" } },
   {
-    "brenoprata10/nvim-highlight-colors",
-    opts = { render = "background", enable_named_colors = true, enable_tailwind = true },
-    event = "BufReadPost",
-  },
-  {
     "EdenEast/nightfox.nvim",
+    lazy = true,
     opts = function()
       -- local C = require("nightfox.lib.color")
       local Shade = require("nightfox.lib.shade")
@@ -101,7 +102,7 @@ return {
 
             -- FIX: Leap highlight groups not being applied.
             LeapBackdrop = { link = "Comment" },
-            LeapMatch = { bg = "palette.blue" },
+            LeapMatch = { fg = "palette.bg1", bg = "palette.blue" },
 
             TreesitterContext = { bg = "palette.bg2" },
 
@@ -121,11 +122,8 @@ return {
             -- PortalBorderNone = { fg = "#89b4fa" },
             -- PortalLabel = { bg = "palette.blue", fg = "palette.bg0" },
 
-            flogHash = { fg = "palette.blue" },
-            flogAuthor = { link = "Comment" },
-            flogRef = { fg = "palette.yellow" },
-            flogRefHeadBranch = { fg = "palette.yellow" },
-            flogDate = { link = "Comment" },
+            PackageInfoOutdatedVersion = { fg = "palette.orange" },
+            PackageInfoUpToDateVersion = { fg = "palette.comment" },
           },
         },
       }

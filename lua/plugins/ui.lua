@@ -1,11 +1,23 @@
 return {
   -- { "ldelossa/buffertag", event = "BufReadPost", opts = {} },
   {
+    "nvim-tree/nvim-web-devicons",
+    opts = {
+      override = {
+        ["Cargo.toml"] = { icon = "", color = "#d28445", name = "Cargo" },
+        -- rs = { icon = "", color = "#d28445", name = "Rust" },
+        mod = { icon = "ﳑ", color = "#6a9fb5", name = "Mod" },
+        sum = { icon = "ﳑ", color = "#6a9fb5", name = "Sum" },
+      },
+    },
+  },
+  {
     "stevearc/dressing.nvim",
-    opts = { input = { enabled = false }, select = { telescope = require("telescope.themes").get_ivy({ ... }) } },
+    opts = { select = { telescope = require("telescope.themes").get_ivy({ ... }) } },
   },
   {
     "folke/which-key.nvim",
+    opts = { key_labels = { ["<space>"] = "<spc>", ["<cr>"] = "<ret>" } },
     config = function(_, opts)
       local wk = require("which-key")
       wk.setup(opts)
@@ -20,6 +32,7 @@ return {
         ["<leader><tab>"] = { name = "+tabs" },
         ["<leader>b"] = { name = "+buffer" },
         ["<leader>c"] = { name = "+code" },
+        ["<leader>d"] = { name = "+debug" },
         ["<leader>f"] = { name = "+file/find" },
         ["<leader>g"] = { name = "+git" },
         ["<leader>gh"] = { name = "+hunks" },
