@@ -1,5 +1,23 @@
 return {
   {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      { "dcampos/cmp-emmet-vim", dependencies = "mattn/emmet-vim" },
+      { "David-Kunz/cmp-npm", opts = { only_semantic_versions = true } },
+    },
+    opts = function(_, opts)
+      local cmp = require("cmp")
+
+      opts.cmp_source_names["emmet_vim"] = "(emmet)"
+      opts.cmp_source_names["npm"] = "(npm)"
+
+      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
+        { name = "emmet_vim" },
+        { name = "npm", keyword_length = 4, priority = 10 },
+      }, 1, #opts.sources))
+    end,
+  },
+  {
     "vuki656/package-info.nvim",
     dependencies = { "MunifTanjim/nui.nvim" },
     event = "BufReadPre package.json",
@@ -40,7 +58,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, { ensure_installed = { "css" } }, 1, #opts.ensure_installed)
+      vim.list_extend(opts.ensure_installed, { ensure_installed = { "css", "html" } }, 1, #opts.ensure_installed)
     end,
   },
   {

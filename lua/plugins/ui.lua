@@ -4,24 +4,46 @@ return {
     "nvim-tree/nvim-web-devicons",
     opts = {
       override = {
-        ["Cargo.toml"] = { icon = "", color = "#d28445", name = "Cargo" },
-        -- rs = { icon = "", color = "#d28445", name = "Rust" },
-        mod = { icon = "ﳑ", color = "#6a9fb5", name = "Mod" },
-        sum = { icon = "ﳑ", color = "#6a9fb5", name = "Sum" },
+        [".luacheckrc"] = { icon = "", color = "#51a0cf", cterm_color = "74", name = "Luacheck" },
+        -- NOTE: Cargo.toml and Cargo.lock don't work
+        ["Cargo.toml"] = { icon = "", color = "#d28446", name = "CargoToml" },
+        ["Cargo.lock"] = { icon = "", color = "#d28446", name = "CargoLock" },
+        -- NOTE: fish color doesn't show in telescope
+        fish = { icon = "󰈺", color = "#6a9fb5", name = "Fish" },
+        ["go.mod"] = { icon = "ﳑ", color = "#6a9fb5", name = "Mod" },
+        ["go.sum"] = { icon = "ﳑ", color = "#6a9fb5", name = "Sum" },
+        yaml = { icon = "", color = "#e8274b", name = "Yaml" },
+        yml = { icon = "", color = "#e8274b", name = "Yml" },
+        tf = { icon = "󱁢", color = "#5F43E9", name = "Terraform" },
+        tex = { icon = "", color = "#3D6117", name = "Tex" },
+        md = { icon = "", color = "#519aba", name = "Markdown" },
+        rmd = { icon = "", color = "#519aba", name = "RMarkdown" },
+        png = { icon = "", color = "#a074c4", name = "Png" },
+        nim = { icon = "󰆥", color = "#f3d400", name = "Nim" },
+        gql = { icon = "", color = "#e535ab", name = "GraphQL" },
+        graphql = { icon = "", color = "#e535ab", name = "GraphQL" },
+        godot = { icon = "", color = "#6d8086", name = "Godot" },
+        env = { icon = "", color = "#faf743", name = "Env" },
+        node_modules = { icon = "", color = "#E8274B", name = "NodeModules" },
+        ["package.json"] = { icon = "", color = "#e8274b", name = "PackageJson" },
+        ["package-lock.json"] = { icon = "", color = "#7a0d21", name = "PackageLockJson" },
+        ["LICENSE"] = { icon = "", color = "#d0bf41", name = "License" },
       },
+      -- override_by_extension = {},
+      -- override_by_filename = {},
     },
   },
   {
     "stevearc/dressing.nvim",
-    opts = { select = { telescope = require("telescope.themes").get_ivy({ ... }) } },
+    opts = { select = { telescope = require("telescope.themes").get_ivy { ... } } },
   },
   {
     "folke/which-key.nvim",
     opts = { key_labels = { ["<space>"] = "<spc>", ["<cr>"] = "<ret>" } },
     config = function(_, opts)
-      local wk = require("which-key")
+      local wk = require "which-key"
       wk.setup(opts)
-      wk.register({
+      wk.register {
         mode = { "n", "v" },
         ["g"] = { name = "+goto" },
         ["ga"] = { name = "+text case" },
@@ -40,14 +62,14 @@ return {
         ["<leader>m"] = { name = "+<localleader>" },
         ["<leader>n"] = { name = "+notes" },
         ["<leader>p"] = { name = "+project" },
-        ["<leader>q"] = { name = "+quit/session" },
+        -- ["<leader>q"] = { name = "+quit/session" },
         ["<leader>s"] = { name = "+search" },
         ["<leader>so"] = { name = "+online" },
         ["<leader>t"] = { name = "+test" },
         ["<leader>u"] = { name = "+ui" },
         ["<leader>w"] = { name = "+windows" },
         ["<leader>x"] = { name = "+diagnostics/quickfix" },
-      })
+      }
     end,
   },
   {
@@ -119,7 +141,7 @@ return {
           end
 
           if not require("noice.lsp").scroll(4) then
-            vim.api.nvim_feedkeys(t("<c-d>"), "n", true)
+            vim.api.nvim_feedkeys(t "<c-d>", "n", true)
           end
         end,
         desc = "Scroll down",
@@ -132,7 +154,7 @@ return {
           end
 
           if not require("noice.lsp").scroll(-4) then
-            vim.api.nvim_feedkeys(t("<c-u>"), "n", true)
+            vim.api.nvim_feedkeys(t "<c-u>", "n", true)
           end
         end,
         desc = "Scroll up",

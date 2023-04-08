@@ -305,12 +305,15 @@ local components = {
   },
   python_env = {
     function()
-      -- local venv = os.getenv("CONDA_DEFAULT_ENV") or os.getenv("VIRTUAL_ENV")
-      local venv = require("swenv.api").get_current_venv()
-      if venv then
-        local icons = require("nvim-web-devicons")
-        local py_icon, _ = icons.get_icon(".py")
-        return string.format(py_icon .. " (%s)", utils.env_cleanup(venv.name))
+      if vim.bo.filetype == "python" then
+        local venv = vim.env.VIRTUAL_ENV
+        -- local venv = os.getenv("CONDA_DEFAULT_ENV") or os.getenv("VIRTUAL_ENV")
+        -- local venv = require("swenv.api").get_current_venv()
+        if venv then
+          local icons = require("nvim-web-devicons")
+          local py_icon, _ = icons.get_icon(".py")
+          return string.format(py_icon .. " (env:%s)", utils.env_cleanup(venv))
+        end
       end
       return ""
     end,

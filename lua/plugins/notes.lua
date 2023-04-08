@@ -1,4 +1,13 @@
 return {
+  -- TODO: replace nvim-femaco with otter.nvim
+  { "AckslD/nvim-FeMaco.lua", config = true, keys = { { "<leader>ne", "<cmd>FeMaco<cr>", desc = "Edit codeblock" } } },
+  { "opdavies/toggle-checkbox.nvim", ft = { "markdown" } },
+  -- TODO: mind.nvim is deprecated
+  {
+    "phaazon/mind.nvim",
+    opts = { ui = { width = 40 } },
+    keys = { { "<leader>nt", "<cmd>MindOpenMain<cr>", desc = "Todos (mind)" } },
+  },
   {
     "mickael-menu/zk-nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -40,11 +49,6 @@ return {
         desc = "New note with selection as content",
       },
     },
-  },
-  {
-    "phaazon/mind.nvim",
-    opts = { ui = { width = 40 } },
-    keys = { { "<leader>nt", "<cmd>MindOpenMain<cr>", desc = "Todos (mind)" } },
   },
   {
     "nvim-telescope/telescope-bibtex.nvim",
@@ -121,24 +125,6 @@ return {
       -- })
     end,
   },
-  { "opdavies/toggle-checkbox.nvim", ft = { "markdown" } },
-  -- TODO: add glow.nvim when it has support for live split preview
-  -- https://github.com/ellisonleao/glow.nvim/discussions/78
-  -- {"ellisonleao/glow.nvim", config = true, cmd = "Glow"}
-  -- TODO: lyaml as a rocks dependency (not supported by lazy.nvim)
-  -- {
-  --   "jghauser/papis.nvim",
-  --   dependencies = { "kkharji/sqlite.lua" },
-  --   cmd = "PapisStart",
-  --   opts = { enable_keymaps = false },
-  --   config = function(_, opts)
-  --     require("papis").setup(opts)
-  --     require("telescope").load_extension("papis")
-  --   end,
-  --   keys = {
-  --     { "<leader>np", "<cmd>Telescope papis<cr>", desc = "Bibliography (papis)" },
-  --   },
-  -- },
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
@@ -178,28 +164,44 @@ return {
       -- )
     end,
   },
-  {
-    "bennypowers/nvim-regexplainer",
-    cmd = { "RegexplainerShowSplit", "RegexplainerShowPopup", "RegexplainerToggle" },
-    opts = { mappings = { toggle = false } },
-    keys = {
-      {
-        "<leader>nE",
-        function()
-          return require("regexplainer").toggle({ display = "popup" })
-        end,
-        desc = "Regexplainer",
-      },
-    },
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = function(_, opts)
-      if type(opts.ensure_installed) == "table" then
-        vim.list_extend(opts.ensure_installed, { "regex" })
-      end
-    end,
-  },
-  { "AckslD/nvim-FeMaco.lua", config = true, keys = { { "<leader>ne", "<cmd>FeMaco<cr>", desc = "Edit codeblock" } } },
+  -- TODO: add glow.nvim when it has support for live split preview
+  -- https://github.com/ellisonleao/glow.nvim/discussions/78
+  -- {"ellisonleao/glow.nvim", config = true, cmd = "Glow"}
+  -- TODO: lyaml as a rocks dependency (not supported by lazy.nvim)
+  -- {
+  --   "jghauser/papis.nvim",
+  --   dependencies = { "kkharji/sqlite.lua" },
+  --   cmd = "PapisStart",
+  --   opts = { enable_keymaps = false },
+  --   config = function(_, opts)
+  --     require("papis").setup(opts)
+  --     require("telescope").load_extension("papis")
+  --   end,
+  --   keys = {
+  --     { "<leader>np", "<cmd>Telescope papis<cr>", desc = "Bibliography (papis)" },
+  --   },
+  -- },
+  -- {
+  --   "bennypowers/nvim-regexplainer",
+  --   cmd = { "RegexplainerShowSplit", "RegexplainerShowPopup", "RegexplainerToggle" },
+  --   opts = { mappings = { toggle = false } },
+  --   keys = {
+  --     {
+  --       "<leader>nE",
+  --       function()
+  --         return require("regexplainer").toggle({ display = "popup" })
+  --       end,
+  --       desc = "Regexplainer",
+  --     },
+  --   },
+  -- },
+  -- {
+  --   "nvim-treesitter/nvim-treesitter",
+  --   opts = function(_, opts)
+  --     if type(opts.ensure_installed) == "table" then
+  --       vim.list_extend(opts.ensure_installed, { "regex" })
+  --     end
+  --   end,
+  -- },
   -- { "lukas-reineke/headlines.nvim", ft = { "markdown" }, config = true },
 }

@@ -44,3 +44,5 @@ if ok then
 else
   vim.notify("toggle-checkbox not loaded")
 end
+
+vim.cmd("set wrap")

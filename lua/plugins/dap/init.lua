@@ -1,6 +1,5 @@
 return {
   {
-
     "mfussenegger/nvim-dap",
     dependencies = {
       "jay-babu/mason-nvim-dap.nvim",
@@ -117,5 +116,23 @@ return {
       { "<leader>dF", "<cmd>Telescope dap frames<cr>", desc = "List frames" },
       { "<leader>dL", "<cmd>Telescope dap list_breakpoints<cr>", desc = "List breakpoints" },
     },
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = { "rcarriga/cmp-dap" },
+    opts = function(_, opts)
+      local cmp = require("cmp")
+
+      opts.cmp_source_names["dap"] = "(dap)"
+
+      cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+        sources = cmp.config.sources({ { name = "dap" } }),
+      })
+
+      -- needed for cmp_dap
+      opts.enabled = function()
+        return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
+      end
+    end,
   },
 }

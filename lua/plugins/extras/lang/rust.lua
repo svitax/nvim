@@ -23,35 +23,6 @@ return {
     end,
   },
   {
-    "saecki/crates.nvim",
-    -- after = "nvim-cmp",
-    event = { "BufRead Cargo.toml" },
-    opts = { null_ls = { enabled = true, name = "crates.nvim" } },
-    config = function(_, opts)
-      local crates = require("crates")
-      crates.setup(opts)
-
-      vim.keymap.set("n", "<leader>mt", crates.toggle, { buffer = true, desc = "Toggle crates.io info" })
-      vim.keymap.set("n", "<leader>mr", crates.reload, { buffer = true, desc = "Reload crates.io info" })
-
-      vim.keymap.set("n", "<leader>mv", crates.show_versions_popup, { buffer = true, desc = "Show crate versions" })
-      vim.keymap.set("n", "<leader>mf", crates.show_features_popup, { buffer = true, desc = "Show crate features" })
-      vim.keymap.set("n", "<leader>md", crates.show_dependencies_popup, { buffer = true, desc = "Show crate deps" })
-
-      vim.keymap.set("n", "<leader>mu", crates.update_crate, { buffer = true, desc = "Update crate" })
-      vim.keymap.set("v", "<leader>mu", crates.update_crates, { buffer = true, desc = "Update crates" })
-      vim.keymap.set("n", "<leader>ma", crates.update_all_crates, { buffer = true, desc = "Update all crates" })
-      vim.keymap.set("n", "<leader>mU", crates.upgrade_crate, { buffer = true, desc = "Upgrade crate" })
-      vim.keymap.set("v", "<leader>mU", crates.upgrade_crates, { buffer = true, desc = "Upgrade crates" })
-      vim.keymap.set("n", "<leader>mA", crates.upgrade_all_crates, { buffer = true, desc = "Upgrade all crates" })
-
-      vim.keymap.set("n", "<leader>mH", crates.open_homepage, { buffer = true, desc = "Open crate homepage" })
-      vim.keymap.set("n", "<leader>mR", crates.open_repository, { buffer = true, desc = "Open crate repository" })
-      vim.keymap.set("n", "<leader>mD", crates.open_documentation, { buffer = true, desc = "Open crate documentation" })
-      vim.keymap.set("n", "<leader>mC", crates.open_crates_io, { buffer = true, desc = "Open crates.io" })
-    end,
-  },
-  {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
@@ -63,7 +34,15 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    dependencies = { "simrat39/rust-tools.nvim" },
+    dependencies = {
+      "simrat39/rust-tools.nvim",
+      {
+        "saecki/crates.nvim",
+        event = { "BufRead Cargo.toml" },
+        opts = { null_ls = { enabled = true, name = "crates.nvim" } },
+        config = true,
+      },
+    },
     opts = {
       -- make sure mason installs the server
       servers = { rust_analyzer = {} },
@@ -74,8 +53,9 @@ return {
           -- stylua: ignore
           if client.name == "rust_analyzer" then
             -- vim.keymap.set("n", "K", "<cmd>RustHoverActions<cr>", { buffer = buffer, desc = "Hover Actions (Rust)" })
-            vim.keymap.set("n", "<leader>ca", "<cmd>RustCodeAction<cr>", { buffer = buffer, desc = "Code Action (Rust)" })
+            -- vim.keymap.set("n", "<leader>ca", "<cmd>RustCodeAction<cr>", { buffer = buffer, desc = "Code Action (Rust)" })
             vim.keymap.set("n", "<leader>dr", "<cmd>RustDebuggables<cr>", { buffer = buffer, desc = "Run Debuggables (Rust)" })
+            vim.keymap.set("n", "<leader>mc", "<cmd>RustOpenCargo<cr>", { buffer = buffer, desc = "Open Cargo.toml" })
           end
           end)
           local mason_registry = require("mason-registry")
@@ -117,6 +97,27 @@ return {
           -- stylua: ignore
           if client.name == "taplo" then
             vim.keymap.set("n", "K", show_documentation, { buffer = buffer, desc = "Show Crate Documentation" })
+          end 
+          -- stylua: ignore
+          if vim.fn.expand("%:t") == "Cargo.toml" then
+            vim.keymap.set("n", "<leader>mt", crates.toggle, { buffer = true, desc = "Toggle crates.io info" })
+            vim.keymap.set("n", "<leader>mr", crates.reload, { buffer = true, desc = "Reload crates.io info" })
+
+            vim.keymap.set("n", "<leader>mv", crates.show_versions_popup, { buffer = true, desc = "Show crate versions" })
+            vim.keymap.set("n", "<leader>mf", crates.show_features_popup, { buffer = true, desc = "Show crate features" })
+            vim.keymap.set("n", "<leader>md", crates.show_dependencies_popup, { buffer = true, desc = "Show crate deps" })
+
+            vim.keymap.set("n", "<leader>mu", crates.update_crate, { buffer = true, desc = "Update crate" })
+            vim.keymap.set("v", "<leader>mu", crates.update_crates, { buffer = true, desc = "Update crates" })
+            vim.keymap.set("n", "<leader>ma", crates.update_all_crates, { buffer = true, desc = "Update all crates" })
+            vim.keymap.set("n", "<leader>mU", crates.upgrade_crate, { buffer = true, desc = "Upgrade crate" })
+            vim.keymap.set("v", "<leader>mU", crates.upgrade_crates, { buffer = true, desc = "Upgrade crates" })
+            vim.keymap.set("n", "<leader>mA", crates.upgrade_all_crates, { buffer = true, desc = "Upgrade all crates" })
+
+            vim.keymap.set("n", "<leader>mH", crates.open_homepage, { buffer = true, desc = "Open crate homepage" })
+            vim.keymap.set("n", "<leader>mR", crates.open_repository, { buffer = true, desc = "Open crate repository" })
+            vim.keymap.set("n", "<leader>mD", crates.open_documentation, { buffer = true, desc = "Open crate documentation" })
+            vim.keymap.set("n", "<leader>mC", crates.open_crates_io, { buffer = true, desc = "Open crates.io" })
           end
           end)
           return false -- make sure the base implementation calls taplo.setup

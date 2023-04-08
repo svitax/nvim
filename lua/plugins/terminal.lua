@@ -3,14 +3,14 @@ local utils = require("utils")
 return {
   { "chomosuke/term-edit.nvim", ft = { "toggleterm" }, opts = { prompt_end = "%$ " } },
   -- BUG: my cwd gets stuck whenever I look at a file in my .config/nvim, and none of these autoroot plugins fix it
-  -- {
-  --   "notjedi/nvim-rooter.lua",
-  --   lazy = false,
-  --   config = function(_, opts)
-  --     require("nvim-rooter").setup(opts)
-  --     vim.cmd([[RooterToggle]])
-  --   end,
-  -- },
+  {
+    "notjedi/nvim-rooter.lua",
+    lazy = false,
+    config = function(_, opts)
+      require("nvim-rooter").setup(opts)
+      vim.cmd([[RooterToggle]])
+    end,
+  },
   { "ahmedkhalf/project.nvim", name = "project_nvim", lazy = false, config = true },
   {
     "akinsho/toggleterm.nvim",
@@ -75,6 +75,7 @@ return {
   --   init = function()
   --     vim.g["rooter_cd_cmd"] = "lcd"
   --   end,
+  --   cmd = { "Rooter" },
   -- },
   -- {
   --   "samjwill/nvim-unception",

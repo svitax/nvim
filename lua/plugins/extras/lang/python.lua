@@ -1,15 +1,22 @@
 return {
   {
-    "AckslD/swenv.nvim",
-    opts = {
-      venvs_path = vim.fn.expand("~/.conda/envs"),
-      -- venvs_path = vim.fn.expand("~/.cache/pypoetry/virtualenvs/"),
-      post_set_venv = function()
-        vim.cmd("LspRestart")
-      end,
-    },
-    keys = { { "<leader>pv", "<cmd>lua require('swenv.api').pick_venv()<cr>", desc = "Switch venv" } },
+    "linux-cultist/venv-selector.nvim",
+    dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim" },
+    event = "VeryLazy", -- Optional: needed only if you want to type `:VenvSelect` without a keymapping
+    opts = { search = true, name = ".venv" },
+    keys = { { "<leader>pv", "<cmd>VenvSelect<cr>", desc = "Switch venv" } },
   },
+  -- {
+  --   "AckslD/swenv.nvim",
+  --   opts = {
+  --     venvs_path = vim.fn.expand("~/.conda/envs"),
+  --     -- venvs_path = vim.fn.expand("~/.cache/pypoetry/virtualenvs/"),
+  --     post_set_venv = function()
+  --       vim.cmd("LspRestart")
+  --     end,
+  --   },
+  --   keys = { { "<leader>pv", "<cmd>lua require('swenv.api').pick_venv()<cr>", desc = "Switch venv" } },
+  -- },
   { "raimon49/requirements.txt.vim", event = "BufReadPre requirements*.txt" },
   -- add python to treesitter
   {

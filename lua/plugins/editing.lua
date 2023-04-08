@@ -36,24 +36,24 @@ return {
     ft = { "javascript", "typescript", "python", "javascriptreact", "typescriptreact", "python" },
     config = true,
   },
-  {
-    "Wansmer/binary-swap.nvim",
-    dependencies = { "nvim-treesitter" },
-    keys = {
-      {
-        "<A-.>",
-        "<cmd>lua require('binary-swap').swap_operands()<cr>",
-        mode = { "n", "i" },
-        desc = "Swap operands",
-      },
-      {
-        "<A-,>",
-        "<cmd>lua require('binary-swap').swap_operands_with_operator()<cr>",
-        mode = { "n", "i" },
-        desc = "Swap operands and operator",
-      },
-    },
-  },
+  -- {
+  --   "Wansmer/binary-swap.nvim",
+  --   dependencies = { "nvim-treesitter" },
+  --   keys = {
+  --     {
+  --       "<A-.>",
+  --       "<cmd>lua require('binary-swap').swap_operands()<cr>",
+  --       mode = { "n", "i" },
+  --       desc = "Swap operands",
+  --     },
+  --     {
+  --       "<A-,>",
+  --       "<cmd>lua require('binary-swap').swap_operands_with_operator()<cr>",
+  --       mode = { "n", "i" },
+  --       desc = "Swap operands and operator",
+  --     },
+  --   },
+  -- },
   {
     "Wansmer/treesj",
     dependencies = { "nvim-treesitter" },
@@ -144,41 +144,28 @@ return {
       })
     end,
   },
-  -- {
-  --   "gbprod/substitute.nvim",
-  --   event = "BufReadPost",
-  --   -- dependencies = { "gbprod/yanky.nvim" },
-  --   opts = {
-  --     on_substitute = function()
-  --       require("yanky.integration").substitute()
-  --     end,
-  --     -- on_substitute = function(event)
-  --     --   require("yanky").init_ring("p", event.register, event.count, event.vmode:match("[vV�]"))
-  --     -- end,
-  --   },
-  --   config = function(_, opts)
-  --     require("substitute").setup(opts)
-  --     vim.keymap.set("n", "S", "<cmd>lua require('substitute').operator()<cr>", { desc = "Substitute operator" })
-  --     vim.keymap.set("n", "SS", "<cmd>lua require('substitute').line()<cr>", { desc = "Substitute line" })
-  --     vim.keymap.set("n", "Ss", "<cmd>lua require('substitute').eol()<cr>", { desc = "Substitute eol" })
-  --     vim.keymap.set("x", "S", "<cmd>lua require('substitute').visual()<cr>", { desc = "Substitute selection" })
-  --     vim.keymap.set(
-  --       "n",
-  --       "Sx",
-  --       "<cmd>lua require('substitute.exchange').operator()<cr>",
-  --       { desc = "Exchange operator" }
-  --     )
-  --     vim.keymap.set({ "n" }, "SX", "<cmd>lua require('substitute.exchange').line()<cr>", { desc = "Exchange line" })
-  --     vim.keymap.set("x", "Sx", "<cmd>lua require('substitute.exchange').visual()<cr>", { desc = "Exchange selection" })
-  --     vim.keymap.set("n", "Sxc", "<cmd>lua require('substitute.exchange').line()<cr>", { desc = "Cancel exchange" })
-  --   end,
-  --   -- keys = {
-  --   -- { "cx", "<cmd>lua require('substitute').operator()<cr>", desc = "Substitute operator" },
-  --   -- { "cxs", "<cmd>lua require('substitute').line()<cr>", desc = "Substitute line" },
-  --   -- { "cxS", "<cmd>lua require('substitute').eol()<cr>", desc = "Substitute eol" },
-  --   -- { "cX", "<cmd>lua require('substitute.exchange').operator()<cr>", desc = "Exchange operator" },
-  --   -- { "cXx", "<cmd>lua require('substitute.exchange').line()<cr>", desc = "Exchange line" },
-  --   -- { "cXc", "<cmd>lua require('substitute.exchange').line()<cr>", desc = "Cancel exchange" },
-  --   -- },
-  -- },
+  {
+    "gbprod/substitute.nvim",
+    event = "BufReadPost",
+    -- dependencies = { "gbprod/yanky.nvim" },
+    opts = {
+      -- on_substitute = function()
+      --   require("yanky.integration").substitute()
+      -- end,
+      -- on_substitute = function(event)
+      --   require("yanky").init_ring("p", event.register, event.count, event.vmode:match("[vV�]"))
+      -- end,
+    },
+    config = true,
+    keys = {
+      { "S", "<cmd>lua require('substitute').operator()<cr>", desc = "Substitute operator" },
+      { "SS", "<cmd>lua require('substitute').line()<cr>", desc = "Substitute line" },
+      { "Ss", "<cmd>lua require('substitute').eol()<cr>", desc = "Substitute eol" },
+      { "S", "<cmd>lua require('substitute').visual()<cr>", mode = { "x" }, desc = "Substitute selection" },
+      { "Sx", "<cmd>lua require('substitute.exchange').operator()<cr>", desc = "Exchange operator" },
+      { "SX", "<cmd>lua require('substitute.exchange').line()<cr>", desc = "Exchange line" },
+      { "Sxc", "<cmd>lua require('substitute.exchange').line()<cr>", desc = "Cancel exchange" },
+      { "Sx", "<cmd>lua require('substitute.exchange').visual()<cr>", mode = { "x" }, desc = "Exchange selecion" },
+    },
+  },
 }

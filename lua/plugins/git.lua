@@ -3,6 +3,25 @@ vim.keymap.set("n", "<leader>gL", "<cmd>Gitsigns blame_line<cr>", { desc = "Blam
 
 return {
   {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      { "petertriho/cmp-git", dependencies = "nvim-lua/plenary.nvim", opts = { github = { pull_requests = 10 } } },
+    },
+    opts = function(_, opts)
+      local cmp = require("cmp")
+
+      opts.cmp_source_names["git"] = "(git)"
+
+      cmp.setup.filetype({ "gitcommit" }, {
+        sources = cmp.config.sources({ { name = "git" } }),
+      })
+
+      -- opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
+      --   { name = "git", priority = 10 },
+      -- }, 1, #opts.sources))
+    end,
+  },
+  {
     "kdheepak/lazygit.nvim",
     init = function()
       vim.g.lazygit_floating_window_winblend = 5

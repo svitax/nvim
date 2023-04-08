@@ -21,6 +21,7 @@ return {
       vim.keymap.set("n", "<leader>gS", custom.delta_stash_picker, { desc = "Git stash" })
     end,
     keys = {
+      { "<leader>/", false },
       { "<leader>'", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
       {
         "<leader>*",
@@ -58,7 +59,7 @@ return {
         }),
         desc = "Switch buffers",
       },
-      { "<leader>/", lv_utils.telescope("live_grep"), desc = "Search project" },
+      -- { "<leader>/", lv_utils.telescope("live_grep"), desc = "Search project" },
       { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command history" },
       -- { "<leader>`", "", desc = "Switch other" },
       { "<leader><space>", lv_utils.telescope("files"), desc = "Find file (cwd)" },
@@ -164,9 +165,6 @@ return {
       -- { "<leader>sB", desc = "Search all open buffers" }, -- buffer (fuzzy) find / or grep only open buffers
       { "<leader>sc", false },
       { "<leader>sC", false },
-      -- TODO: search only current dir
-      { "<leader>sd", lv_utils.telescope("live_grep"), desc = "Search current directory" }, -- grep project (default telescope grep)
-      { "<leader>se", lv_utils.telescope("live_grep", { cwd = "~/.config/nvim" }), desc = "Search .config/nvim" }, -- grep nvim config
       { "<leader>sf", false },
       { "<leader>sg", false },
       { "<leader>sG", false },
@@ -176,7 +174,7 @@ return {
       { "<leader>sk", false },
       { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to mark" },
       { "<leader>sM", false },
-      { "<leader>sp", lv_utils.telescope("live_grep"), desc = "Search project" }, -- grep project (default telescope grep)
+      -- { "<leader>sp", lv_utils.telescope("live_grep"), desc = "Search project" }, -- grep project (default telescope grep)
       -- TODO: search other project
       -- { "<leader>sP", desc = "Search other project" }, -- prompt a project to search in
       {
@@ -199,6 +197,9 @@ return {
         -- howdoi = { pager_command = "bat --color=always --theme=gruvbox-dark" },
         bibtex = { global_files = { "~/Dropbox/docs/lib.bib" }, search_keys = { "title", "author", "year" } },
         repo = { list = { search_dirs = { "~/projects", "~/.config/nvim" } } },
+        live_grep_args = {
+          auto_quoting = true, -- enable/disable auto-quoting
+        },
       },
       defaults = require("telescope.themes").get_ivy({
         -- wrap_results = true,
@@ -225,6 +226,122 @@ return {
           },
         },
       }),
+    },
+  },
+  {
+    -- NOTE: oldfiles are only saved when the program is closed. so if you open a file you haven't
+    -- worked on before, the builtin telescope oldfiles picker will not show it.
+    "smartpde/telescope-recent-files",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("recent_files")
+    end,
+    keys = {
+      { "<leader>fr", "<cmd>Telescope recent_files pick<cr>", desc = "Recent files" },
+      { "<leader>fR", "<cmd>Telescope recent_files pick only_cwd=true<cr>", desc = "Recent files (cwd)" },
+    },
+  },
+  {
+    "tsakirist/telescope-lazy.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("lazy")
+    end,
+    keys = { { "<leader>sl", "<cmd>Telescope lazy<cr>", desc = "Search plugins" } },
+  },
+  {
+    "debugloop/telescope-undo.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("undo")
+    end,
+    keys = { { "<leader>su", "<cmd>Telescope undo<cr>", desc = "Undo history" } },
+  },
+  {
+    "cljoly/telescope-repo.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("repo")
+    end,
+    -- TODO: wait until author provides custom actions for the repo list picker
+    keys = { { "<leader>fp", "<cmd>Telescope repo list show_untracked=true<cr>", desc = "Find project" } },
+  },
+  {
+    "benfowler/telescope-luasnip.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("luasnip")
+    end,
+    keys = { { "<leader>sS", "<cmd>Telescope luasnip<cr>", desc = "Search snippets" } },
+  },
+  {
+    "nvim-telescope/telescope-live-grep-args.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("live_grep_args")
+    end,
+    keys = {
+      {
+        "<leader>/",
+        function()
+          require("telescope").extensions.live_grep_args.live_grep_args({
+            attach_mappings = function(_, map)
+              map("i", "<c-g>", require("telescope-live-grep-args.actions").quote_prompt())
+              map("i", "<c-i>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
+              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t " }))
+              return true
+            end,
+          })
+        end,
+        desc = "Search project",
+      },
+      -- grep cwd (of current file)
+      {
+        "<leader>sd",
+        function()
+          require("telescope").extensions.live_grep_args.live_grep_args({
+            cwd = utils.get_head_dir(),
+            attach_mappings = function(_, map)
+              map("i", "<c-g>", require("telescope-live-grep-args.actions").quote_prompt())
+              map("i", "<c-i>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
+              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t " }))
+              return true
+            end,
+          })
+        end,
+        desc = "Search cwd",
+      },
+      -- grep nvim config
+      {
+        "<leader>se",
+        function()
+          require("telescope").extensions.live_grep_args.live_grep_args({
+            cwd = "~/.config/nvim",
+            attach_mappings = function(_, map)
+              map("i", "<c-g>", require("telescope-live-grep-args.actions").quote_prompt())
+              map("i", "<c-i>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
+              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t " }))
+              return true
+            end,
+          })
+        end,
+        desc = "Search .config/nvim",
+      },
+      -- grep project (default telescope grep)
+      {
+        "<leader>sp",
+        function()
+          require("telescope").extensions.live_grep_args.live_grep_args({
+            attach_mappings = function(_, map)
+              map("i", "<c-g>", require("telescope-live-grep-args.actions").quote_prompt())
+              map("i", "<c-i>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
+              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t " }))
+              return true
+            end,
+          })
+        end,
+        desc = "Search project",
+      },
     },
   },
   -- { "prochri/telescope-all-recent.nvim", dependencies = { "kkharji/sqlite.lua" }, opts = {}, cmd = "Telescope" },
@@ -267,49 +384,6 @@ return {
   --   end,
   --   keys = { { "<leader>fo", "<cmd>Telescope olddirs picker<cr>", desc = "Recent dirs" } },
   -- },
-  {
-    -- NOTE: oldfiles are only saved when the program is closed. so if you open a file you haven't
-    -- worked on before, the builtin telescope oldfiles picker will not show it.
-    "smartpde/telescope-recent-files",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    config = function()
-      require("telescope").load_extension("recent_files")
-    end,
-    keys = { { "<leader>fr", "<cmd>Telescope recent_files pick<cr>", desc = "Recent files" } },
-  },
-  {
-    "tsakirist/telescope-lazy.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    config = function()
-      require("telescope").load_extension("lazy")
-    end,
-    keys = { { "<leader>sl", "<cmd>Telescope lazy<cr>", desc = "Search plugins" } },
-  },
-  {
-    "debugloop/telescope-undo.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    config = function()
-      require("telescope").load_extension("undo")
-    end,
-    keys = { { "<leader>su", "<cmd>Telescope undo<cr>", desc = "Undo history" } },
-  },
-  {
-    "cljoly/telescope-repo.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    config = function()
-      require("telescope").load_extension("repo")
-    end,
-    -- TODO: wait until author provides custom actions for the repo list picker
-    keys = { { "<leader>fp", "<cmd>Telescope repo list show_untracked=true<cr>", desc = "Find project" } },
-  },
-  {
-    "benfowler/telescope-luasnip.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    config = function()
-      require("telescope").load_extension("luasnip")
-    end,
-    keys = { { "<leader>sS", "<cmd>Telescope luasnip<cr>", desc = "Search snippets" } },
-  },
   -- {
   --   "zane-/howdoi.nvim",
   --   dependencies = { "nvim-telescope/telescope.nvim" },
@@ -321,29 +395,30 @@ return {
   --     { "<leader>hd", "<cmd>Telescope howdoi<cr>", desc = "Howdoi" },
   --   },
   -- },
-  {
-    "lalitmee/browse.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    cmd = { "Browse", "BrowseBookmarks", "BrowseInputSearch", "BrowseDevdocsSearch", "BrowseDevdocsFiletypeSearch" },
-    opts = {
-      bookmarks = {
-        ["npm-search"] = "https://npmjs.com/search?q=%s",
-        ["github-code-search"] = "https://github.com/search?q=%s&type=code",
-        ["github-repo-search"] = "https://github.com/search?q=%s&type=repositories",
-        ["github-issues-search"] = "https://github.com/search?q=%s&type=issues",
-        ["github-pulls-search"] = "https://github.com/search?q=%s&type=pullrequests",
-      },
-    },
-    keys = {
-      { "<leader>soo", "<cmd>lua require('browse').input_search()<cr>", desc = "Look up online" },
-      { "<leader>sob", "<cmd>lua require('browse').open_bookmarks()<cr>", desc = "Bookmarks" },
-      { "<leader>sos", "<cmd>lua require('browse').browse()<cr>", desc = "Browse" },
-      { "<leader>sod", "<cmd>lua require('browse.devdocs').search()<cr>", desc = "Devdocs" },
-      {
-        "<leader>sof",
-        "<cmd>lua require('browse.devdocs').search_with_filetype()<cr>",
-        desc = "Devdocs with filetype",
-      },
-    },
-  },
+  -- TODO: delete browse.nvim and use something like rofi instead
+  -- {
+  --   "lalitmee/browse.nvim",
+  --   dependencies = { "nvim-telescope/telescope.nvim" },
+  --   cmd = { "Browse", "BrowseBookmarks", "BrowseInputSearch", "BrowseDevdocsSearch", "BrowseDevdocsFiletypeSearch" },
+  --   opts = {
+  --     bookmarks = {
+  --       ["npm-search"] = "https://npmjs.com/search?q=%s",
+  --       ["github-code-search"] = "https://github.com/search?q=%s&type=code",
+  --       ["github-repo-search"] = "https://github.com/search?q=%s&type=repositories",
+  --       ["github-issues-search"] = "https://github.com/search?q=%s&type=issues",
+  --       ["github-pulls-search"] = "https://github.com/search?q=%s&type=pullrequests",
+  --     },
+  --   },
+  --   keys = {
+  --     { "<leader>soo", "<cmd>lua require('browse').input_search()<cr>", desc = "Look up online" },
+  --     { "<leader>sob", "<cmd>lua require('browse').open_bookmarks()<cr>", desc = "Bookmarks" },
+  --     { "<leader>sos", "<cmd>lua require('browse').browse()<cr>", desc = "Browse" },
+  --     { "<leader>sod", "<cmd>lua require('browse.devdocs').search()<cr>", desc = "Devdocs" },
+  --     {
+  --       "<leader>sof",
+  --       "<cmd>lua require('browse.devdocs').search_with_filetype()<cr>",
+  --       desc = "Devdocs with filetype",
+  --     },
+  --   },
+  -- },
 }

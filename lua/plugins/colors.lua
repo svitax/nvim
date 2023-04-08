@@ -104,7 +104,7 @@ return {
             LeapBackdrop = { link = "Comment" },
             LeapMatch = { fg = "palette.bg1", bg = "palette.blue" },
 
-            TreesitterContext = { bg = "palette.bg2" },
+            TreesitterContext = { bg = "palette.bg0" },
 
             Hlargs = { link = "@parameter" },
 

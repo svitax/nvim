@@ -15,19 +15,11 @@ return {
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
-      -- "dburian/cmp-markdown-link",
       -- "hrsh7th/cmp-omni",
       -- "hrsh7th/cmp-nvim-lsp-document-symbol",
       "hrsh7th/cmp-cmdline",
       -- "PaterJason/cmp-conjure",
-      -- "jcha0713/cmp-tw2css",
-      "bydlw98/cmp-env",
-      -- "tamago324/cmp-zsh",
       "chrisgrieser/cmp-nerdfont",
-      "rcarriga/cmp-dap",
-      { "petertriho/cmp-git", dependencies = "nvim-lua/plenary.nvim", opts = { github = { pull_requests = 10 } } },
-      { "dcampos/cmp-emmet-vim", dependencies = "mattn/emmet-vim" },
-      { "David-Kunz/cmp-npm", opts = { only_semantic_versions = true } },
     },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
@@ -47,20 +39,13 @@ return {
 
       -- local cmp_source_names = {
       opts.cmp_source_names = {
-        -- ["markdown-link"] = "(markdown)",
         -- nvim_lsp_document_symbol = "(symbol)",
         nvim_lsp = "(lsp)",
         buffer = "(buffer)",
         path = "(path)",
         luasnip = "(snippet)",
         -- conjure = "(conjure)",
-        env = "(env)",
-        -- zsh = "(zsh)",
         nerdfont = "(nerdfont)",
-        dap = "(dap)",
-        git = "(git)",
-        emmet_vim = "(emmet)",
-        npm = "(npm)",
       }
 
       local luasnip = require("luasnip")
@@ -72,49 +57,14 @@ return {
       })
 
       cmp.setup.cmdline({ "/", "?", "@" }, {
-        sources = { { name = "nvim_lsp_document_symbol" }, { name = "buffer" } },
+        -- { name = "nvim_lsp_document_symbol" }
+        sources = { { name = "buffer" } },
         formatting = { max_width = 30 },
       })
-
-      -- TODO: should i have this in all other filetypes too?
-      -- cmp.setup.filetype({ "sh", "zsh" }, {
-      --   sources = cmp.config.sources({ { name = "env" }, { name = "zsh" } }),
-      -- })
-
-      cmp.setup.filetype({ "gitcommit" }, {
-        sources = cmp.config.sources({ { name = "git" } }),
-      })
-
-      cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
-        sources = cmp.config.sources({ { name = "dap" } }),
-      })
-
-      -- needed for cmp_dap
-      opts.enabled = function()
-        return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
-      end
 
       opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
         -- { name = "conjure" },
         { name = "nerdfont" },
-        { name = "emmet_vim" },
-        { name = "npm", keyword_length = 4 },
-        -- TODO: don't insert closing pairs ')', ']' if they already exist
-        -- {
-        --   name = "markdown-link",
-        --   option = {
-        --     reference_link_location = "top",
-        --     searched_depth = 3,
-        --     searched_dirs = {
-        --       "%:h", --always search the current dir
-        --       "~/Desktop/notes/", --custom path to search as well
-        --     },
-        --     --only offer links to .png or .md files
-        --     search_pattern = png_or_markdown_files,
-        --     wiki_base_url = "",
-        --     wiki_end_url = ".md",
-        --   },
-        -- },
       }, 1, #opts.sources))
 
       opts.formatting = {

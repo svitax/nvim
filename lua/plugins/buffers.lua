@@ -16,6 +16,12 @@ return {
     },
     config = true,
     keys = {
+      { "<C-1>", "<cmd>GrappleSelect key=1<cr>", desc = "Select tag buffer 1" },
+      { "<C-2>", "<cmd>GrappleSelect key=2<cr>", desc = "Select tag buffer 2" },
+      { "<C-3>", "<cmd>GrappleSelect key=3<cr>", desc = "Select tag buffer 3" },
+      { "<C-4>", "<cmd>GrappleSelect key=4<cr>", desc = "Select tag buffer 4" },
+      { "<C-5>", "<cmd>GrappleSelect key=5<cr>", desc = "Select tag buffer 5" },
+      { "<C-6>", "<cmd>GrappleSelect key=6<cr>", desc = "Select tag buffer 6" },
       { "<leader>bt", "<cmd>GrapplePopup tags<cr>", desc = "Show tagged buffers" },
       { "<leader>bT", "<cmd>GrappleToggle<cr>", desc = "Tag buffer" },
     },

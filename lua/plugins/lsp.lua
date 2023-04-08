@@ -86,6 +86,7 @@ return {
           -- nls.builtins.formatting.prettierd,
           nls.builtins.formatting.stylua,
           nls.builtins.diagnostics.selene,
+          -- nls.builtins.diagnostics.luacheck,
           -- nls.builtins.diagnostics.commitlint,
         },
       }

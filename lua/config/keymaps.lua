@@ -10,6 +10,19 @@ local function map(mode, lhs, rhs, opts)
   end
 end
 
+-- delete some LazyVim mappings I don't use
+vim.keymap.del("n", "<leader>w-")
+vim.keymap.del("n", "<leader>w|")
+vim.keymap.del("n", "<leader>-")
+vim.keymap.del("n", "<leader>|")
+vim.keymap.del("n", "<leader>ft")
+vim.keymap.del("n", "<leader>fT")
+vim.keymap.del("n", "<leader><tab>l")
+vim.keymap.del("n", "<leader><tab>f")
+vim.keymap.del("n", "<leader>`")
+vim.keymap.del("n", "<leader>gG")
+vim.keymap.del("n", "<leader>qq")
+
 -- map("n", "gl", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 -- I use jkl; instead of hjkl
 map({ "n", "x" }, ";", "l", { desc = "Right" })
@@ -46,18 +59,7 @@ map("v", "<C-A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 -- map({ "i" }, "?", "?<c-g>u", { description = "" })
 -- map({ "i" }, "<cr>", "<cr>c-g>u", { description = "" })
 -- map({ "i" }, "<space>", "<space><c-g>u", { description = "" })
-
--- delete some LazyVim mappings I don't use
-vim.keymap.del("n", "<leader>w-")
-vim.keymap.del("n", "<leader>w|")
-vim.keymap.del("n", "<leader>-")
-vim.keymap.del("n", "<leader>|")
-vim.keymap.del("n", "<leader>ft")
-vim.keymap.del("n", "<leader>fT")
-vim.keymap.del("n", "<leader><tab>l")
-vim.keymap.del("n", "<leader><tab>f")
-vim.keymap.del("n", "<leader>`")
-vim.keymap.del("n", "<leader>gG")
+map({ "n" }, "<leader>q", "<cmd>qa<cr>", { desc = "Quit all" })
 
 -- { "<leader>p&", desc = "Async cmd in project root" }, -- overseer
 -- { "<leader>p.", desc = "Browse project" },

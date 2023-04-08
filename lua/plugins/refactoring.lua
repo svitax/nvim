@@ -5,7 +5,7 @@ return {
   {
     "cshuaimin/ssr.nvim",
     config = true,
-    keys = { { "<leader>sr", "<cmd>lua require('ssr').open()<cr>", desc = "Replace in files" } },
+    keys = { { "<leader>sr", "<cmd>lua require('ssr').open()<cr>", mode = { "n", "x" }, desc = "Replace in files" } },
   },
   {
     "ThePrimeagen/refactoring.nvim",

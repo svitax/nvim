@@ -4,7 +4,6 @@ return {
   { "windwp/nvim-spectre", enabled = false },
   { "folke/persistence.nvim", enabled = false },
   { "echasnovski/mini.surround", enabled = false },
-  { "echasnovski/mini.surround", enabled = false },
   { "catppuccin/nvim", enabled = false },
   {
     "nvim-neo-tree/neo-tree.nvim",

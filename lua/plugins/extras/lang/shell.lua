@@ -1,19 +1,20 @@
 return {
   {
     "hrsh7th/nvim-cmp",
-    dependencies = { "mtoohey31/cmp-fish", "tamago324/cmp-zsh" },
+    dependencies = { "mtoohey31/cmp-fish", "tamago324/cmp-zsh", "bydlw98/cmp-env" },
     opts = function(_, opts)
       local cmp = require("cmp")
 
       opts.cmp_source_names["zsh"] = "(zsh)"
       opts.cmp_source_names["fish"] = "(fish)"
+      opts.cmp_source_names["env"] = "(env)"
 
       cmp.setup.filetype({ "sh", "zsh" }, {
         sources = cmp.config.sources({ { name = "env" }, { name = "zsh" } }),
       })
 
       cmp.setup.filetype({ "fish" }, {
-        sources = cmp.config.sources({ { name = "env" }, { name = "fish" } }),
+        sources = cmp.config.sources({ { name = "env" }, { name = "fish", priority = 10 } }),
       })
 
       -- opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {

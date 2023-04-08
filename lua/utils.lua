@@ -212,6 +212,23 @@ M.float_term = function(cmd, opts)
   end
 end
 
+-- returns the head directory
+---@return string
+function M.get_head_dir()
+  ---@type string?
+  local path = vim.api.nvim_buf_get_name(0)
+  path = path ~= "" and vim.loop.fs_realpath(path) or nil
+  local head = path ~= "" and path:match("(.*/)") or nil
+  if not head then
+    path = path and vim.fs.dirname(path) or vim.loop.cwd()
+    ---@type string?
+    head = vim.fs.find(M.root_patterns, { path = path, upward = true })[1]
+    head = head and vim.fs.dirname(head) or vim.loop.cwd()
+  end
+  ---@cast head string
+  return head
+end
+
 -- returns the root directory based on:
 -- * lsp workspace folders
 -- * lsp root_dir
@@ -253,16 +270,29 @@ function M.get_root()
   return root
 end
 
-function M.env_cleanup(venv)
-  if string.find(venv, "/") then
-    local final_venv = venv
-    for w in venv:gmatch("([^/]+)") do
-      final_venv = w
-    end
-    venv = final_venv
-  end
-  return venv
+function M.split(input, delimiter)
+  local arr = {}
+  local _ = string.gsub(input, "[^" .. delimiter .. "]+", function(w)
+    table.insert(arr, w)
+  end)
+  return arr
 end
+
+function M.env_cleanup(venv)
+  local params = M.split(venv, "/")
+  return params[#params - 1]
+end
+
+-- function M.env_cleanup(venv)
+--   if string.find(venv, "/") then
+--     local final_venv = venv
+--     for w in venv:gmatch("([^/]+)") do
+--       final_venv = w
+--     end
+--     venv = final_venv
+--   end
+--   return venv
+-- end
 
 --- Add a source to cmp
 -- @param source the cmp source string or table to add (see cmp documentation for source table format)
@@ -276,6 +306,27 @@ function M.add_cmp_source(source)
     table.insert(config.sources, source)
     -- call the setup function again
     cmp.setup(config)
+  end
+end
+
+-- this will return a function that calls telescope.
+-- cwd will default to lazyvim.util.get_root
+-- for `files`, git_files or find_files will be chosen depending on .git
+function M.telescope(builtin, opts)
+  local params = { builtin = builtin, opts = opts }
+  return function()
+    builtin = params.builtin
+    opts = params.opts
+    opts = vim.tbl_deep_extend("force", { cwd = M.get_root() }, opts or {})
+    if builtin == "files" then
+      if vim.loop.fs_stat((opts.cwd or vim.loop.cwd()) .. "/.git") then
+        opts.show_untracked = true
+        builtin = "git_files"
+      else
+        builtin = "find_files"
+      end
+    end
+    require("telescope.builtin")[builtin](opts)
   end
 end
 
