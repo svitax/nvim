@@ -1,6 +1,7 @@
 return {
   {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
     init = function()
       -- change/add/delete lazyvim lsp keymaps
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
@@ -33,6 +34,8 @@ return {
   },
   {
     "williamboman/mason.nvim",
+    cmd = "Mason",
+    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
         "stylua",
@@ -77,6 +80,7 @@ return {
   },
   {
     "jose-elias-alvarez/null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     opts = function()
       local nls = require("null-ls")
       return {
@@ -99,6 +103,27 @@ return {
       { "<leader>ci", "<cmd>Glance implementations<cr>", desc = "Find implementations" },
       { "<leader>cd", "<cmd>Glance definitions<cr>", desc = "Jump to definition" },
       { "<leader>cD", "<cmd>Glance references<cr>", desc = "Jump to references" },
+    },
+  },
+  -- NOTE: nvim-navbuddy
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      {
+        "SmiteshP/nvim-navbuddy",
+        dependencies = { "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
+        opts = { lsp = { auto_attach = true } },
+        config = function(_, opts)
+          local navbuddy = require("nvim-navbuddy")
+          local actions = require("nvim-navbuddy.actions")
+          opts.mappings = {
+            ["l"] = actions.parent,
+            [";"] = actions.children,
+          }
+          navbuddy.setup(opts)
+        end,
+        keys = { { "<leader>co", "<cmd>Navbuddy<cr>", desc = "Symbols outline" } },
+      },
     },
   },
   -- {

@@ -2,9 +2,9 @@ return {
   {
     "linux-cultist/venv-selector.nvim",
     dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim" },
-    event = "VeryLazy", -- Optional: needed only if you want to type `:VenvSelect` without a keymapping
-    opts = { search = true, name = ".venv" },
+    cmd = "VenvSelect",
     keys = { { "<leader>pv", "<cmd>VenvSelect<cr>", desc = "Switch venv" } },
+    opts = { search = true, name = ".venv" },
   },
   -- {
   --   "AckslD/swenv.nvim",
@@ -33,6 +33,7 @@ return {
     opts = {
       ---@type lspconfig.options
       servers = {
+        ---@type lspconfig.options.pylsp
         pylsp = {
           settings = {
             pylsp = {
@@ -73,6 +74,7 @@ return {
           },
         },
         -- will be automatically installed with mason and loaded with lspconfig
+        ---@type lspconfig.options.pyright
         pyright = {
           settings = {
             python = {

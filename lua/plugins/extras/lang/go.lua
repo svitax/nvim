@@ -1,10 +1,9 @@
 return {
-
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
-        vim.list_extend(opts.ensure_installed, { "go", "gomod", "gosum" })
+        vim.list_extend(opts.ensure_installed, { "go", "gomod", "gosum" }, 1, #opts.ensure_installed)
       end
     end,
   },
@@ -24,11 +23,7 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        gopls = {},
-      },
-    },
+    opts = { servers = { gopls = {} } },
   },
   {
     "olexsmir/gopher.nvim",

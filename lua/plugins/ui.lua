@@ -33,17 +33,15 @@ return {
       -- override_by_filename = {},
     },
   },
-  {
-    "stevearc/dressing.nvim",
-    opts = { select = { telescope = require("telescope.themes").get_ivy { ... } } },
-  },
+  { "stevearc/dressing.nvim", opts = { select = { telescope = require("telescope.themes").get_ivy({ ... }) } } },
   {
     "folke/which-key.nvim",
+    event = "VeryLazy",
     opts = { key_labels = { ["<space>"] = "<spc>", ["<cr>"] = "<ret>" } },
     config = function(_, opts)
-      local wk = require "which-key"
+      local wk = require("which-key")
       wk.setup(opts)
-      wk.register {
+      wk.register({
         mode = { "n", "v" },
         ["g"] = { name = "+goto" },
         ["ga"] = { name = "+text case" },
@@ -69,7 +67,7 @@ return {
         ["<leader>u"] = { name = "+ui" },
         ["<leader>w"] = { name = "+windows" },
         ["<leader>x"] = { name = "+diagnostics/quickfix" },
-      }
+      })
     end,
   },
   {
@@ -141,7 +139,7 @@ return {
           end
 
           if not require("noice.lsp").scroll(4) then
-            vim.api.nvim_feedkeys(t "<c-d>", "n", true)
+            vim.api.nvim_feedkeys(t("<c-d>"), "n", true)
           end
         end,
         desc = "Scroll down",
@@ -154,7 +152,7 @@ return {
           end
 
           if not require("noice.lsp").scroll(-4) then
-            vim.api.nvim_feedkeys(t "<c-u>", "n", true)
+            vim.api.nvim_feedkeys(t("<c-u>"), "n", true)
           end
         end,
         desc = "Scroll up",

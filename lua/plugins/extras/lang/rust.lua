@@ -45,7 +45,10 @@ return {
     },
     opts = {
       -- make sure mason installs the server
-      servers = { rust_analyzer = {} },
+      servers = {
+        ---@type lspconfig.options.rust_analyzer
+        rust_analyzer = {},
+      },
       setup = {
         rust_analyzer = function(_, opts)
           local rt = require("rust-tools")

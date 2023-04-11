@@ -1,10 +1,22 @@
 return {
+
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
+        ---@type lspconfig.options.tailwindcss
         tailwindcss = {
           filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte" },
+          -- only attach tailwindcss server if there's a tailwind config file
+          root_dir = require("lspconfig").util.root_pattern(
+            "tailwind.config.js",
+            "tailwind.config.ts"
+            -- "postcss.config.js",
+            -- "postcss.config.ts",
+            -- "package.json",
+            -- "node_modules",
+            -- ".git"
+          ),
         },
       },
     },

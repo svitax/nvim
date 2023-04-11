@@ -8,7 +8,6 @@ return {
   { "LazyVim/LazyVim", opts = { colorscheme = "terafox" } },
   {
     "EdenEast/nightfox.nvim",
-    lazy = true,
     opts = function()
       -- local C = require("nightfox.lib.color")
       local Shade = require("nightfox.lib.shade")

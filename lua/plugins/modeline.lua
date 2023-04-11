@@ -447,7 +447,6 @@ end
 return {
   {
     "nvim-lualine/lualine.nvim",
-    dependencies = { "AckslD/swenv.nvim" },
     event = "VeryLazy",
     opts = function(plugin)
       if plugin.override then

@@ -1,10 +1,12 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPost", "BufNewFile" },
     dependencies = {
+      "nvim-treesitter-textobjects",
       "nvim-treesitter/playground",
       -- Better treesitter indents
-      "yioneko/nvim-yati",
+      -- "yioneko/nvim-yati",
       "yioneko/vim-tmindent",
       -- wisely add "end" in ruby, lua, vimscript, etc. treesitter aware.
       "RRethy/nvim-treesitter-endwise",
@@ -27,36 +29,36 @@ return {
       playground = { enable = true },
       -- indent = { enable = true, disable = { "yaml", "python" } },
       indent = { enable = false },
-      yati = {
-        enable = true,
-        default_lazy = true,
-        default_fallback = function(lnum, computed, bufnr)
-          local tm_fts = {
-            "c",
-            "cpp",
-            "lua",
-            "python",
-            "html",
-            "json",
-            "css",
-            "less",
-            "scss",
-            "javascript",
-            "typescript",
-            "javascriptreact",
-            "typescriptreact",
-            "rust",
-            "yaml",
-            "gitcommit",
-            "gitignore",
-          }
-          if vim.tbl_contains(tm_fts, vim.bo[bufnr].filetype) then
-            return require("tmindent").get_indent(lnum, bufnr) + computed
-          end
-          -- or any other fallback methods
-          return require("nvim-yati.fallback").vim_auto(lnum, computed, bufnr)
-        end,
-      },
+      -- yati = {
+      --   enable = true,
+      --   default_lazy = true,
+      --   default_fallback = function(lnum, computed, bufnr)
+      --     local tm_fts = {
+      --       "c",
+      --       "cpp",
+      --       "lua",
+      --       "python",
+      --       "html",
+      --       "json",
+      --       "css",
+      --       "less",
+      --       "scss",
+      --       "javascript",
+      --       "typescript",
+      --       "javascriptreact",
+      --       "typescriptreact",
+      --       "rust",
+      --       "yaml",
+      --       "gitcommit",
+      --       "gitignore",
+      --     }
+      --     if vim.tbl_contains(tm_fts, vim.bo[bufnr].filetype) then
+      --       return require("tmindent").get_indent(lnum, bufnr) + computed
+      --     end
+      --     -- or any other fallback methods
+      --     return require("nvim-yati.fallback").vim_auto(lnum, computed, bufnr)
+      --   end,
+      -- },
       endwise = { enable = true },
       matchup = { enable = true },
       incremental_selection = {

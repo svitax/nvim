@@ -421,4 +421,12 @@ return {
   --     },
   --   },
   -- },
+  -- {
+  --   "sopa0/telescope-makefile",
+  --   dependencies = { "nvim-telescope/telescope.nvim" },
+  --   config = function()
+  --     require("telescope").load_extension("make")
+  --   end,
+  --   keys = { { "<leader>cM", "<cmd>Telescope make<cr>", desc = "Make" } },
+  -- },
 }

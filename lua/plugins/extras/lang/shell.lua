@@ -30,7 +30,15 @@ return {
       end
     end,
   },
-  { "neovim/nvim-lspconfig", opts = { servers = { bashls = { filetypes = { "sh", "bash", "zsh" } } } } },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        ---@type lspconfig.options.bashls
+        bashls = { filetypes = { "sh", "bash", "zsh" } },
+      },
+    },
+  },
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
