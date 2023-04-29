@@ -36,65 +36,6 @@ return {
     "williamboman/mason.nvim",
     cmd = "Mason",
     keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
-    opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
-        "stylua",
-        "selene",
-        -- "luacheck",
-        -- "editorconfig-checker"
-        -- "commitlint",
-      }, 0, #opts.ensure_installed)
-    end,
-    ---@param opts MasonSettings | {ensure_installed: string[]}
-    config = function(plugin, opts)
-      require("mason").setup(opts)
-      local mr = require("mason-registry")
-      for _, tool in ipairs(opts.ensure_installed) do
-        local p = mr.get_package(tool)
-        if not p:is_installed() then
-          p:install()
-        end
-      end
-
-      local pylsp = require("mason-registry").get_package("python-lsp-server")
-
-      pylsp:on("install:success", function()
-        -- Install pylsp plugins...
-        vim.schedule(function()
-          local install_cmd = {
-            vim.fn.expand("~/.local/share/nvim/mason/packages/python-lsp-server/venv/bin/python"),
-            "-m",
-            "pip",
-            "install",
-            "python-lsp-black",
-            "python-lsp-ruff",
-            -- "pylsp-mypy",
-            "pylsp-rope",
-            "pyls-isort",
-          }
-          vim.fn.system(install_cmd)
-          -- vim.notify("python-lsp-server plugins installed", "info", { title = "mason.nvim" })
-        end)
-      end)
-    end,
-  },
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    opts = function()
-      local nls = require("null-ls")
-      return {
-        sources = {
-          -- nls.builtins.diagnostics.xo,
-          -- nls.builtins.code_actions.xo,
-          -- nls.builtins.formatting.prettierd,
-          nls.builtins.formatting.stylua,
-          nls.builtins.diagnostics.selene,
-          -- nls.builtins.diagnostics.luacheck,
-          -- nls.builtins.diagnostics.commitlint,
-        },
-      }
-    end,
   },
   {
     "DNLHC/glance.nvim",
@@ -126,16 +67,68 @@ return {
       },
     },
   },
-  -- {
-  --   -- TODO: preview doesn't work and won't override lazyvim <leader>ca for some reason
-  --   "aznhe21/actions-preview.nvim",
-  --   opts = {
-  --     diff = {
-  --       algorithm = "patience",
-  --       ignore_whitespace = true,
-  --     },
-  --     telescope = require("telescope.themes").get_ivy(),
-  --   },
-  --   keys = { { "<leader>ca", ":lua require('actions-preview').code_actions()<cr>", desc = "Lol" } },
-  -- },
+  {
+    "hrsh7th/nvim-gtd",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = "neovim/nvim-lspconfig",
+    keys = {
+      {
+        "gf",
+        function()
+          require("gtd").exec({ command = "edit" })
+        end,
+        desc = "Go to definition or file",
+      },
+    },
+    ---@type gtd.kit.App.Config.Schema
+    opts = {
+      sources = {
+        { name = "findup" },
+        {
+          name = "walk",
+          root_markers = {
+            ".git",
+            ".neoconf.json",
+            "Makefile",
+            "tsconfig.json",
+            "package.json",
+          },
+          ignore_patterns = { "/node_modules", "/.git" },
+        },
+        { name = "lsp" },
+      },
+    },
+  },
+  {
+    "lvimuser/lsp-inlayhints.nvim",
+    event = "LspAttach",
+    opts = {},
+    config = function(_, opts)
+      require("lsp-inlayhints").setup(opts)
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("LspAttach_inlayhints", {}),
+        callback = function(args)
+          if not (args.data and args.data.client_id) then
+            return
+          end
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          require("lsp-inlayhints").on_attach(client, args.buf, false)
+        end,
+      })
+    end,
+  },
+  {
+    "kosayoda/nvim-lightbulb",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = { ignore = { "null-ls" } },
+    config = function(_, opts)
+      require("nvim-lightbulb").setup(opts)
+      vim.api.nvim_create_autocmd("CursorHold", {
+        group = vim.api.nvim_create_augroup("lightbulb", {}),
+        callback = function()
+          require("nvim-lightbulb").update_lightbulb()
+        end,
+      })
+    end,
+  },
 }

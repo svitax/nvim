@@ -1,23 +1,13 @@
 return {
-  -- TODO: replace nvim-femaco with otter.nvim
-  { "AckslD/nvim-FeMaco.lua", config = true, keys = { { "<leader>ne", "<cmd>FeMaco<cr>", desc = "Edit codeblock" } } },
   { "opdavies/toggle-checkbox.nvim", ft = { "markdown" } },
-  -- TODO: mind.nvim is deprecated
-  {
-    "phaazon/mind.nvim",
-    opts = { ui = { width = 40 } },
-    keys = { { "<leader>nt", "<cmd>MindOpenMain<cr>", desc = "Todos (mind)" } },
-  },
+
   {
     "mickael-menu/zk-nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     name = "zk",
-    ft = "markdown",
+    -- ft = "markdown",
+    cmd = { "ZkNew", "ZkNotes", "ZkTags", "ZkMatch" },
     opts = { picker = "telescope" },
-    -- config = function(_, opts)
-    --   require("zk").setup(opts)
-    --   require("telescope").load_extension("zk")
-    -- end,
     keys = {
       -- Find notes.
       { "<leader>fn", "<cmd>ZkNotes { sort = {'modified'}}<cr>", desc = "Find notes" },
@@ -58,7 +48,8 @@ return {
     end,
     keys = {
       -- { "<leader>nb", "<cmd>Telescope bibtex<cr>", desc = "Bibliography" },
-      { "<leader>nB", "<cmd>e ~/Dropbox/docs/lib.bib<cr>", desc = "Edit bib file" },
+      -- { "<leader>nB", "<cmd>e ~/Dropbox/docs/lib.bib<cr>", desc = "Edit bib file" },
+      { "<leader>nB", "<cmd>e ~/Drive/docs/lib.bib<cr>", desc = "Edit bib file" },
       {
         "<leader>fb",
         function()
@@ -80,7 +71,8 @@ return {
                     or line:match("%s*books/[^\n]+")
                   if s ~= nil then
                     -- s = s:match("%b{}") or s:match('%b""') or s:match("%d+")
-                    s = "/home/svitax/Dropbox/docs/" .. (s:match("%{(.-)%}") or s:match("(books/[^\n]+)"))
+                    -- s = "/home/svitax/Dropbox/docs/" .. (s:match("%{(.-)%}") or s:match("(books/[^\n]+)"))
+                    s = "/home/svitax/Drive/docs/" .. (s:match("%{(.-)%}") or s:match("(books/[^\n]+)"))
                     -- print(s)
                     Job:new({
                       command = cmd,
@@ -154,6 +146,9 @@ return {
       --   opts.sources,
       --   nls.builtins.diagnostics.vale.with({
       --     extra_args = { "--config", vim.fn.expand("$HOME") .. "/.config/vale/.vale.ini" },
+      --     diagnostics_postprocess = function(diagnostic)
+      --      diagnostic.severity = vim.diagnostic.severity.HINT
+      --    end
       --   })
       -- )
       -- table.insert(
@@ -164,44 +159,4 @@ return {
       -- )
     end,
   },
-  -- TODO: add glow.nvim when it has support for live split preview
-  -- https://github.com/ellisonleao/glow.nvim/discussions/78
-  -- {"ellisonleao/glow.nvim", config = true, cmd = "Glow"}
-  -- TODO: lyaml as a rocks dependency (not supported by lazy.nvim)
-  -- {
-  --   "jghauser/papis.nvim",
-  --   dependencies = { "kkharji/sqlite.lua" },
-  --   cmd = "PapisStart",
-  --   opts = { enable_keymaps = false },
-  --   config = function(_, opts)
-  --     require("papis").setup(opts)
-  --     require("telescope").load_extension("papis")
-  --   end,
-  --   keys = {
-  --     { "<leader>np", "<cmd>Telescope papis<cr>", desc = "Bibliography (papis)" },
-  --   },
-  -- },
-  -- {
-  --   "bennypowers/nvim-regexplainer",
-  --   cmd = { "RegexplainerShowSplit", "RegexplainerShowPopup", "RegexplainerToggle" },
-  --   opts = { mappings = { toggle = false } },
-  --   keys = {
-  --     {
-  --       "<leader>nE",
-  --       function()
-  --         return require("regexplainer").toggle({ display = "popup" })
-  --       end,
-  --       desc = "Regexplainer",
-  --     },
-  --   },
-  -- },
-  -- {
-  --   "nvim-treesitter/nvim-treesitter",
-  --   opts = function(_, opts)
-  --     if type(opts.ensure_installed) == "table" then
-  --       vim.list_extend(opts.ensure_installed, { "regex" })
-  --     end
-  --   end,
-  -- },
-  -- { "lukas-reineke/headlines.nvim", ft = { "markdown" }, config = true },
 }

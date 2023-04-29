@@ -4,15 +4,6 @@ vim.keymap.set("n", "<leader>ws", "<cmd>split<CR>", { desc = "Split window" })
 vim.keymap.set("n", "<leader>wv", "<cmd>vsplit<CR>", { desc = "Vsplit window" })
 
 return {
-  -- {
-  --   "Lilja/zellij.nvim",
-  --   event = "VeryLazy",
-  --   opts = {
-  --     replaceVimWindowNavigationKeybinds = false, -- Will set keybinds like <C-w>h to left
-  --     vimTmuxNavigatorKeybinds = true, -- Will set keybinds like <C-h> to left
-  --     debug = true,
-  --   },
-  -- },
   {
     "declancm/windex.nvim",
     opts = { default_keymaps = false },

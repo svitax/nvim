@@ -11,7 +11,7 @@ return {
       -- make sure mason installs the server
       servers = {
         ---@type lspconfig.options.stylelint_lsp
-        stylelint_lsp = {},
+        stylelint_lsp = { filetypes = { "css", "less", "scss", "sugarss", "wxss" } },
       },
     },
   },

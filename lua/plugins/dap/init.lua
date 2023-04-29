@@ -5,7 +5,7 @@ return {
       "jay-babu/mason-nvim-dap.nvim",
       "rcarriga/nvim-dap-ui",
       "mxsdev/nvim-dap-vscode-js",
-      "theHamsta/nvim-dap-virtual-text",
+      { "theHamsta/nvim-dap-virtual-text", opts = {} },
       "jbyuki/one-small-step-for-vimkind",
       {
         "mfussenegger/nvim-dap-python",
@@ -23,7 +23,6 @@ return {
       local mason_dap = require("mason-nvim-dap")
       local dap = require("dap")
       local ui = require("dapui")
-      local vt = require("nvim-dap-virtual-text")
 
       dap.set_log_level("TRACE")
 
@@ -82,7 +81,6 @@ return {
       require("dap-python")
 
       -- UI Settings
-      vt.setup()
       ui.setup({
         icons = { expanded = "▾", collapsed = "▸" },
         mappings = {

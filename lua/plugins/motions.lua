@@ -1,6 +1,28 @@
 -- TODO: replace syntax-tree-surfer and tree-climber.nvim with my fork of nvim-treeclimber
 return {
-  { "chaoren/vim-wordmotion", event = "BufReadPost" },
+  {
+    -- "chrisGrieserGoesToTown",
+    "chrisgrieser/nvim-spider",
+    keys = {
+      { "w", "<cmd>lua require('spider').motion('w')<cr>", mode = { "n", "o", "x" }, desc = "nvim-spider w" },
+      { "e", "<cmd>lua require('spider').motion('e')<cr>", mode = { "n", "o", "x" }, desc = "nvim-spider e" },
+      { "b", "<cmd>lua require('spider').motion('b')<cr>", mode = { "n", "o", "x" }, desc = "nvim-spider b" },
+      { "ge", "<cmd>lua require('spider').motion('ge')<cr>", mode = { "n", "o", "x" }, desc = "nvim-spider ge" },
+      -- <C-bs> maps to <C-h> in terminals, but I like to have <C-bs> delete the previous word.
+      { "<C-bs>", "<space><cmd>normal db<cr>", mode = { "i", "c" }, desc = "nvim-spider db" },
+      { "<C-h>", "<space><cmd>normal db<cr>", mode = { "i", "c" }, desc = "nvim-spider db" },
+      -- <A-bs> is mapped to delete previous word on my keyboard (macos), make that consistent inside nvim
+      { "<A-bs>", "<space><cmd>normal db<cr>", mode = { "i", "c" }, desc = "nvim-spider db" },
+    },
+  },
+  {
+    "chrisgrieser/nvim-various-textobjs",
+    opts = { useDefaultKeymaps = true },
+    keys = {
+      { "aw", "<cmd>lua require('various-textobjs').subword(false)<cr>", mode = { "o", "x" }, desc = "outer word" },
+      { "iw", "<cmd>lua require('various-textobjs').subword(true)<cr>", mode = { "o", "x" }, desc = "inner word" },
+    },
+  },
   {
     "ggandor/leap.nvim",
     config = function(_, opts)
@@ -68,47 +90,4 @@ return {
     --   )
     -- end,
   },
-  -- {
-  --   -- TODO: don't need goto actions
-  --   "drybalka/tree-climber.nvim",
-  --   dependencies = { "nvim-treesitter" },
-  --   keys = {
-  --     {
-  --       "<A-l>",
-  --       "<cmd>lua require('tree-climber').goto_parent()<cr>",
-  --       -- mode = { "i", "n" },
-  --       desc = "Jump to parent node",
-  --     },
-  --     {
-  --       "<A-;>",
-  --       "<cmd>lua require('tree-climber').goto_child()<cr>",
-  --       -- mode = { "n", "i" },
-  --       desc = "Jump to child node",
-  --     },
-  --     {
-  --       "<A-j>",
-  --       "<cmd>lua require('tree-climber').goto_next()<cr>",
-  --       -- mode = { "i", "n" },
-  --       desc = "Jump to next node",
-  --     },
-  --     {
-  --       "<A-k>",
-  --       "<cmd>lua require('tree-climber').goto_prev()<cr>",
-  --       -- mode = { "i", "n" },
-  --       desc = "Jump to prev node",
-  --     },
-  --     {
-  --       "<A-J>",
-  --       "<cmd>lua require('tree-climber').swap_next()<cr>",
-  --       -- mode = { "n", "i" },
-  --       desc = "Swap with next node",
-  --     },
-  --     {
-  --       "<A-K>",
-  --       "<cmd>lua require('tree-climber').swap_prev()<cr>",
-  --       -- mode = { "n", "i" },
-  --       desc = "Swap with prev node",
-  --     },
-  --   },
-  -- },
 }

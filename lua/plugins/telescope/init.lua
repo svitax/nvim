@@ -148,15 +148,13 @@ return {
       { "<leader>gs" },
       { "<leader>gS" },
 
-      { "<leader>ha", "<cmd>Telescope autocommands<cr>", desc = "Autocommands" },
+      { "<leader>hA", "<cmd>Telescope autocommands<cr>", desc = "Autocommands" },
       { "<leader>hc", "<cmd>Telescope command_history<cr>", desc = "Command history" },
       { "<leader>hC", "<cmd>Telescope commands<cr>", desc = "Commands" },
-      { "<leader>hh", "<cmd>Telescope help_tags<cr>", desc = "Help pages" },
-      { "<leader>hH", "<cmd>Telescope highlights<cr>", desc = "Highlight groups" },
+      { "<leader>hH", "<cmd>Telescope help_tags<cr>", desc = "Help pages" },
+      { "<leader>hg", "<cmd>Telescope highlights<cr>", desc = "Highlight groups" },
       { "<leader>hk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
-      { "<leader>hm", "<cmd>Noice telescope<cr>", desc = "Messages" }, -- noice
       { "<leader>hM", "<cmd>Telescope man_pages<cr>", desc = "Man pages" },
-      { "<leader>he", "<cmd>Noice errors<cr>", desc = "Errors" }, -- noice
       { "<leader>ho", "<cmd>Telescope vim_options<cr>", desc = "Options" },
 
       { "<leader>sa", false },
@@ -195,7 +193,8 @@ return {
     opts = {
       extensions = {
         -- howdoi = { pager_command = "bat --color=always --theme=gruvbox-dark" },
-        bibtex = { global_files = { "~/Dropbox/docs/lib.bib" }, search_keys = { "title", "author", "year" } },
+        -- bibtex = { global_files = { "~/Dropbox/docs/lib.bib" }, search_keys = { "title", "author", "year" } },
+        bibtex = { global_files = { "~/Drive/docs/lib.bib" }, search_keys = { "title", "author", "year" } },
         repo = { list = { search_dirs = { "~/projects", "~/.config/nvim" } } },
         live_grep_args = {
           auto_quoting = true, -- enable/disable auto-quoting
@@ -327,6 +326,23 @@ return {
         end,
         desc = "Search .config/nvim",
       },
+      -- grep notes
+      {
+        "<leader>sn",
+        function()
+          require("telescope").extensions.live_grep_args.live_grep_args({
+            -- cwd = "~/Dropbox/notes",
+            cwd = "~/Drive/notes",
+            attach_mappings = function(_, map)
+              map("i", "<c-g>", require("telescope-live-grep-args.actions").quote_prompt())
+              map("i", "<c-i>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
+              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t " }))
+              return true
+            end,
+          })
+        end,
+        desc = "Search notes",
+      },
       -- grep project (default telescope grep)
       {
         "<leader>sp",
@@ -344,89 +360,4 @@ return {
       },
     },
   },
-  -- { "prochri/telescope-all-recent.nvim", dependencies = { "kkharji/sqlite.lua" }, opts = {}, cmd = "Telescope" },
-  -- {
-  --   "nvim-telescope/telescope-file-browser.nvim",
-  --   dependencies = { "nvim-telescope/telescope.nvim" },
-  --   config = function()
-  --     require("telescope").load_extension("file_browser")
-  --   end,
-  --   keys = {
-  --     -- TODO: find directory
-  --     { "<leader>fd", "<cmd>Telescope file_browser<cr>", desc = "Find directory" }, -- Search for directories, on <cr> open dirvish/dired
-  --     {
-  --       "<leader>fE",
-  --       function()
-  --         require("telescope").extensions.file_browser.file_browser({
-  --           cwd = "~/.config/nvim",
-  --           cwd_to_path = true,
-  --         })
-  --       end,
-  --       desc = "Browse .config/nvim",
-  --     },
-  --   },
-  -- },
-  -- {
-  --   "princejoogie/dir-telescope.nvim",
-  --   dependencies = { "nvim-telescope/telescope.nvim" },
-  --   config = function()
-  --     require("telescope").load_extension("dir")
-  --   end,
-  --   -- TODO: make dir-telescope not search .git and node_modules folders
-  --   -- choose a dir to grep in
-  --   keys = { { "<leader>sD", "<cmd>Telescope dir live_grep<cr>", desc = "Search other directory" } },
-  -- },
-  -- {
-  --   "marcuscaisey/olddirs.nvim",
-  --   dependencies = { "nvim-telescope/telescope.nvim" },
-  --   config = function()
-  --     require("telescope").load_extension("olddirs")
-  --   end,
-  --   keys = { { "<leader>fo", "<cmd>Telescope olddirs picker<cr>", desc = "Recent dirs" } },
-  -- },
-  -- {
-  --   "zane-/howdoi.nvim",
-  --   dependencies = { "nvim-telescope/telescope.nvim" },
-  --   config = function()
-  --     require("telescope").load_extension("howdoi")
-  --   end,
-  --   keys = {
-  --     -- NOTE: telescope-howdoi previewer shows no colors
-  --     { "<leader>hd", "<cmd>Telescope howdoi<cr>", desc = "Howdoi" },
-  --   },
-  -- },
-  -- TODO: delete browse.nvim and use something like rofi instead
-  -- {
-  --   "lalitmee/browse.nvim",
-  --   dependencies = { "nvim-telescope/telescope.nvim" },
-  --   cmd = { "Browse", "BrowseBookmarks", "BrowseInputSearch", "BrowseDevdocsSearch", "BrowseDevdocsFiletypeSearch" },
-  --   opts = {
-  --     bookmarks = {
-  --       ["npm-search"] = "https://npmjs.com/search?q=%s",
-  --       ["github-code-search"] = "https://github.com/search?q=%s&type=code",
-  --       ["github-repo-search"] = "https://github.com/search?q=%s&type=repositories",
-  --       ["github-issues-search"] = "https://github.com/search?q=%s&type=issues",
-  --       ["github-pulls-search"] = "https://github.com/search?q=%s&type=pullrequests",
-  --     },
-  --   },
-  --   keys = {
-  --     { "<leader>soo", "<cmd>lua require('browse').input_search()<cr>", desc = "Look up online" },
-  --     { "<leader>sob", "<cmd>lua require('browse').open_bookmarks()<cr>", desc = "Bookmarks" },
-  --     { "<leader>sos", "<cmd>lua require('browse').browse()<cr>", desc = "Browse" },
-  --     { "<leader>sod", "<cmd>lua require('browse.devdocs').search()<cr>", desc = "Devdocs" },
-  --     {
-  --       "<leader>sof",
-  --       "<cmd>lua require('browse.devdocs').search_with_filetype()<cr>",
-  --       desc = "Devdocs with filetype",
-  --     },
-  --   },
-  -- },
-  -- {
-  --   "sopa0/telescope-makefile",
-  --   dependencies = { "nvim-telescope/telescope.nvim" },
-  --   config = function()
-  --     require("telescope").load_extension("make")
-  --   end,
-  --   keys = { { "<leader>cM", "<cmd>Telescope make<cr>", desc = "Make" } },
-  -- },
 }

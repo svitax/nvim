@@ -4,7 +4,7 @@ vim.keymap.set("n", "<s-tab>", "za", { desc = "Fold cycle" })
 return {
   -- TODO: When entering and leaving diffview, my folds get messed up
   "kevinhwang91/nvim-ufo",
-  dependencies = "kevinhwang91/promise-async",
+  dependencies = { "kevinhwang91/promise-async", "nvim-treesitter/nvim-treesitter" },
   event = "BufReadPost",
   -- lazy = false, -- can't lazy load, or folds from previous sessions are opened
   config = function()

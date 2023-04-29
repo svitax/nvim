@@ -57,7 +57,9 @@
       {
         "language": [
           "javascript",
-          "typescript"
+          "typescript",
+          "javascriptreact",
+          "typescriptreact"
         ],
         "path": "./basic/javascript.json"
       },

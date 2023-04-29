@@ -1,16 +1,14 @@
 local utils = require("utils")
 
 return {
-  { "chomosuke/term-edit.nvim", ft = { "toggleterm" }, opts = { prompt_end = "%$ " } },
-  -- BUG: my cwd gets stuck whenever I look at a file in my .config/nvim, and none of these autoroot plugins fix it
-  -- {
-  --   "notjedi/nvim-rooter.lua",
-  --   lazy = false,
-  --   config = function(_, opts)
-  --     require("nvim-rooter").setup(opts)
-  --     vim.cmd([[RooterToggle]])
-  --   end,
-  -- },
+  {
+    "chomosuke/term-edit.nvim",
+    ft = { "toggleterm" },
+    opts = {
+      -- prompt_end = "%$ " -- bash/zsh
+      prompt_end = "> ", -- powershell/fish
+    },
+  },
   { "ahmedkhalf/project.nvim", name = "project_nvim", lazy = false, config = true },
   {
     "akinsho/toggleterm.nvim",
@@ -42,17 +40,19 @@ return {
         vim.keymap.set("t", "<ESC>", [[<c-\><c-n>]], { buffer = true, desc = "Exit terminal mode" })
         vim.keymap.set("t", "<C-h>", "<C-w>", { buffer = true, desc = "Delete previous word (<C-bs>)" })
         vim.keymap.set("t", "<C-bs>", "<C-w>", { buffer = true, desc = "Delete previous word (<C-bs>)" })
+        -- vim.keymap.set("t", "<C-h>", "<C-\\><C-o>db", { buffer = true, desc = "Delete previous word (<C-bs>)" })
+        -- vim.keymap.set("t", "<C-bs>", "<C-\\><C-o>db", { buffer = true, desc = "Delete previous word (<C-bs>)" })
       end,
     },
     cmd = { "ToggleTerm", "ToggleTermSendVisualSelection" },
     keys = {
-      { "<c-t>", "<cmd>ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal" },
-      { "<A-1>", "<cmd>1ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal" },
-      { "<A-2>", "<cmd>2ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 2" },
-      { "<A-3>", "<cmd>3ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 3" },
-      { "<A-4>", "<cmd>4ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 4" },
-      { "<A-5>", "<cmd>5ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 5" },
-      { "<A-6>", "<cmd>6ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 6" },
+      { "<C-t>", "<cmd>ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal" },
+      { "<C-1>", "<cmd>1ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal" },
+      { "<C-2>", "<cmd>2ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 2" },
+      { "<C-3>", "<cmd>3ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 3" },
+      { "<C-4>", "<cmd>4ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 4" },
+      { "<C-5>", "<cmd>5ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 5" },
+      { "<C-6>", "<cmd>6ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 6" },
       -- { "<leader>gt", "<cmd>lua _lazygit_toggle()<CR>", mode = { "n" }, desc = "Toggle lazygit" },
       -- { "<leader>hn", "<cmd>lua _navi_toggle()<CR>", mode = { "n" }, desc = "Toggle navi" },
       { "<leader>hn", utils.float_term("navi", { count = 7 }), mode = { "n" }, desc = "Cheatsheet (navi)" },
@@ -70,29 +70,4 @@ return {
       -- { "<leader>tv", "<cmd>ToggleTerm direction='vertical'<cr>", desc = "Toggle terminal vertical" },
     },
   },
-  -- {
-  --   "airblade/vim-rooter",
-  --   init = function()
-  --     vim.g["rooter_cd_cmd"] = "lcd"
-  --   end,
-  --   cmd = { "Rooter" },
-  -- },
-  -- {
-  --   "samjwill/nvim-unception",
-  --   init = function()
-  --     vim.g.unception_open_buffer_in_new_tab = true
-  --   end,
-  --   config = function()
-  --     vim.api.nvim_create_autocmd("User", {
-  --       group = vim.api.nvim_create_augroup("UnceptionGroup", { clear = true }),
-  --       pattern = "UnceptionEditRequestReceived",
-  --       callback = function()
-  --         local ok, _ = pcall(require, "toggleterm")
-  --         if ok then
-  --           vim.cmd("ToggleTerm")
-  --         end
-  --       end,
-  --     })
-  --   end,
-  -- },
 }

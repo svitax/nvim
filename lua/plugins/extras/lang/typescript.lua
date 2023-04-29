@@ -20,6 +20,30 @@ return {
             completions = {
               completeFunctionCalls = true,
             },
+            typescript = {
+              inlayHints = {
+                includeInlayParameterNameHints = "all",
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+            javascript = {
+              inlayHints = {
+                includeInlayParameterNameHints = "all",
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
           },
         },
       },
@@ -28,9 +52,11 @@ return {
           require("lazyvim.util").on_attach(function(client, buffer)
             if client.name == "tsserver" then
               -- stylua: ignore
-              vim.keymap.set("n", "<leader>cO", "<cmd>TypescriptOrganizeImports<CR>", { buffer = buffer, desc = "Organize Imports" })
+              vim.keymap.set("n", "<leader>cO", "<cmd>TypescriptOrganizeImports<CR>",
+                { buffer = buffer, desc = "Organize Imports" })
               -- stylua: ignore
-              vim.keymap.set("n", "<leader>cR", "<cmd>TypescriptRenameFile<CR>", { desc = "Rename File", buffer = buffer })
+              vim.keymap.set("n", "<leader>cR", "<cmd>TypescriptRenameFile<CR>",
+                { desc = "Rename File", buffer = buffer })
             end
           end)
           require("typescript").setup({ server = opts })
@@ -45,7 +71,8 @@ return {
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
         "prettierd",
-        "eslint-lsp",
+        "eslint_d",
+        -- "eslint-lsp",
       }, 0, #opts.ensure_installed)
     end,
   },
@@ -53,8 +80,24 @@ return {
     "jose-elias-alvarez/null-ls.nvim",
     opts = function(_, opts)
       local nls = require("null-ls")
-      table.insert(opts.sources, require("typescript.extensions.null-ls.code-actions"))
+      -- table.insert(opts.sources, require("typescript.extensions.null-ls.code-actions"))
       table.insert(opts.sources, nls.builtins.formatting.prettierd)
+      table.insert(
+        opts.sources,
+        nls.builtins.formatting.eslint_d.with({
+          condition = function(utils)
+            return utils.root_has_file({
+              ".eslintrc.js",
+              ".eslintrc.json",
+              ".eslintrc.cjs",
+              ".eslintrc.ts",
+              ".eslintrc.yaml",
+              ".eslintrc.yml",
+              "eslint.config.js",
+            })
+          end,
+        })
+      )
     end,
   },
 }

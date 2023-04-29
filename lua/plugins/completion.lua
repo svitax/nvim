@@ -6,7 +6,18 @@ return {
     keys = function()
       return {}
     end,
-    config = function()
+    opts = {
+      -- Don't store snippet history for less overhead
+      history = false,
+      -- Event on which to check for exiting a snippet's region
+      region_check_events = "InsertEnter",
+      delete_check_events = "InsertLeave",
+      ft_func = function()
+        return vim.split(vim.bo.filetype, ".", { plain = true })
+      end,
+    },
+    config = function(_, opts)
+      require("luasnip").setup(opts)
       require("luasnip.loaders.from_vscode").lazy_load({ paths = "./snippets" })
       require("luasnip.loaders.from_lua").lazy_load({ paths = "./snippets/luasnippets" })
     end,
@@ -20,6 +31,7 @@ return {
       "hrsh7th/cmp-cmdline",
       -- "PaterJason/cmp-conjure",
       "chrisgrieser/cmp-nerdfont",
+      { "abecodes/tabout.nvim", branch = "feature/tabout-md", opts = {} },
     },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
@@ -112,8 +124,9 @@ return {
           -- they way you will only jump inside the snippet region
           elseif luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
-          elseif has_words_before() then
-            cmp.complete()
+          -- elseif has_words_before() then
+          --   fallback()
+          --   cmp.complete()
           else
             fallback()
           end

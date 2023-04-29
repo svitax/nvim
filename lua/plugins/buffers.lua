@@ -2,6 +2,7 @@ vim.keymap.set("n", "<leader>bs", "<cmd>up!<cr>", { desc = "Save buffer" })
 vim.keymap.set("n", "<c-s>", "<cmd>up!<cr>", { desc = "Save buffer" })
 
 return {
+  -- TODO: show grapple tag buffer number in modeline
   {
     "cbochs/grapple.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -16,60 +17,16 @@ return {
     },
     config = true,
     keys = {
-      { "<C-1>", "<cmd>GrappleSelect key=1<cr>", desc = "Select tag buffer 1" },
-      { "<C-2>", "<cmd>GrappleSelect key=2<cr>", desc = "Select tag buffer 2" },
-      { "<C-3>", "<cmd>GrappleSelect key=3<cr>", desc = "Select tag buffer 3" },
-      { "<C-4>", "<cmd>GrappleSelect key=4<cr>", desc = "Select tag buffer 4" },
-      { "<C-5>", "<cmd>GrappleSelect key=5<cr>", desc = "Select tag buffer 5" },
-      { "<C-6>", "<cmd>GrappleSelect key=6<cr>", desc = "Select tag buffer 6" },
+      { "<A-1>", "<cmd>GrappleSelect key=1<cr>", desc = "Select tag buffer 1" },
+      { "<A-2>", "<cmd>GrappleSelect key=2<cr>", desc = "Select tag buffer 2" },
+      { "<A-3>", "<cmd>GrappleSelect key=3<cr>", desc = "Select tag buffer 3" },
+      { "<A-4>", "<cmd>GrappleSelect key=4<cr>", desc = "Select tag buffer 4" },
+      { "<A-5>", "<cmd>GrappleSelect key=5<cr>", desc = "Select tag buffer 5" },
+      { "<A-6>", "<cmd>GrappleSelect key=6<cr>", desc = "Select tag buffer 6" },
       { "<leader>bt", "<cmd>GrapplePopup tags<cr>", desc = "Show tagged buffers" },
       { "<leader>bT", "<cmd>GrappleToggle<cr>", desc = "Tag buffer" },
     },
   },
-  -- <A-o> and <A-i> to jump to previous and next buffer on jumplist (mirrors <C-o> and <C-i>.)
-  -- {
-  --   "cbochs/portal.nvim",
-  --   opts = {
-  --     labels = { "j", "k", "l", ";" },
-  --     escape = { ["<esc>"] = true, ["q"] = true },
-  --     portal = {
-  --       title = { render_empty = false, options = { relative = "editor", width = 60 } },
-  --       body = { options = { relative = "editor", width = 60 } },
-  --     },
-  --   },
-  --   keys = {
-  --     {
-  --       "<A-o>",
-  --       function()
-  --         local query = require("portal.query").resolve({ "different" })
-  --         local jumps = require("portal.jump").search(query, "backward")
-  --         require("portal.jump").select(jumps[1])
-  --       end,
-  --       desc = "Jump previous buffer",
-  --     },
-  --     {
-  --       "<A-i>",
-  --       function()
-  --         local query = require("portal.query").resolve({ "different" })
-  --         local jumps = require("portal.jump").search(query, "forward")
-  --         require("portal.jump").select(jumps[1])
-  --       end,
-  --       desc = "Jump next buffer",
-  --     },
-  --     {
-  --       "<C-o>",
-  --       function()
-  --         require("portal").jump_backward({ query = { "valid", "valid", "valid" } })
-  --       end,
-  --     },
-  --     {
-  --       "<C-i>",
-  --       function()
-  --         require("portal").jump_forward({ query = { "valid", "valid", "valid" } })
-  --       end,
-  --     },
-  --   },
-  -- },
   -- <A-o> and <A-i> to jump to previous and next buffer on jumplist (mirrors <C-o> and <C-i>.)
   {
     "kwkarlwang/bufjump.nvim",

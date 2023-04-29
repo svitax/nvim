@@ -123,6 +123,9 @@ return {
 
             PackageInfoOutdatedVersion = { fg = "palette.orange" },
             PackageInfoUpToDateVersion = { fg = "palette.comment" },
+
+            ["@text.strong"] = { fg = "palette.orange", style = "bold" },
+            ["@text.emphasis"] = { fg = "palette.orange", style = "italic" },
           },
         },
       }

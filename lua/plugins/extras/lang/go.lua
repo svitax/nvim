@@ -23,7 +23,20 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    opts = { servers = { gopls = {} } },
+    opts = {
+      servers = {
+        gopls = {
+          hints = {
+            assignVariableTypes = true,
+            compositeLiteralFields = true,
+            constantValues = true,
+            functionTypeParameters = true,
+            parameterNames = true,
+            rangeVariableTypes = true,
+          },
+        },
+      },
+    },
   },
   {
     "olexsmir/gopher.nvim",

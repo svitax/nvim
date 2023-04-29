@@ -1,4 +1,14 @@
 {
+  "zettelkasten note": {
+    "prefix": "zk",
+    "body": [
+      "---",
+      "title: \"${1:Title}\"",
+      "date: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND",
+      "keyword: [${2:tags}]",
+      "---"
+    ]
+  },
   "info (GitHub Callout)": {
     "prefix": ["info (GitHub Callout)", "note (GitHub Callout)"],
     "body": ["> __Note__  ", "> $0"]

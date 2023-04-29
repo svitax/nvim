@@ -33,10 +33,10 @@ map({ "n", "v" }, "h", ":", { desc = "Command" })
 map({ "n", "v" }, "<S-Left>", "_", { desc = "First non-whitespace character" })
 map({ "n", "v" }, "<S-Right>", "$", { desc = "End of line" })
 -- <C-Bs> maps to <C-h> in terminals, but I like to have <C-bs> delete the previous word.
-map({ "i", "c" }, "<C-h>", "<C-w>", { desc = "Delete previous word (<C-bs>)" })
-map({ "i", "c" }, "<C-bs>", "<C-w>", { desc = "Delete previous word (<C-bs>)" })
+-- map({ "i", "c" }, "<C-h>", "<C-w>", { desc = "Delete previous word (<C-bs>)" })
+-- map({ "i", "c" }, "<C-bs>", "<C-w>", { desc = "Delete previous word (<C-bs>)" })
 -- <A-bs> is mapped to delete previous word on my keyboard (macos), make that consistent inside nvim
-map({ "i" }, "<A-bs>", "<C-w>", { desc = "Delete previous word" })
+-- map({ "i" }, "<A-bs>", "<C-w>", { desc = "Delete previous word" })
 -- select all
 map({ "i" }, "<A-a>", "<esc>ggVG$", { desc = "Select all" })
 map({ "n", "v" }, "<A-a>", "ggVG$", { desc = "Select all" })
@@ -60,6 +60,35 @@ map("v", "<C-A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 -- map({ "i" }, "<cr>", "<cr>c-g>u", { description = "" })
 -- map({ "i" }, "<space>", "<space><c-g>u", { description = "" })
 map({ "n" }, "<leader>q", "<cmd>qa<cr>", { desc = "Quit all" })
+
+-- Use , key for matching parens
+map({ "n", "x" }, ",", "%", { remap = true, desc = "jump to paren" })
+
+-- Quick substitute within selected area
+map("x", "<leader>sg", ":s///gc<Left><Left><Left><Left>", { desc = "Substitute within selection" })
+
+-- i to indent properly on empty lines
+map({ "n", "v", "x" }, "i", function()
+  if #vim.fn.getline(".") == 0 then
+    return [["_cc]]
+  else
+    return "i"
+  end
+end, { expr = true })
+
+-- Yank buffer's relative path to clipboard
+map({ "n" }, "<leader>yr", function()
+  local path = vim.fn.expand("%:~:.")
+  vim.fn.setreg("+", path)
+  vim.notify(path, vim.log.levels.info, { title = "Yanked relative path" })
+end, { silent = true, desc = "Yank relative path" })
+
+-- Yank buffer's absolute path to clipboard
+map({ "n" }, "<leader>ya", function()
+  local path = vim.fn.expand("%:p")
+  vim.fn.setreg("+", path)
+  vim.notify(path, vim.log.levels.info, { title = "Yanked absolute path" })
+end, { silent = true, desc = "Yank absolute path" })
 
 -- { "<leader>p&", desc = "Async cmd in project root" }, -- overseer
 -- { "<leader>p.", desc = "Browse project" },

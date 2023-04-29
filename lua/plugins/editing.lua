@@ -1,3 +1,6 @@
+-- stylua: ignore
+-- if true then return {} end
+
 local u = require("utils")
 return {
   {
@@ -11,48 +14,16 @@ return {
       { "yg", desc = "Yank macro" },
     },
   },
-  -- <A-n> and <A-p> to cycle through yank history (like Emacs 'kill-ring.')
+  -- BUG: in neovim 0.9 E5108: Error executing lua: /usr/share/nvim/runtime/lua/vim/treesitter/language.lua:94: no parser for 'typescriptreact' language, see :help treesitter-parsers
   -- {
-  --   "gbprod/yanky.nvim",
-  --   dependencies = { "nvim-telescope/telescope.nvim" },
-  --   config = function(_, opts)
-  --     require("yanky").setup(opts)
-  --     require("telescope").load_extension("yank_history")
-  --   end,
-  --   opts = { highlight = { timer = 150 } },
-  --   keys = {
-  --     { "p", "<Plug>(YankyPutAfter)", desc = "Put after" },
-  --     { "P", "<Plug>(YankyPutBefore)", desc = "Put before" },
-  --     -- { "gp", "<Plug>(YankyGPutAfter)", desc = "gput after" },
-  --     -- { "gP", "<Plug>(YankyGPutBefore)", desc = "gput before" },
-  --     { "<A-n>", "<Plug>(YankyCycleForward)", desc = "Cycle kill ring forward" },
-  --     { "<A-p>", "<Plug>(YankyCycleBackward)", desc = "Cycle kill ring backward" },
-  --     { "<leader>sy", "<cmd>Telescope yank_history<cr>", desc = "Yank history" },
+  --   "axelvc/template-string.nvim",
+  --   event = "InsertEnter",
+  --   ft = {
+  --     "javascript",
+  --     "typescript",
+  --     "python", "javascriptreact", "typescriptreact",
   --   },
-  -- },
-  {
-    "axelvc/template-string.nvim",
-    event = "InsertEnter",
-    ft = { "javascript", "typescript", "python", "javascriptreact", "typescriptreact", "python" },
-    config = true,
-  },
-  -- {
-  --   "Wansmer/binary-swap.nvim",
-  --   dependencies = { "nvim-treesitter" },
-  --   keys = {
-  --     {
-  --       "<A-.>",
-  --       "<cmd>lua require('binary-swap').swap_operands()<cr>",
-  --       mode = { "n", "i" },
-  --       desc = "Swap operands",
-  --     },
-  --     {
-  --       "<A-,>",
-  --       "<cmd>lua require('binary-swap').swap_operands_with_operator()<cr>",
-  --       mode = { "n", "i" },
-  --       desc = "Swap operands and operator",
-  --     },
-  --   },
+  --   config = true,
   -- },
   {
     "Wansmer/treesj",
@@ -73,6 +44,30 @@ return {
         end,
       })
     end,
+  },
+  {
+    "gbprod/substitute.nvim",
+    event = "BufReadPost",
+    -- dependencies = { "gbprod/yanky.nvim" },
+    opts = {
+      -- on_substitute = function()
+      --   require("yanky.integration").substitute()
+      -- end,
+      -- on_substitute = function(event)
+      --   require("yanky").init_ring("p", event.register, event.count, event.vmode:match("[vV�]"))
+      -- end,
+    },
+    config = true,
+    keys = {
+      { "S", "<cmd>lua require('substitute').operator()<cr>", desc = "Substitute operator" },
+      { "SS", "<cmd>lua require('substitute').line()<cr>", desc = "Substitute line" },
+      { "Ss", "<cmd>lua require('substitute').eol()<cr>", desc = "Substitute eol" },
+      { "S", "<cmd>lua require('substitute').visual()<cr>", mode = { "x" }, desc = "Substitute selection" },
+      { "Sx", "<cmd>lua require('substitute.exchange').operator()<cr>", desc = "Exchange operator" },
+      { "SX", "<cmd>lua require('substitute.exchange').line()<cr>", desc = "Exchange line" },
+      { "Sxc", "<cmd>lua require('substitute.exchange').line()<cr>", desc = "Cancel exchange" },
+      { "Sx", "<cmd>lua require('substitute.exchange').visual()<cr>", mode = { "x" }, desc = "Exchange selecion" },
+    },
   },
   -- operator for smart duplication of lines and selections
   {
@@ -97,8 +92,11 @@ return {
           elseif u.contains({ "bash", "zsh", "sh" }, ft) and line:find("^%s*if.+then$") then
             line = line:gsub("^(%s*)if", "%1elif")
           elseif
-            u.contains({ "javascript", "typescript", "javascriptreact", "typescriptreact" }, ft)
-            and line:find("^%s*if.+{$")
+            u.contains({
+              "javascript",
+              "typescript",
+              "tsx", --[["javascriptreact", "typescriptreact"]]
+            }, ft) and line:find("^%s*if.+{$")
           then
             line = line:gsub("^(%s*)if", "%1} else if")
           -- smart switching of css words
@@ -143,29 +141,5 @@ return {
         end,
       })
     end,
-  },
-  {
-    "gbprod/substitute.nvim",
-    event = "BufReadPost",
-    -- dependencies = { "gbprod/yanky.nvim" },
-    opts = {
-      -- on_substitute = function()
-      --   require("yanky.integration").substitute()
-      -- end,
-      -- on_substitute = function(event)
-      --   require("yanky").init_ring("p", event.register, event.count, event.vmode:match("[vV�]"))
-      -- end,
-    },
-    config = true,
-    keys = {
-      { "S", "<cmd>lua require('substitute').operator()<cr>", desc = "Substitute operator" },
-      { "SS", "<cmd>lua require('substitute').line()<cr>", desc = "Substitute line" },
-      { "Ss", "<cmd>lua require('substitute').eol()<cr>", desc = "Substitute eol" },
-      { "S", "<cmd>lua require('substitute').visual()<cr>", mode = { "x" }, desc = "Substitute selection" },
-      { "Sx", "<cmd>lua require('substitute.exchange').operator()<cr>", desc = "Exchange operator" },
-      { "SX", "<cmd>lua require('substitute.exchange').line()<cr>", desc = "Exchange line" },
-      { "Sxc", "<cmd>lua require('substitute.exchange').line()<cr>", desc = "Cancel exchange" },
-      { "Sx", "<cmd>lua require('substitute.exchange').visual()<cr>", mode = { "x" }, desc = "Exchange selecion" },
-    },
   },
 }

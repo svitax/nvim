@@ -8,10 +8,16 @@ return {
       end
     end,
   },
-  -- TODO: idk if this works?
+  -- TODO: idk if crates cmp completion works?
   {
     "hrsh7th/nvim-cmp",
-    dependencies = { "saecki/crates.nvim" },
+    dependencies = {
+      {
+        "saecki/crates.nvim",
+        event = { "BufRead Cargo.toml" },
+        opts = { null_ls = { enabled = true, name = "crates.nvim" } },
+      },
+    },
     opts = function(_, opts)
       local cmp = require("cmp")
 
@@ -34,15 +40,7 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    dependencies = {
-      "simrat39/rust-tools.nvim",
-      {
-        "saecki/crates.nvim",
-        event = { "BufRead Cargo.toml" },
-        opts = { null_ls = { enabled = true, name = "crates.nvim" } },
-        config = true,
-      },
-    },
+    dependencies = { "simrat39/rust-tools.nvim", "saecki/crates.nvim" },
     opts = {
       -- make sure mason installs the server
       servers = {
@@ -69,9 +67,7 @@ return {
           local liblldb_path = vim.fn.has("mac") == 1 and extension_path .. "lldb/lib/liblldb.dylib"
             or extension_path .. "lldb/lib/liblldb.so"
           local rust_tools_opts = vim.tbl_deep_extend("force", opts, {
-            dap = {
-              adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
-            },
+            dap = { adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path) },
             tools = {
               on_initialized = function()
                 vim.cmd([[
@@ -84,7 +80,7 @@ return {
               end,
             },
           })
-          require("rust-tools").setup(rust_tools_opts)
+          rt.setup(rust_tools_opts)
           return true
         end,
         taplo = function(_, _)

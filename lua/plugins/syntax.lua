@@ -5,8 +5,6 @@ return {
     dependencies = {
       "nvim-treesitter-textobjects",
       "nvim-treesitter/playground",
-      -- Better treesitter indents
-      -- "yioneko/nvim-yati",
       "yioneko/vim-tmindent",
       -- wisely add "end" in ruby, lua, vimscript, etc. treesitter aware.
       "RRethy/nvim-treesitter-endwise",
@@ -26,52 +24,59 @@ return {
       },
     },
     opts = {
-      playground = { enable = true },
-      -- indent = { enable = true, disable = { "yaml", "python" } },
-      indent = { enable = false },
-      -- yati = {
-      --   enable = true,
-      --   default_lazy = true,
-      --   default_fallback = function(lnum, computed, bufnr)
-      --     local tm_fts = {
-      --       "c",
-      --       "cpp",
-      --       "lua",
-      --       "python",
-      --       "html",
-      --       "json",
-      --       "css",
-      --       "less",
-      --       "scss",
-      --       "javascript",
-      --       "typescript",
-      --       "javascriptreact",
-      --       "typescriptreact",
-      --       "rust",
-      --       "yaml",
-      --       "gitcommit",
-      --       "gitignore",
-      --     }
-      --     if vim.tbl_contains(tm_fts, vim.bo[bufnr].filetype) then
-      --       return require("tmindent").get_indent(lnum, bufnr) + computed
-      --     end
-      --     -- or any other fallback methods
-      --     return require("nvim-yati.fallback").vim_auto(lnum, computed, bufnr)
-      --   end,
-      -- },
-      endwise = { enable = true },
-      matchup = { enable = true },
+      endwise = { enable = true }, -- See: https://github.com/RRethy/nvim-treesitter-endwise
+      -- indent = { enable = false },
+      indent = { enable = true, disable = { "yaml", "python" } },
       incremental_selection = {
         enable = true,
         keymaps = {
           init_selection = "<CR>",
           node_incremental = "<CR>",
-          scope_incremental = "<S-CR>",
-          node_decremental = "<BS>",
+          scope_incremental = false,
+          -- scope_incremental = "<S-CR>",
+          node_decremental = "<S-CR>",
+        },
+      },
+      matchup = { enable = true, include_match_words = true }, -- See: https://github.com/andymass/vim-matchup
+      playground = { enable = true },
+      -- refactor = { highlight_definitions = { enable = true }, highlight_current_scope = { enable = true } },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            ["af"] = "@function.outer",
+            ["if"] = "@function.inner",
+            ["ac"] = "@class.outer",
+            ["ic"] = "@class.inner",
+            ["a,"] = "@parameter.outer",
+            ["i,"] = "@parameter.inner",
+          },
+        },
+        move = {
+          enable = true,
+          set_jumps = true,
+          goto_next_start = {
+            ["],"] = "@parameter.inner",
+          },
+          goto_previous_start = {
+            ["[,"] = "@parameter.inner",
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = {
+            [">,"] = "@parameter.inner",
+          },
+          swap_previous = {
+            ["<,"] = "@parameter.inner",
+          },
         },
       },
     },
   },
+  -- { "MTDL9/vim-log-highlighting", ft = "log" },
+  { "NMAC427/guess-indent.nvim", event = "BufReadPost", config = true },
   { "zbirenbaum/neodim", event = "LspAttach", opts = { alpha = 0.60, update_in_insert = { enable = false } } },
   -- highlight arguments' definitions and usages
   {
@@ -83,8 +88,12 @@ return {
   },
   {
     "folke/todo-comments.nvim",
-    opts = { highlight = { after = "" }, signs = false },
+    opts = { signs = false, highlight = { after = "" } },
     keys = {
+      -- stylua: ignore
+      { "]t", function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
+      -- stylua: ignore
+      { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
       {
         "<leader>xt",
         function()
@@ -111,6 +120,4 @@ return {
       },
     },
   },
-  -- { "MTDL9/vim-log-highlighting", ft = "log" },
-  { "NMAC427/guess-indent.nvim", event = "BufReadPost", config = true },
 }

@@ -97,7 +97,12 @@ return {
             },
           },
         },
-        sourcery = { init_options = { token = os.getenv("SOURCERY_TOKEN") } },
+        sourcery = {
+          init_options = { token = os.getenv("SOURCERY_TOKEN") },
+          filetypes = {
+            "python", --[[ "javascript", "javascriptreact", "typescript", "typescriptreact"]]
+          },
+        },
         -- ruff_lsp = { init_options = { settings = { args = {}, organizeImports = true, fixAll = true } } },
         -- ruff_lsp = {},
       },
@@ -157,6 +162,38 @@ return {
         -- "pyright", -- installed by including in nvim-lspconfig opts
         -- "sourcery", -- installed by including in nvim-lspconfig opts
       }, 0, #opts.ensure_installed)
+    end,
+    ---@param opts MasonSettings | {ensure_installed: string[]}
+    config = function(plugin, opts)
+      require("mason").setup(opts)
+      local mr = require("mason-registry")
+      for _, tool in ipairs(opts.ensure_installed) do
+        local p = mr.get_package(tool)
+        if not p:is_installed() then
+          p:install()
+        end
+      end
+
+      local pylsp = require("mason-registry").get_package("python-lsp-server")
+
+      pylsp:on("install:success", function()
+        -- Install pylsp plugins...
+        vim.schedule(function()
+          local install_cmd = {
+            vim.fn.expand("~/.local/share/nvim/mason/packages/python-lsp-server/venv/bin/python"),
+            "-m",
+            "pip",
+            "install",
+            "python-lsp-black",
+            "python-lsp-ruff",
+            -- "pylsp-mypy",
+            "pylsp-rope",
+            "pyls-isort",
+          }
+          vim.fn.system(install_cmd)
+          -- vim.notify("python-lsp-server plugins installed", "info", { title = "mason.nvim" })
+        end)
+      end)
     end,
   },
   {
