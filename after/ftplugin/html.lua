@@ -22,7 +22,6 @@ vim.keymap.set(
   "<cmd>lua require('jump-tag').jumpPrevSibling()<cr>",
   { desc = "Jump to prev node", buffer = true }
 )
-
 -- close a self-closing tag
 -- BUG: in neovim 0.9 E5108: Error executing lua: /usr/share/nvim/runtime/lua/vim/treesitter/language.lua:94: no parser for 'typescriptreact' language, see :help treesitter-parsers
 -- vim.keymap.set("i", "/", function()
