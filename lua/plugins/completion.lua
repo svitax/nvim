@@ -26,11 +26,12 @@ return {
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
-      -- "hrsh7th/cmp-omni",
-      -- "hrsh7th/cmp-nvim-lsp-document-symbol",
       "hrsh7th/cmp-cmdline",
       -- "PaterJason/cmp-conjure",
       "chrisgrieser/cmp-nerdfont",
+      "hrsh7th/cmp-nvim-lsp-document-symbol",
+      -- "hrsh7th/cmp-omni",
+      "f3fora/cmp-spell",
       { "abecodes/tabout.nvim", branch = "feature/tabout-md", opts = {} },
     },
     ---@param opts cmp.ConfigSchema
@@ -51,33 +52,65 @@ return {
 
       -- local cmp_source_names = {
       opts.cmp_source_names = {
-        -- nvim_lsp_document_symbol = "(symbol)",
-        nvim_lsp = "(lsp)",
         buffer = "(buffer)",
-        path = "(path)",
-        luasnip = "(snippet)",
+        cmdline = "(cmd)",
         -- conjure = "(conjure)",
+        luasnip = "(snippet)",
         nerdfont = "(nerdfont)",
+        nvim_lsp = "(lsp)",
+        -- nvim_lsp_document_symbol = "(symbol)",
+        path = "(path)",
+        spell = "(spell)",
       }
 
       local luasnip = require("luasnip")
       local cmp = require("cmp")
 
       cmp.setup.cmdline(":", {
-        sources = { { name = "cmdline" }, { name = "path" } },
+        sources = { { name = "cmdline", keyword_pattern = [=[[^[:blank:]\!]*]=] }, { name = "path" } },
         formatting = { max_width = 30 },
       })
 
       cmp.setup.cmdline({ "/", "?", "@" }, {
-        -- { name = "nvim_lsp_document_symbol" }
-        sources = { { name = "buffer" } },
+        -- cmp groups. if we can't find anything in one group, look in the next
+        sources = cmp.config.sources({ { name = "nvim_lsp_document_symbol" } }, { { name = "buffer" } }),
         formatting = { max_width = 30 },
       })
 
-      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-        -- { name = "conjure" },
-        { name = "nerdfont" },
-      }, 1, #opts.sources))
+      opts.sources = cmp.config.sources(
+        -- cmp groups. if we can't find anything in one group, look in the next
+        -- NOTE: do I find myself needing the buffer completions a lot? should I put it back in the first group?
+        {
+          { name = "nvim_lsp" },
+          { name = "luasnip" },
+          { name = "path", option = { trailing_slash = true } },
+          { name = "nerdfont" },
+        },
+        {
+          {
+            name = "buffer",
+            keyword_length = 4,
+            max_item_count = 5, -- only show up to 5 items
+            options = {
+              get_bufnrs = function()
+                return vim.tbl_map(vim.api.nvim_win_get_buf, vim.api.nvim_list_wins())
+              end,
+            },
+          },
+          -- need to set spell for this to show up
+          { name = "spell", option = { keep_all_entries = false } },
+        }
+      )
+      -- extend the default lazyvim ones
+      -- opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
+      --   -- { name = "conjure" },
+      --   { name = "nerdfont" },
+      -- }, 1, #opts.sources))
+
+      -- TODO: vim-dadbod file
+      -- cmp.setup.filetype({ "sql", "mysql", "plsql" }, {
+      --   sources = cmp.config.sources({ { name = "vim-dadbod-completion" } }),
+      -- })
 
       opts.formatting = {
         fields = { "kind", "abbr", "menu" },

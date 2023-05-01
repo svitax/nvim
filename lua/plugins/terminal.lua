@@ -1,15 +1,15 @@
 local utils = require("utils")
 
 return {
+  { "ahmedkhalf/project.nvim", name = "project_nvim", lazy = false, config = true },
   {
     "chomosuke/term-edit.nvim",
-    ft = { "toggleterm" },
+    ft = { "toggleterm", "ugaterm" },
     opts = {
       -- prompt_end = "%$ " -- bash/zsh
       prompt_end = "> ", -- powershell/fish
     },
   },
-  { "ahmedkhalf/project.nvim", name = "project_nvim", lazy = false, config = true },
   {
     "akinsho/toggleterm.nvim",
     opts = {
@@ -24,15 +24,11 @@ return {
       end,
       direction = "horizontal",
       insert_mappings = false,
+      terminal_mappings = true,
       start_in_insert = true,
       shade_filetypes = { "none" },
       on_create = function(t)
-        -- vim.keymap.set(
-        --   "n",
-        --   "q",
-        --   "<cmd>close<cr>",
-        --   { buffer = true, noremap = true, silent = true, desc = "Close terminal" }
-        -- )
+        vim.keymap.set("n", "q", "<cmd>ToggleTerm<cr>", { buffer = true, silent = true })
         vim.keymap.set("t", "<c-j>", [[<Cmd>wincmd j<CR>]], { buffer = true, desc = "Switch window down" })
         vim.keymap.set("t", "<c-k>", [[<Cmd>wincmd k<CR>]], { buffer = true, desc = "Switch window up" })
         vim.keymap.set("t", "<c-l>", [[<Cmd>wincmd h<CR>]], { buffer = true, desc = "Switch window left" })
@@ -44,15 +40,27 @@ return {
         -- vim.keymap.set("t", "<C-bs>", "<C-\\><C-o>db", { buffer = true, desc = "Delete previous word (<C-bs>)" })
       end,
     },
-    cmd = { "ToggleTerm", "ToggleTermSendVisualSelection" },
+    cmd = {
+      "ToggleTerm",
+      "ToggleTermSendCurrentLine",
+      "ToggleTermSendVisualLines",
+      "ToggleTermSendVisualSelection",
+      "ToggleTermToggleAll",
+      "ToggleTermSetName",
+      "TermSelect",
+      "TermExec",
+    },
     keys = {
-      { "<C-t>", "<cmd>ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal" },
+      -- { "<C-t>", "<cmd>ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal" },
+      { "<C-t>", desc = "Toggle terminal" },
       { "<C-1>", "<cmd>1ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal" },
       { "<C-2>", "<cmd>2ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 2" },
       { "<C-3>", "<cmd>3ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 3" },
       { "<C-4>", "<cmd>4ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 4" },
       { "<C-5>", "<cmd>5ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 5" },
       { "<C-6>", "<cmd>6ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 6" },
+      { "<leader>ft", "<cmd>TermSelect<cr>", desc = "Find terminal" },
+      { "<A-t>", "<cmd>ToggleTermSetName<cr>", desc = "Rename terminal" },
       -- { "<leader>gt", "<cmd>lua _lazygit_toggle()<CR>", mode = { "n" }, desc = "Toggle lazygit" },
       -- { "<leader>hn", "<cmd>lua _navi_toggle()<CR>", mode = { "n" }, desc = "Toggle navi" },
       { "<leader>hn", utils.float_term("navi", { count = 7 }), mode = { "n" }, desc = "Cheatsheet (navi)" },
@@ -68,6 +76,45 @@ return {
 
       -- { "<leader>tt", "<cmd>ToggleTerm direction='horizontal'<cr>", desc = "Toggle terminal" },
       -- { "<leader>tv", "<cmd>ToggleTerm direction='vertical'<cr>", desc = "Toggle terminal vertical" },
+    },
+  },
+  {
+    "willothy/flatten.nvim",
+    lazy = false,
+    priority = 1001,
+    opts = {
+      window = { open = "alternate" },
+      callbacks = {
+        pre_open = function()
+          require("toggleterm").toggle(0) -- Close toggleterm when an external open request is received
+        end,
+        post_open = function(bufnr, winnr, ft)
+          if ft == "gitcommit" then
+            -- If the file is a git commit, create one-shot autocmd to delete it on write
+            -- If you just want the toggleable terminal integration, ignore this bit and only use the
+            -- code in the else block
+            vim.api.nvim_create_autocmd("BufWritePost", {
+              buffer = bufnr,
+              once = true,
+              callback = function()
+                -- This is a bit of a hack, but if you run bufdelete immediately
+                -- the shell can occasionally freeze
+                vim.defer_fn(function()
+                  vim.api.nvim_buf_delete(bufnr, {})
+                end, 50)
+              end,
+            })
+          else
+            -- If it's a normal file, then reopen the terminal, then switch back to the newly opened window
+            -- This gives the appearance of the window opening independently of the terminal
+            require("toggleterm").toggle(0)
+            vim.api.nvim_set_current_win(winnr)
+          end
+        end,
+        block_end = function()
+          require("toggleterm").toggle(0) -- After blocking ends (for a git commit, etc), reopen the terminal
+        end,
+      },
     },
   },
 }

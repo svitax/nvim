@@ -38,6 +38,16 @@ local function fg(name)
 end
 
 local components = {
+  grapple = {
+    function()
+      local key = require("grapple").key()
+      return modeline_icons.tag .. " [" .. key .. "]"
+    end,
+    cond = require("grapple").exists,
+    color = function(_)
+      return { fg = get_spec("syntax.ident") }
+    end,
+  },
   gutter = {
     function()
       return git_icons.gutter
@@ -95,7 +105,7 @@ local components = {
   },
   toggleterm = {
     function()
-      return modeline_icons.term .. " " .. vim.b.toggle_number
+      return modeline_icons.term .. " [" .. vim.b.toggle_number .. "]"
     end,
     padding = { left = 2, right = 1 },
     cond = function()
@@ -472,6 +482,7 @@ return {
           lualine_b = {
             components.buf_size,
             components.toggleterm,
+            components.grapple,
             components.buf_modified,
             components.dir,
             components.filename,

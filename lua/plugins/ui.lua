@@ -95,6 +95,7 @@ return {
         ["["] = { name = "+prev" },
         ["<leader><tab>"] = { name = "+tabs" },
         ["<leader>b"] = { name = "+buffer" },
+        ["<leader>bx"] = { name = "+scratch" },
         ["<leader>c"] = { name = "+code" },
         ["<leader>d"] = { name = "+debug" },
         ["<leader>f"] = { name = "+file/find" },
@@ -147,6 +148,11 @@ return {
         { filter = { event = "msg_show", find = "%d+ more lines" }, { opts = { skip = true } } },
       },
       lsp = {
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
+        },
         progress = { enabled = true },
         hover = {
           enabled = true,

@@ -1,5 +1,14 @@
 return {
   {
+    "lambdalisue/suda.vim",
+    event = "BufRead",
+    cmd = { "SudaRead", "SudaWrite" },
+    keys = {
+      { "<leader>fs", ":SudaWrite ", desc = "Sudo write file" },
+      { "<leader>fS", ":SudaRead ", desc = "Sudo read file" },
+    },
+  },
+  {
     "is0n/fm-nvim",
     opts = { mappings = { q = ":q<CR>" } },
     keys = {

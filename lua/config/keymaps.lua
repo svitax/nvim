@@ -3,9 +3,11 @@
 -- Add any additional keymaps here
 local function map(mode, lhs, rhs, opts)
   local keys = require("lazy.core.handler").handlers.keys
-  --- @cast keys LazyKeysHandler
+  ---@cast keys LazyKeysHandler
   -- do not create the keymap if a lazy keys handler exists
   if not keys.active[keys.parse({ lhs, mode = mode }).id] then
+    opts = opts or {}
+    opts.silent = opts.silent ~= false
     vim.keymap.set(mode, lhs, rhs, opts)
   end
 end
@@ -59,7 +61,7 @@ map("v", "<C-A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 -- map({ "i" }, "?", "?<c-g>u", { description = "" })
 -- map({ "i" }, "<cr>", "<cr>c-g>u", { description = "" })
 -- map({ "i" }, "<space>", "<space><c-g>u", { description = "" })
-map({ "n" }, "<leader>q", "<cmd>qa<cr>", { desc = "Quit all" })
+map("n", "<leader>q", "<cmd>qa<cr>", { desc = "Quit all" })
 
 -- Use , key for matching parens
 map({ "n", "x" }, ",", "%", { remap = true, desc = "jump to paren" })
@@ -77,18 +79,49 @@ map({ "n", "v", "x" }, "i", function()
 end, { expr = true })
 
 -- Yank buffer's relative path to clipboard
-map({ "n" }, "<leader>yr", function()
+map("n", "<leader>yr", function()
   local path = vim.fn.expand("%:~:.")
   vim.fn.setreg("+", path)
   vim.notify(path, vim.log.levels.info, { title = "Yanked relative path" })
 end, { silent = true, desc = "Yank relative path" })
 
 -- Yank buffer's absolute path to clipboard
-map({ "n" }, "<leader>ya", function()
+map("n", "<leader>ya", function()
   local path = vim.fn.expand("%:p")
   vim.fn.setreg("+", path)
   vim.notify(path, vim.log.levels.info, { title = "Yanked absolute path" })
 end, { silent = true, desc = "Yank absolute path" })
+
+-- replaces netrw's gx
+map("n", "gx", function()
+  require("various-textobjs").url() -- select URL
+  -- this works since the plugin switched to visual mode
+  -- if the textobj has been found
+  local foundURL = vim.fn.mode():find("v")
+  -- if not found in proximity, search whole buffer via urlview.nvim instead
+  if not foundURL then
+    vim.cmd.UrlView("buffer")
+    return
+  end
+  -- retrieve URL with the z-register as intermediary
+  vim.cmd.normal({ '"zy', bang = true })
+  local url = vim.fn.getreg("z")
+  -- open with the OS-specific shell command
+  local opener
+  if vim.fn.has("macunix") == 1 then
+    opener = "open"
+  elseif vim.fn.has("linux") == 1 then
+    opener = "xdg-open"
+  elseif vim.fn.has("win64") == 1 or vim.fn.has("win32") == 1 then
+    opener = "start"
+  end
+  local openCommand = string.format("%s '%s' >/dev/null 2>&1", opener, url)
+  os.execute(openCommand)
+end, { desc = "Smart URL Opener" })
+
+-- lua/config/autocmds.lua
+map("n", "<leader>fM", "<cmd>Rename<cr>", { desc = "Rename this file" })
+map("n", "<leader>fD", "<cmd>Delete<cr>", { desc = "Delete this file" })
 
 -- { "<leader>p&", desc = "Async cmd in project root" }, -- overseer
 -- { "<leader>p.", desc = "Browse project" },

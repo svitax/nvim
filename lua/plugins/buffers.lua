@@ -36,15 +36,29 @@ return {
       { "<A-i>", "<cmd>lua require('bufjump').forward()<cr>", desc = "Jump next file" },
     },
   },
-  -- <Space>ba, <Space>bd, <Space>bh, <Space>bo to delete buffers.
   {
-    "kazhala/close-buffers.nvim",
-    config = true,
+    -- <Space>bd, <Space>bw to delete buffers.
+    "famiu/bufdelete.nvim",
+    cmd = { "Bdelete", "Bwipeout" },
     keys = {
-      { "<leader>ba", "<cmd>BDelete all<cr>", desc = "Delete all buffers" },
-      { "<leader>bd", "<cmd>BDelete this<cr>", desc = "Delete buffer" },
-      { "<leader>bh", "<cmd>BDelete! hidden<cr>", desc = "Delete hidden buffers" },
-      { "<leader>bo", "<cmd>BDelete! other<cr>", desc = "Delete other buffers" },
+      { "<leader>bd", "<cmd>Bdeletecr>", desc = "Delete buffer" },
+      { "<leader>bw", "<cmd>Bwipeoutcr>", desc = "Wipeout buffer" },
+    },
+  },
+  {
+    "m-demare/attempt.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function(_, opts)
+      require("attempt").setup(opts)
+      require("telescope").load_extension("attempt")
+    end,
+    keys = {
+      { "<leader>bxd", "<cmd>lua require('attempt').delete_buf()<cr>", desc = "Delete scratch buffer" },
+      { "<leader>bxe", "<cmd>lua require('attempt').run()<cr>", desc = "Eval scratch buffer" },
+      { "<leader>bxf", "<cmd>Telescope attempt<cr>", desc = "Find scratch buffers" },
+      { "<leader>bxn", "<cmd>lua require('attempt').new_input_ext()<cr>", desc = "New scratch buffer (input)" },
+      { "<leader>bxN", "<cmd>lua require('attempt').new_select()<cr>", desc = "New scratch buffer (select)" },
+      { "<leader>bxr", "<cmd>lua require('attempt').rename_buf()<cr>", desc = "Rename scratch buffer" },
     },
   },
 }

@@ -76,6 +76,7 @@ return {
     },
   },
   -- { "MTDL9/vim-log-highlighting", ft = "log" },
+  { "echasnovski/mini.trailspace", event = { "BufReadPost", "BufNewFile" }, main = "mini.trailspace", config = true },
   { "NMAC427/guess-indent.nvim", event = "BufReadPost", config = true },
   { "zbirenbaum/neodim", event = "LspAttach", opts = { alpha = 0.60, update_in_insert = { enable = false } } },
   -- highlight arguments' definitions and usages

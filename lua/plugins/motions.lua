@@ -1,7 +1,6 @@
 -- TODO: replace syntax-tree-surfer and tree-climber.nvim with my fork of nvim-treeclimber
 return {
   {
-    -- "chrisGrieserGoesToTown",
     "chrisgrieser/nvim-spider",
     keys = {
       { "w", "<cmd>lua require('spider').motion('w')<cr>", mode = { "n", "o", "x" }, desc = "nvim-spider w" },
@@ -89,5 +88,11 @@ return {
     --     { buffer = true, desc = "Jump to parent node" }
     --   )
     -- end,
+  },
+  {
+    "axieax/urlview.nvim",
+    opts = { jump = { prev = "[u", next = "]u" } },
+    cmd = "UrlView",
+    keys = { { "<leader>sU", "<cmd>UrlView<cr>", { desc = "Search URLs" } } },
   },
 }

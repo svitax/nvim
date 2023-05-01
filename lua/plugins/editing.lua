@@ -18,12 +18,12 @@ return {
   -- {
   --   "axelvc/template-string.nvim",
   --   event = "InsertEnter",
-  --   ft = {
-  --     "javascript",
-  --     "typescript",
-  --     "python", "javascriptreact", "typescriptreact",
+  --   ft = { "javascript", "typescript", "python", "javascriptreact", "typescriptreact", "vue" },
+  --   opts = {
+  --     filetypes = { "javascript", "typescript", "python", "javascriptreact", "typescriptreact", "vue" },
+  --     remove_template_string = true,
+  --     restore_quotes = { normal = [[']], jsx = [["]] },
   --   },
-  --   config = true,
   -- },
   {
     "Wansmer/treesj",

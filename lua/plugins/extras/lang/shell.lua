@@ -54,14 +54,18 @@ return {
     "jose-elias-alvarez/null-ls.nvim",
     opts = function(_, opts)
       local nls = require("null-ls")
-      -- table.insert(opts.sources, nls.builtins.diagnostics.shellcheck)
-      -- table.insert(opts.sources, nls.builtins.code_actions.shellcheck)
-      table.insert(opts.sources, nls.builtins.diagnostics.zsh)
+      -- table.insert(opts.sources, nls.builtins.diagnostics.beautysh)
+      -- table.insert(
+      --   opts.sources,
+      --   nls.builtins.diagnostics.dotenv_linter.with({ filetypes = "dotenv", extra_args = { "--skip", "UnorderedKey" } })
+      -- )
+      -- table.insert(opts.sources, nls.builtins.diagnostics.shellcheck.with({ diagnostics_format = "SC#{c}:#{m}" }))
       table.insert(opts.sources, nls.builtins.diagnostics.fish)
+      table.insert(opts.sources, nls.builtins.diagnostics.zsh)
       table.insert(opts.sources, nls.builtins.formatting.fish_indent)
       table.insert(opts.sources, nls.builtins.formatting.shfmt.with({ extra_filetypes = { "zsh" } }))
       table.insert(opts.sources, nls.builtins.formatting.shellharden.with({ extra_filetypes = { "zsh" } }))
-      -- table.insert(opts.sources, nls.builtins.diagnostics.beautysh)
+      -- table.insert(opts.sources, nls.builtins.code_actions.shellcheck)
     end,
   },
 }

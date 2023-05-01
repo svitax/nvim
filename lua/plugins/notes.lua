@@ -49,7 +49,8 @@ return {
     keys = {
       -- { "<leader>nb", "<cmd>Telescope bibtex<cr>", desc = "Bibliography" },
       -- { "<leader>nB", "<cmd>e ~/Dropbox/docs/lib.bib<cr>", desc = "Edit bib file" },
-      { "<leader>nB", "<cmd>e ~/Drive/docs/lib.bib<cr>", desc = "Edit bib file" },
+      -- { "<leader>nB", "<cmd>e ~/Drive/docs/lib.bib<cr>", desc = "Edit bib file" },
+      { "<leader>nB", "<cmd>e ~/OneDrive/docs/lib.bib<cr>", desc = "Edit bib file" },
       {
         "<leader>fb",
         function()
@@ -72,7 +73,8 @@ return {
                   if s ~= nil then
                     -- s = s:match("%b{}") or s:match('%b""') or s:match("%d+")
                     -- s = "/home/svitax/Dropbox/docs/" .. (s:match("%{(.-)%}") or s:match("(books/[^\n]+)"))
-                    s = "/home/svitax/Drive/docs/" .. (s:match("%{(.-)%}") or s:match("(books/[^\n]+)"))
+                    -- s = "/home/svitax/Drive/docs/" .. (s:match("%{(.-)%}") or s:match("(books/[^\n]+)"))
+                    s = "/home/svitax/OneDrive/docs/" .. (s:match("%{(.-)%}") or s:match("(books/[^\n]+)"))
                     -- print(s)
                     Job:new({
                       command = cmd,

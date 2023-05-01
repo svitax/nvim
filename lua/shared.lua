@@ -25,6 +25,8 @@ return {
     new_file = "",
     checkbox_blank = "",
     term = "",
+    hook = "󰛢",
+    tag = "",
   },
   git_icons = {
     added = "",

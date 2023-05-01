@@ -330,4 +330,16 @@ function M.telescope(builtin, opts)
   end
 end
 
+-- Close quickfix and loclist, then switch any active windows, then delete buffer from buffer list
+function M.close_buffer()
+  vim.cmd.cclose()
+  vim.cmd.lclose()
+  local ok, close_buffers = pcall(require, "close_buffers")
+  if ok then
+    close_buffers.delete({ type = "this" })
+  else
+    vim.cmd.bdelete({ bang = true })
+  end
+end
+
 return M
