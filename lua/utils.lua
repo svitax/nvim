@@ -334,9 +334,9 @@ end
 function M.close_buffer()
   vim.cmd.cclose()
   vim.cmd.lclose()
-  local ok, close_buffers = pcall(require, "close_buffers")
+  local ok, bufdelete = pcall(require, "bufdelete")
   if ok then
-    close_buffers.delete({ type = "this" })
+    bufdelete.bufdelete(0)
   else
     vim.cmd.bdelete({ bang = true })
   end

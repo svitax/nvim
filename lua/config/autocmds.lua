@@ -159,7 +159,7 @@ autocmd("User", {
       -- require("neo-tree").close_all()
       vim.api.nvim_command("Alpha")
       -- require("close_buffers").wipe({ type = event.buf }) -- close_buffers doesn't provide an event after delete like bufdelete does (BDeletePost)
-      vim.api.nvim_command(event.buf .. "bwipeout")
+      vim.api.nvim_command(event.buf .. "Bwipeout")
     end
   end,
 })
