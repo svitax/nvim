@@ -1,7 +1,7 @@
 local utils = require("utils")
 
 return {
-  { "ahmedkhalf/project.nvim", name = "project_nvim", lazy = false, config = true },
+  -- { "ahmedkhalf/project.nvim", name = "project_nvim", lazy = false, config = true },
   {
     "chomosuke/term-edit.nvim",
     ft = { "toggleterm", "ugaterm" },

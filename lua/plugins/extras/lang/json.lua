@@ -25,14 +25,7 @@ return {
             new_config.settings.json.schemas = new_config.settings.json.schemas or {}
             vim.list_extend(new_config.settings.json.schemas, require("schemastore").json.schemas())
           end,
-          settings = {
-            json = {
-              format = {
-                enable = true,
-              },
-              validate = { enable = true },
-            },
-          },
+          settings = { json = { format = { enable = true }, validate = { enable = true } } },
         },
       },
     },
@@ -50,7 +43,13 @@ return {
     "jose-elias-alvarez/null-ls.nvim",
     opts = function(_, opts)
       local nls = require("null-ls")
-      table.insert(opts.sources, nls.builtins.diagnostics.jsonlint.with({ extra_filetypes = { "jsonc" } }))
+      table.insert(
+        opts.sources,
+        nls.builtins.diagnostics.jsonlint.with({
+          extra_filetypes = { "jsonc" },
+          method = nls.methods.DIAGNOSTICS_ON_SAVE,
+        })
+      )
     end,
   },
 }

@@ -24,6 +24,8 @@ vim.keymap.del("n", "<leader><tab>f")
 vim.keymap.del("n", "<leader>`")
 vim.keymap.del("n", "<leader>gG")
 vim.keymap.del("n", "<leader>qq")
+vim.keymap.del("n", "<leader>bd")
+vim.keymap.del("n", "<leader>bD")
 
 -- map("n", "gl", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 -- I use jkl; instead of hjkl

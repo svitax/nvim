@@ -2,7 +2,20 @@ vim.keymap.set("n", "<leader>bs", "<cmd>up!<cr>", { desc = "Save buffer" })
 vim.keymap.set("n", "<c-s>", "<cmd>up!<cr>", { desc = "Save buffer" })
 
 return {
-  -- TODO: show grapple tag buffer number in modeline
+  {
+    "sQVe/bufignore.nvim",
+    event = "BufEnter",
+    opts = { ignore_sources = { git = true, patterns = { "/%.git/", "/%node_modules/" } } },
+  },
+  {
+    "axkirillov/hbac.nvim",
+    event = "BufEnter",
+    opts = { autoclose = true, threshold = 10 },
+    keys = {
+      { "<leader>bD", "<cmd>Hbac close_unpinned", desc = "Delete unpinned buffers" },
+      { "<leader>bp", "<cmd>Hbac toggle_pin", desc = "Pin buffer" },
+    },
+  },
   {
     "cbochs/grapple.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },

@@ -1,4 +1,12 @@
 return {
+  -- {
+  --   "echasnovski/mini.misc",
+  --   version = false,
+  --   config = function(_, opts)
+  --     require("mini.misc").setup(opts)
+  --     require("mini.misc").setup_auto_root()
+  --   end,
+  -- },
   {
     "lambdalisue/suda.vim",
     event = "BufRead",

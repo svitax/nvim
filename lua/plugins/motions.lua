@@ -93,6 +93,6 @@ return {
     "axieax/urlview.nvim",
     opts = { jump = { prev = "[u", next = "]u" } },
     cmd = "UrlView",
-    keys = { { "<leader>sU", "<cmd>UrlView<cr>", { desc = "Search URLs" } } },
+    keys = { { "<leader>sU", "<cmd>UrlView<cr>", desc = "Search URLs" } },
   },
 }

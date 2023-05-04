@@ -46,4 +46,13 @@ return {
     gutter = "▍",
   },
   dap_icons = { breakpoint = "ﴫ", log_point = "", stopped = "" },
+  mode_colors = {
+    ["i"] = "#a9b665",
+    ["c"] = "#d8a657",
+    ["t"] = "#ea6962",
+    ["v"] = "#d4879c",
+    ["V"] = "#d4879c",
+    [""] = "#d4879c",
+    [""] = "#d4879c",
+  },
 }

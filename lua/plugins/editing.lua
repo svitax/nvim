@@ -4,16 +4,36 @@
 local u = require("utils")
 return {
   {
-    "chrisgrieser/nvim-recorder",
-    config = true,
+    "ecthelionvi/NeoComposer.nvim",
+    dependencies = { "kkharji/sqlite.lua" },
+    cmd = { "EditMacros", "ClearNeoComposer", "ToggleDelay" },
     keys = {
-      { "q", desc = "Record macro" },
+      { "q", desc = "Toggle record macro" },
       { "Q", desc = "Play macro" },
-      { "<C-q>", desc = "Switch macro slot" },
-      { "cq", desc = "Edit macro" },
+      { "<C-q>", desc = "Toggle macro menu" },
+      { "cq", desc = "Stop macro" },
       { "yg", desc = "Yank macro" },
+      { "<C-n>", desc = "Cycle macro forward" },
+      { "<C-p>", desc = "Cycle macro backward" },
+      { "<Leader>sM", "<cmd>Telescope macros<cr>", desc = "Search macros" },
     },
+    opts = { keymaps = { toggle_macro_menu = "<C-q>" } },
+    config = function(_, opts)
+      require("NeoComposer").setup(opts)
+      require("telescope").load_extension("macros")
+    end,
   },
+  -- {
+  --   "chrisgrieser/nvim-recorder",
+  --   config = true,
+  --   keys = {
+  --     { "q", desc = "Record macro" },
+  --     { "Q", desc = "Play macro" },
+  --     { "<C-q>", desc = "Switch macro slot" },
+  --     { "cq", desc = "Edit macro" },
+  --     { "yg", desc = "Yank macro" },
+  --   },
+  -- },
   -- BUG: in neovim 0.9 E5108: Error executing lua: /usr/share/nvim/runtime/lua/vim/treesitter/language.lua:94: no parser for 'typescriptreact' language, see :help treesitter-parsers
   -- {
   --   "axelvc/template-string.nvim",

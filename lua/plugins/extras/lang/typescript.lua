@@ -85,6 +85,7 @@ return {
       table.insert(
         opts.sources,
         nls.builtins.formatting.eslint_d.with({
+          method = nls.methods.DIAGNOSTICS_ON_SAVE,
           condition = function(utils)
             return utils.root_has_file({
               ".eslintrc.js",

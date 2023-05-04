@@ -14,8 +14,23 @@ return {
     opts = function(_, opts)
       local nls = require("null-ls")
       table.insert(opts.sources, nls.builtins.formatting.stylua)
-      table.insert(opts.sources, nls.builtins.diagnostics.selene)
-      -- table.insert(opts.sources, nls.builtins.diagnostics.luacheck)
+      table.insert(
+        opts.sources,
+        nls.builtins.diagnostics.selene.with({
+          method = nls.methods.DIAGNOSTICS_ON_SAVE,
+          condition = function(utils)
+            return utils.root_has_file({ "selene.toml" })
+          end,
+        })
+      )
+      -- table.insert(
+      --   opts.sources,
+      --   nls.builtins.diagnostics.luacheck.with({
+      --     condition = function(utils)
+      --       return utils.root_has_file({ ".luacheckrc" })
+      --     end,
+      --   })
+      -- )
     end,
   },
 }

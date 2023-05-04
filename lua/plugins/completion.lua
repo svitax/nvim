@@ -67,7 +67,7 @@ return {
       local cmp = require("cmp")
 
       cmp.setup.cmdline(":", {
-        sources = { { name = "cmdline", keyword_pattern = [=[[^[:blank:]\!]*]=] }, { name = "path" } },
+        sources = { { name = "cmdline" }, { name = "path" } },
         formatting = { max_width = 30 },
       })
 
@@ -81,12 +81,10 @@ return {
         -- cmp groups. if we can't find anything in one group, look in the next
         -- NOTE: do I find myself needing the buffer completions a lot? should I put it back in the first group?
         {
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-          { name = "path", option = { trailing_slash = true } },
-          { name = "nerdfont" },
-        },
-        {
+          { name = "nvim_lsp", group_index = 1 },
+          { name = "luasnip", group_index = 1 },
+          { name = "path", option = { trailing_slash = true }, group_index = 1 },
+          { name = "nerdfont", group_index = 1 },
           {
             name = "buffer",
             keyword_length = 4,
@@ -96,9 +94,10 @@ return {
                 return vim.tbl_map(vim.api.nvim_win_get_buf, vim.api.nvim_list_wins())
               end,
             },
+            group_index = 2,
           },
           -- need to set spell for this to show up
-          { name = "spell", option = { keep_all_entries = false } },
+          -- { name = "spell", option = { keep_all_entries = false }, group_index = 2 },
         }
       )
       -- extend the default lazyvim ones

@@ -4,7 +4,7 @@ return {
     dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim" },
     cmd = "VenvSelect",
     keys = { { "<leader>pv", "<cmd>VenvSelect<cr>", desc = "Switch venv" } },
-    opts = { search = true, name = ".venv" },
+    opts = { search_workspace = true, search = false, dap_enabled = true, name = { ".venv" } },
   },
   -- {
   --   "AckslD/swenv.nvim",
@@ -29,70 +29,78 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
+    -- dependencies = "rafi/neoconf-venom.nvim",
+    -- config = function(_, opts)
+    --   require("venom").setup()
+    --   require('lazy.core.config').plugins["nvim-lspconfig"].config()
+    -- end,
     ---@class PluginLspOpts
     opts = {
       ---@type lspconfig.options
       servers = {
         ---@type lspconfig.options.pylsp
-        pylsp = {
-          settings = {
-            pylsp = {
-              plugins = {
-                pyflakes = { enabled = false },
-                mccabe = { enabled = false },
-                pycodestyle = {
-                  maxLineLength = 99,
-                  ignore = {
-                    "E226",
-                    "E266",
-                    "E302",
-                    "E303",
-                    "E304",
-                    "E305",
-                    "E402",
-                    "C0103",
-                    "W0104",
-                    "W0621",
-                    "W391",
-                    "W503",
-                    "W504",
-                  },
-                },
-                pydocstyle = { enabled = false },
-                autopep8 = { enabled = false },
-                yapf = { enbaled = true },
-                flake8 = { enabled = false },
-                pylint = { enabled = false },
-                rope = { enabled = true },
-                rope_completion = { enabled = false },
-                rope_autoimport = { enabled = false },
-                ruff = { enabled = true },
-                -- mypy = { enabled = false },
-                black = { enbaled = true },
-              },
-            },
-          },
-        },
+        -- pylsp = {
+        --   settings = {
+        --     pylsp = {
+        --       plugins = {
+        --         pyflakes = { enabled = false },
+        --         mccabe = { enabled = false },
+        --         pycodestyle = {
+        --           maxLineLength = 99,
+        --           ignore = {
+        --             "E226",
+        --             "E266",
+        --             "E302",
+        --             "E303",
+        --             "E304",
+        --             "E305",
+        --             "E402",
+        --             "C0103",
+        --             "W0104",
+        --             "W0621",
+        --             "W391",
+        --             "W503",
+        --             "W504",
+        --           },
+        --         },
+        --         pydocstyle = { enabled = false },
+        --         autopep8 = { enabled = false },
+        --         yapf = { enabled = true },
+        --         flake8 = { enabled = false },
+        --         pylint = { enabled = false },
+        --         rope = { enabled = true },
+        --         rope_completion = { enabled = false },
+        --         rope_autoimport = { enabled = false },
+        --         ruff = { enabled = true },
+        --         -- mypy = { enabled = false },
+        --         black = { enabled = true },
+        --       },
+        --     },
+        --   },
+        -- },
         -- will be automatically installed with mason and loaded with lspconfig
         ---@type lspconfig.options.pyright
         pyright = {
           settings = {
             python = {
               analysis = {
-                -- INFO: use mypy for type checking
-                typeCheckingMode = "off",
+                autoSearchPaths = true,
                 useLibraryCodeForTypes = true,
-                diagnosticSeverityOverrides = {
-                  -- reportGeneralTypeIssues = "none",
-                  -- reportOptionalMemberAccess = "none",
-                  -- reportOptionalSubscript = "none",
-                  -- reportPrivateImportUsage = "none",
-                  reportUndefinedVariable = "none",
-                  reportUnusedImport = "none",
-                  reportUnusedVariable = "none",
-                  reportMissingTypeStubs = "none",
-                },
-                autoImportCompletions = false,
+                diagnosticMode = "openFilesOnly",
+                --       -- INFO: use mypy for type checking
+                --       typeCheckingMode = "off",
+                --       useLibraryCodeForTypes = true,
+                --       diagnosticSeverityOverrides = {
+                --         -- reportGeneralTypeIssues = "none",
+                --         -- reportOptionalMemberAccess = "none",
+                --         -- reportOptionalSubscript = "none",
+                --         -- reportPrivateImportUsage = "none",
+                --         reportUndefinedVariable = "none",
+                --         reportUnusedImport = "none",
+                --         reportUnusedVariable = "none",
+                --         reportMissingTypeStubs = "none",
+                --       },
+                --       autoImportCompletions = false,
               },
             },
           },
@@ -106,6 +114,7 @@ return {
         -- ruff_lsp = { init_options = { settings = { args = {}, organizeImports = true, fixAll = true } } },
         -- ruff_lsp = {},
       },
+      ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
       setup = {
         -- ruff_lsp = function(_, opts)
         --   require("lazyvim.util").on_attach(function(client, buffer)
@@ -123,25 +132,25 @@ return {
             end
           end)
         end,
-        pyright = function(_, opts)
-          require("lazyvim.util").on_attach(function(client, buffer)
-            local rc = client.server_capabilities
-            if client.name == "pyright" then
-              rc.definitionProvider = false
-              rc.completionProvider = false
-              rc.signatureHelpProvider = false
-            end
-          end)
-        end,
-        pylsp = function(_, opts)
-          require("lazyvim.util").on_attach(function(client, buffer)
-            local rc = client.server_capabilities
-            if client.name == "pylsp" then
-              rc.renameProvider = false
-              rc.hoverProvider = false
-            end
-          end)
-        end,
+        -- pyright = function(_, opts)
+        --   require("lazyvim.util").on_attach(function(client, buffer)
+        --     local rc = client.server_capabilities
+        --     if client.name == "pyright" then
+        --       rc.definitionProvider = false
+        --       rc.completionProvider = false
+        --       rc.signatureHelpProvider = false
+        --     end
+        --   end)
+        -- end,
+        -- pylsp = function(_, opts)
+        --   require("lazyvim.util").on_attach(function(client, buffer)
+        --     local rc = client.server_capabilities
+        --     if client.name == "pylsp" then
+        --       rc.renameProvider = false
+        --       rc.hoverProvider = false
+        --     end
+        --   end)
+        -- end,
       },
     },
   },
@@ -202,7 +211,11 @@ return {
       local nls = require("null-ls")
       table.insert(
         opts.sources,
-        nls.builtins.diagnostics.mypy.with({ prefer_local = ".venv/bin", extra_args = { "--strict" } })
+        nls.builtins.diagnostics.mypy.with({
+          prefer_local = ".venv/bin",
+          extra_args = { "--strict" },
+          method = nls.methods.DIAGNOSTICS_ON_SAVE,
+        })
       )
       -- table.insert(opts.sources, nls.builtins.formatting.black)
       -- TODO: use usort until ruff_lsp supports sorting imports with vim.lsp.buf.format() and not just code actions

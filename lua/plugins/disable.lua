@@ -4,7 +4,9 @@ return {
   { "windwp/nvim-spectre", enabled = false },
   { "folke/persistence.nvim", enabled = false },
   { "echasnovski/mini.surround", enabled = false },
+  { "echasnovski/mini.bufremove", enabled = false },
   { "catppuccin/nvim", enabled = false },
+  { "catppuccin", enabled = false },
   {
     "nvim-neo-tree/neo-tree.nvim",
     keys = { { "<leader>fe", false }, { "<leader>fE", false }, { "<leader>e", false }, { "<leader>E", false } },

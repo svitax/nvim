@@ -77,6 +77,26 @@ return {
       -- override_by_filename = {},
     },
   },
+  --   -- TODO: kinda jittery. look into fixing that
+  -- {
+  --   "luukvbaal/statuscol.nvim",
+  --   event = "UIEnter",
+  --   opts = function()
+  --     local builtin = require("statuscol.builtin")
+  --     return {
+  --       -- setopt = true,
+  --       relculright = true,
+  --       segments = {
+  --         { sign = { name = { "GitSigns" }, mawidth = 1, auto = true }, click = "v:lua.ScSa" },
+  --         -- { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
+  --         --   { text = { "%s" }, click = "v:lua.ScSa" },
+  --         { sign = { name = { "Diagnostic" }, maxwidth = 1 }, click = "v:lua.ScSa" },
+  --         { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+  --       },
+  --     }
+  --   end,
+  -- },
+  { "Bekaboo/deadcolumn.nvim", event = "VeryLazy", config = true, opts = { warning = { colorcode = "#ea6962" } } },
   { "stevearc/dressing.nvim", opts = { select = { telescope = require("telescope.themes").get_ivy({ ... }) } } },
   {
     "folke/which-key.nvim",
@@ -203,7 +223,7 @@ return {
       { "<leader>hm", "<cmd>Noice telescope<cr>", desc = "Search messages" }, -- noice
       {
         "<c-d>",
-        -- stylua: ignore 
+        -- stylua: ignore
         function() if not require("noice.lsp").scroll(4) then return "<c-d>" end end,
         silent = true,
         expr = true,

@@ -316,7 +316,8 @@ local components = {
   python_env = {
     function()
       if vim.bo.filetype == "python" then
-        local venv = vim.env.VIRTUAL_ENV
+        local venv = require("venv-selector").get_active_venv()
+        -- local venv = vim.env.VIRTUAL_ENV
         -- local venv = os.getenv("CONDA_DEFAULT_ENV") or os.getenv("VIRTUAL_ENV")
         -- local venv = require("swenv.api").get_current_venv()
         if venv then
@@ -358,6 +359,12 @@ local components = {
     end,
     cond = function()
       return package.loaded["noice"] and require("noice").api.status.mode.has()
+    end,
+    color = fg("Constant"),
+  },
+  showmacro = {
+    function()
+      return require("NeoComposer.ui").status_recording()
     end,
     color = fg("Constant"),
   },
@@ -491,7 +498,8 @@ return {
             components.location,
             components.progress,
             components.showcmd,
-            components.showmode,
+            -- components.showmode,
+            components.showmacro,
             -- {
             --   function() return require("nvim-navic").get_location() end,
             --   cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,

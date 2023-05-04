@@ -76,25 +76,27 @@ autocmd("FileType", {
 --   end,
 -- })
 
-augroup("checktime", { clear = true })
-autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  desc = "Reload file if it changes on disk",
-  group = "checktime",
-  command = "checktime",
-})
+-- Already in LazyVim
+-- augroup("checktime", { clear = true })
+-- autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+--   desc = "Reload file if it changes on disk",
+--   group = "checktime",
+--   command = "checktime",
+-- })
 
-augroup("last_loc", {})
-autocmd("BufReadPost", {
-  desc = "Go to last location when opening a buffer",
-  group = "last_loc",
-  callback = function()
-    local mark = vim.api.nvim_buf_get_mark(0, '"')
-    local lcount = vim.api.nvim_buf_line_count(0)
-    if mark[1] > 0 and mark[1] <= lcount then
-      pcall(vim.api.nvim_win_set_cursor, 0, mark)
-    end
-  end,
-})
+-- Already in LazyVim
+-- augroup("last_loc", {})
+-- autocmd("BufReadPost", {
+--   desc = "Go to last location when opening a buffer",
+--   group = "last_loc",
+--   callback = function()
+--     local mark = vim.api.nvim_buf_get_mark(0, '"')
+--     local lcount = vim.api.nvim_buf_line_count(0)
+--     if mark[1] > 0 and mark[1] <= lcount then
+--       pcall(vim.api.nvim_win_set_cursor, 0, mark)
+--     end
+--   end,
+-- })
 
 augroup("open_swap", { clear = true })
 autocmd("SwapExists", {
@@ -163,3 +165,93 @@ autocmd("User", {
     end
   end,
 })
+
+-- Array of file names indicating root directory. Modify to your liking
+local root_names = { ".git", "Makefile", "pyproject.toml" }
+-- Cache to use for speed up (at cost of possibly outdated results)
+local root_cache = {}
+augroup("auto_root", {})
+autocmd("BufEnter", {
+  desc = "Auto change current directory (vim-rooter)",
+  group = "auto_root",
+  callback = function()
+    -- Get directory path to start search from
+    local path = vim.api.nvim_buf_get_name(0)
+    if path == "" then
+      return
+    end
+    path = vim.fs.dirname(path)
+
+    -- Try cache and resort to searching upward for root directory
+    local root = root_cache[path]
+    if root == nil then
+      local root_file = vim.fs.find(root_names, { path = path, upward = true })[1]
+      if root_file == nil then
+        return
+      end
+      root = vim.fs.dirname(root_file)
+      root_cache[path] = root
+    end
+
+    -- Set current directory and
+    -- If new cwd has a pyproject.toml file, activate cached venv from venv-selector
+    -- I'm auto activating venvs like this because the DirChanged event isn't firing when I auto root like this
+    -- Downside is we're setting venv every time we navigate to a buffer in a python project, when really we only need to do it once
+    if vim.fn.chdir(root) and (vim.fn.findfile("pyproject.toml", vim.fn.getcwd() .. ";") ~= "") then
+      require("venv-selector").retrieve_from_cache()
+    end
+  end,
+})
+
+augroup("open_pdf", {})
+autocmd("BufReadPost", {
+  desc = "Open PDFs using Neovim from your xdg assigned viewer.",
+  pattern = "*.pdf",
+  group = "open_pdf",
+  callback = function(event)
+    local filename = event.file
+    vim.fn.jobstart({ "xdg-open", filename }, { detach = true })
+    vim.api.nvim_command(event.buf .. "Bwipeout")
+  end,
+})
+
+augroup("modicator", { clear = true })
+autocmd("ModeChanged", {
+  desc = "Change foreground color of CursorLineNr highlight based on current Vim mode",
+  pattern = "*:[tcvV\x16]",
+  group = "modicator",
+  callback = function()
+    local modes = require("shared").mode_colors
+    vim.api.nvim_set_hl(0, "CursorLineNr", { foreground = modes[vim.api.nvim_get_mode().mode] or "#665c54" })
+    -- vim.api.nvim_set_hl(0, "CursorLine", { bg = require("utils").blend(modes["v"], "#32302f", 0.15) })
+  end,
+})
+autocmd("InsertEnter", {
+  desc = "Change foreground color of CursorLineNr highlight based on current Vim mode",
+  pattern = "*",
+  group = "modicator",
+  callback = function()
+    local modes = require("shared").mode_colors
+    vim.api.nvim_set_hl(0, "CursorLineNr", { foreground = modes["i"] })
+    -- vim.api.nvim_set_hl(0, "CursorLine", { background = require("utils").blend(modes["i"], "#32302f", 0.10) })
+  end,
+})
+---Reset highlights
+autocmd("ModeChanged", {
+  desc = "Change foreground color of CursorLineNr highlight based on current Vim mode",
+  pattern = "[tcvV\x16]:n",
+  group = "modicator",
+  callback = function()
+    vim.api.nvim_set_hl(0, "CursorLineNr", { foreground = "#665c54" })
+  end,
+})
+autocmd({ "CmdlineLeave", "InsertLeave", "TextYankPost", "WinLeave" }, {
+  desc = "Change foreground color of CursorLineNr highlight based on current Vim mode",
+  pattern = "*",
+  group = "modicator",
+  callback = function()
+    vim.api.nvim_set_hl(0, "CursorLineNr", { foreground = "#665c54" })
+    -- vim.api.nvim_set_hl(0, "CursorLine", { background = "#32302f" })
+  end,
+})
+

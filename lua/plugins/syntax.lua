@@ -5,7 +5,6 @@ return {
     dependencies = {
       "nvim-treesitter-textobjects",
       "nvim-treesitter/playground",
-      "yioneko/vim-tmindent",
       -- wisely add "end" in ruby, lua, vimscript, etc. treesitter aware.
       "RRethy/nvim-treesitter-endwise",
       -- Sticky headers

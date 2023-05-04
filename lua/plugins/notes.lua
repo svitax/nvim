@@ -1,6 +1,54 @@
 return {
   { "opdavies/toggle-checkbox.nvim", ft = { "markdown" } },
+  {
+    "quarto-dev/quarto-nvim",
+    dev = false,
+    dependencies = {
+      {
+        "jmbuhr/otter.nvim",
+        dev = false,
+        config = function()
+          require("otter.config").setup({})
+        end,
+      },
+    },
+    ft = { "quarto", "markdown" },
+    config = function()
+      require("quarto").setup({
+        lspFeatures = {
+          enabled = true,
+          languages = { "r", "python", "julia", "bash", "lua" },
+          chunks = "all", -- 'curly' or 'all'
+          diagnostics = { enabled = true, triggers = { "BufWritePost" } },
+          completion = { enabled = true },
+        },
+        keymap = { hover = "K", definition = "gd" },
+      })
+      vim.api.nvim_create_autocmd({ "FileType" }, {
+        pattern = "markdown",
+        callback = function()
+          vim.cmd("QuartoActivate")
+        end,
+      })
+    end,
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = { "jmbuhr/otter.nvim", "kdheepak/cmp-latex-symbols", "jc-doyle/cmp-pandoc-references" },
+    opts = function(_, opts)
+      local cmp = require("cmp")
 
+      opts.cmp_source_names["otter"] = "(otter)"
+      opts.cmp_source_names["latex_symbols"] = "(latex)"
+      opts.cmp_source_names["pandoc_references"] = "(ref)"
+
+      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
+        { name = "otter", group_index = 1 },
+        { name = "latex_symbols", group_index = 2 },
+        { name = "pandoc_references", group_index = 2 },
+      }, 1, #opts.sources))
+    end,
+  },
   {
     "mickael-menu/zk-nvim",
     dependencies = { "nvim-lua/plenary.nvim" },

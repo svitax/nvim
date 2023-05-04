@@ -45,4 +45,5 @@ else
   vim.notify("toggle-checkbox not loaded")
 end
 
-vim.cmd("set wrap")
+vim.cmd("setlocal wrap")
+vim.cmd("setlocal nospell")
