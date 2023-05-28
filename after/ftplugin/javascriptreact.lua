@@ -1,1 +1,1 @@
-vim.cmd.runtime({ "after/ftplugin/html.lua", bang = true })
+-- vim.cmd.runtime({ "after/ftplugin/html.lua", bang = true })

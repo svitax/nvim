@@ -62,7 +62,11 @@ return {
       -- { "<leader>/", lv_utils.telescope("live_grep"), desc = "Search project" },
       { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command history" },
       -- { "<leader>`", "", desc = "Switch other" },
-      { "<leader><space>", lv_utils.telescope("files"), desc = "Find file (cwd)" },
+      {
+        "<leader><space>",
+        lv_utils.telescope("files", { prompt_title = "Find files (git)" }),
+        desc = "Find file (cwd)",
+      },
       { "<leader>l", "<cmd>Lazy<cr>", desc = "Plugins" },
 
       {
@@ -123,7 +127,10 @@ return {
 
       {
         "<leader>f.",
-        lv_utils.telescope("git_files", { cwd = "~/.dotfiles/", show_untracked = true }),
+        lv_utils.telescope(
+          "git_files",
+          { cwd = "~/.dotfiles/", prompt_title = "Find in dotfiles (git)", show_untracked = true }
+        ),
         -- { cwd = "~/", find_command = { "rg", "--hidden", "--files", "--follow", "--glob=!.git" } }
         desc = "Find file in dotfiles",
       },
@@ -175,26 +182,35 @@ return {
       -- { "<leader>sp", lv_utils.telescope("live_grep"), desc = "Search project" }, -- grep project (default telescope grep)
       -- TODO: search other project
       -- { "<leader>sP", desc = "Search other project" }, -- prompt a project to search in
+      -- { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
+      { "<leader>sR", false },
       {
         "<leader>ss",
-        lv_utils.telescope(
-          "grep_string",
-          { path_display = { "smart" }, only_sort_text = true, word_math = "-w", search = "" }
-        ),
+        lv_utils.telescope("grep_string", {
+          prompt_title = "Fuzzy grep project",
+          path_display = { "smart" },
+          only_sort_text = true,
+          word_math = "-w",
+          search = "",
+        }),
         desc = "Fuzzy search project",
       },
+      { "<leader>sS", false },
       -- TODO: dictionary and thesaurus
       -- { "<leader>st", desc = "Dictionary" },
       -- { "<leader>sT", desc = "Thesaurus" },
+      { "<leader>sT", false },
       -- TODO: search word
       -- { "<leader>sw", lv_utils.telescope("grep_string"), desc = "Search word (root)" },
       -- { "<leader>sW", lv_utils.telescope("grep_string", { cwd = false }), desc = "Search word (cwd)" },
+      { "<leader>sw", false },
+      { "<leader>sW", false },
     },
     opts = {
       extensions = {
         -- howdoi = { pager_command = "bat --color=always --theme=gruvbox-dark" },
         -- bibtex = { global_files = { "~/Dropbox/docs/lib.bib" }, search_keys = { "title", "author", "year" } },
-        bibtex = { global_files = { "~/Drive/docs/lib.bib" }, search_keys = { "title", "author", "year" } },
+        bibtex = { global_files = { "~/OneDrive/docs/lib.bib" }, search_keys = { "title", "author", "year" } },
         repo = { list = { search_dirs = { "~/projects", "~/.config/nvim" } } },
         live_grep_args = {
           auto_quoting = true, -- enable/disable auto-quoting
@@ -284,15 +300,33 @@ return {
         "<leader>/",
         function()
           require("telescope").extensions.live_grep_args.live_grep_args({
+            prompt_title = "Search project (args)",
             attach_mappings = function(_, map)
-              map("i", "<c-g>", require("telescope-live-grep-args.actions").quote_prompt())
-              map("i", "<c-i>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
-              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t " }))
+              map("i", "<c-l>", require("telescope-live-grep-args.actions").quote_prompt())
+              map("i", "<c-;>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t " }))
+              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
               return true
             end,
           })
         end,
         desc = "Search project",
+      },
+      -- grep dotfiles directory
+      {
+        "<leader>s.",
+        function()
+          require("telescope").extensions.live_grep_args.live_grep_args({
+            cwd = "~/.dotfiles",
+            prompt_title = "Search dotfiles (args)",
+            attach_mappings = function(_, map)
+              map("i", "<c-l>", require("telescope-live-grep-args.actions").quote_prompt())
+              map("i", "<c-;>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t" }))
+              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
+              return true
+            end,
+          })
+        end,
+        desc = "Search .dotfiles",
       },
       -- grep cwd (of current file)
       {
@@ -300,10 +334,11 @@ return {
         function()
           require("telescope").extensions.live_grep_args.live_grep_args({
             cwd = utils.get_head_dir(),
+            prompt_title = "Search cwd (args)",
             attach_mappings = function(_, map)
-              map("i", "<c-g>", require("telescope-live-grep-args.actions").quote_prompt())
-              map("i", "<c-i>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
-              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t " }))
+              map("i", "<c-l>", require("telescope-live-grep-args.actions").quote_prompt())
+              map("i", "<c-;>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t" }))
+              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
               return true
             end,
           })
@@ -316,10 +351,11 @@ return {
         function()
           require("telescope").extensions.live_grep_args.live_grep_args({
             cwd = "~/.config/nvim",
+            prompt_title = "Search Neovim config (args)",
             attach_mappings = function(_, map)
-              map("i", "<c-g>", require("telescope-live-grep-args.actions").quote_prompt())
-              map("i", "<c-i>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
-              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t " }))
+              map("i", "<c-l>", require("telescope-live-grep-args.actions").quote_prompt())
+              map("i", "<c-;>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t" }))
+              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
               return true
             end,
           })
@@ -333,10 +369,11 @@ return {
           require("telescope").extensions.live_grep_args.live_grep_args({
             -- cwd = "~/Dropbox/notes",
             cwd = "~/Drive/notes",
+            prompt_title = "Search notes (args)",
             attach_mappings = function(_, map)
-              map("i", "<c-g>", require("telescope-live-grep-args.actions").quote_prompt())
-              map("i", "<c-i>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
-              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t " }))
+              map("i", "<c-l>", require("telescope-live-grep-args.actions").quote_prompt())
+              map("i", "<c-;>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t" }))
+              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
               return true
             end,
           })
@@ -348,10 +385,11 @@ return {
         "<leader>sp",
         function()
           require("telescope").extensions.live_grep_args.live_grep_args({
+            prompt_title = "Search project (args)",
             attach_mappings = function(_, map)
-              map("i", "<c-g>", require("telescope-live-grep-args.actions").quote_prompt())
-              map("i", "<c-i>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
-              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t " }))
+              map("i", "<c-l>", require("telescope-live-grep-args.actions").quote_prompt())
+              map("i", "<c-;>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " -t" }))
+              map("i", "<c-o>", require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }))
               return true
             end,
           })

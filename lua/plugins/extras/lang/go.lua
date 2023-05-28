@@ -26,6 +26,9 @@ return {
     opts = {
       servers = {
         gopls = {
+          completeUnimported = true,
+          usePlaceholders = true,
+          analyses = { unusedparams = true },
           hints = {
             assignVariableTypes = true,
             compositeLiteralFields = true,

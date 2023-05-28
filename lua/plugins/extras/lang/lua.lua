@@ -17,7 +17,7 @@ return {
       table.insert(
         opts.sources,
         nls.builtins.diagnostics.selene.with({
-          method = nls.methods.DIAGNOSTICS_ON_SAVE,
+          -- method = nls.methods.DIAGNOSTICS_ON_SAVE,
           condition = function(utils)
             return utils.root_has_file({ "selene.toml" })
           end,

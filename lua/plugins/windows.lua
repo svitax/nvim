@@ -4,6 +4,17 @@ vim.keymap.set("n", "<leader>ws", "<cmd>split<CR>", { desc = "Split window" })
 vim.keymap.set("n", "<leader>wv", "<cmd>vsplit<CR>", { desc = "Vsplit window" })
 
 return {
+  -- {
+  --   "numToStr/Navigator.nvim",
+  --   config = true,
+  --   keys = {
+  --     { "<C-l>", "<cmd>NavigatorLeft<cr>", desc = "Switch window left" },
+  --     { "<C-;>", "<cmd>NavigatorRight<cr>", desc = "Switch window right" },
+  --     { "<C-j>", "<cmd>NavigatorDown<cr>", desc = "Switch window down" },
+  --     { "<C-k>", "<cmd>NavigatorUp<cr>", desc = "Switch window up" },
+  --     { "<C-p>", "<cmd>NavigatorPrevious<cr>", desc = "Switch window previous" },
+  --   },
+  -- },
   {
     "declancm/windex.nvim",
     opts = { default_keymaps = false },

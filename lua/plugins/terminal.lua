@@ -1,7 +1,9 @@
 local utils = require("utils")
 
 return {
+  -- NOTE: I need this for overseer to work properly
   -- { "ahmedkhalf/project.nvim", name = "project_nvim", lazy = false, config = true },
+  -- { "notjedi/nvim-rooter.lua", event = "VeryLazy", config = true },
   {
     "chomosuke/term-edit.nvim",
     ft = { "toggleterm", "ugaterm" },

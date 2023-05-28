@@ -23,9 +23,7 @@ return {
 
       opts.cmp_source_names["crates"] = "(crates)"
 
-      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-        { name = "crates" },
-      }, 1, #opts.sources))
+      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, { { name = "crates" } }))
     end,
   },
   {
@@ -45,7 +43,21 @@ return {
       -- make sure mason installs the server
       servers = {
         ---@type lspconfig.options.rust_analyzer
-        rust_analyzer = {},
+        rust_analyzer = {
+          settings = {
+            ["rust-analyzer"] = {
+              cargo = { allFeatures = true },
+              checkOnSave = { allFeatures = true, command = "clippy", extraArgs = { "--no-deps" } },
+              procMacro = {
+                ignored = {
+                  ["async-trait"] = { "async_trait" },
+                  ["napi-derive"] = { "napi" },
+                  ["async-recursion"] = { "async_recursion" },
+                },
+              },
+            },
+          },
+        },
       },
       setup = {
         rust_analyzer = function(_, opts)
@@ -96,7 +108,7 @@ return {
           -- stylua: ignore
           if client.name == "taplo" then
             vim.keymap.set("n", "K", show_documentation, { buffer = buffer, desc = "Show Crate Documentation" })
-          end 
+          end
           -- stylua: ignore
           if vim.fn.expand("%:t") == "Cargo.toml" then
             vim.keymap.set("n", "<leader>mt", crates.toggle, { buffer = true, desc = "Toggle crates.io info" })

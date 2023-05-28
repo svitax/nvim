@@ -22,49 +22,61 @@ return {
       require("luasnip.loaders.from_lua").lazy_load({ paths = "./snippets/luasnippets" })
     end,
   },
+  -- http.nvim support for codeium
+  { "jcdickinson/http.nvim", build = "cargo build --workspace --release" },
   -- then: setup supertab in cmp
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
       "hrsh7th/cmp-cmdline",
+      { "jcdickinson/codeium.nvim", dependencies = { "jcdickinson/http.nvim" }, config = true },
+      -- vim.call('coc#rpc#ready')
       -- "PaterJason/cmp-conjure",
+      { "dcampos/cmp-emmet-vim", dependencies = "mattn/emmet-vim" },
       "chrisgrieser/cmp-nerdfont",
       "hrsh7th/cmp-nvim-lsp-document-symbol",
       -- "hrsh7th/cmp-omni",
-      "f3fora/cmp-spell",
-      { "abecodes/tabout.nvim", branch = "feature/tabout-md", opts = {} },
+      "jmbuhr/otter.nvim",
+      -- "f3fora/cmp-spell",
+      -- { "abecodes/tabout.nvim", branch = "feature/tabout-md", opts = {} },
+      "lukas-reineke/cmp-under-comparator",
     },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
-      local has_words_before = function()
-        local unpack = unpack or table.unpack
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-      end
-
-      local t = function(str)
-        return vim.api.nvim_replace_termcodes(str, true, true, true)
-      end
+      -- local has_words_before = function()
+      --   local unpack = unpack or table.unpack
+      --   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+      --   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+      -- end
 
       -- local png_or_markdown_files = function(path)
       --   return string.match(path, ".*%.png") or string.match(path, ".*%.md")
       -- end
+
+      local t = function(str)
+        return vim.api.nvim_replace_termcodes(str, true, true, true)
+      end
 
       -- local cmp_source_names = {
       opts.cmp_source_names = {
         buffer = "(buffer)",
         cmdline = "(cmd)",
         -- conjure = "(conjure)",
+        emmet_vim = "(emmet)",
         luasnip = "(snippet)",
         nerdfont = "(nerdfont)",
         nvim_lsp = "(lsp)",
         -- nvim_lsp_document_symbol = "(symbol)",
         path = "(path)",
-        spell = "(spell)",
+        -- spell = "(spell)",
       }
 
       local luasnip = require("luasnip")
       local cmp = require("cmp")
+
+      -- If you want insert `(` after select function or method item
+      -- local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+      -- cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
       cmp.setup.cmdline(":", {
         sources = { { name = "cmdline" }, { name = "path" } },
@@ -77,39 +89,68 @@ return {
         formatting = { max_width = 30 },
       })
 
-      opts.sources = cmp.config.sources(
+      -- opts.sources = cmp.config.sources(vim.list_extend(opts.sources,))
+      opts.sources = {
         -- cmp groups. if we can't find anything in one group, look in the next
         -- NOTE: do I find myself needing the buffer completions a lot? should I put it back in the first group?
+        -- { name = "nvim_lsp", group_index = 1 },
+        { name = "otter", group_index = 1 },
+        { name = "codeium", group_index = 1 },
+        { name = "luasnip", group_index = 1 },
+        { name = "path", option = { trailing_slash = true }, group_index = 1 },
+        { name = "nerdfont", group_index = 2 },
         {
-          { name = "nvim_lsp", group_index = 1 },
-          { name = "luasnip", group_index = 1 },
-          { name = "path", option = { trailing_slash = true }, group_index = 1 },
-          { name = "nerdfont", group_index = 1 },
-          {
-            name = "buffer",
-            keyword_length = 4,
-            max_item_count = 5, -- only show up to 5 items
-            options = {
-              get_bufnrs = function()
-                return vim.tbl_map(vim.api.nvim_win_get_buf, vim.api.nvim_list_wins())
-              end,
-            },
-            group_index = 2,
+          name = "buffer",
+          keyword_length = 4,
+          max_item_count = 5, -- only show up to 5 items
+          options = {
+            get_bufnrs = function()
+              return vim.tbl_map(vim.api.nvim_win_get_buf, vim.api.nvim_list_wins())
+            end,
           },
-          -- need to set spell for this to show up
-          -- { name = "spell", option = { keep_all_entries = false }, group_index = 2 },
-        }
-      )
-      -- extend the default lazyvim ones
-      -- opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-      --   -- { name = "conjure" },
-      --   { name = "nerdfont" },
-      -- }, 1, #opts.sources))
+          group_index = 2,
+        },
+        -- need to set spell for this to show up
+        -- { name = "spell", option = { keep_all_entries = false }, group_index = 2 },
+      }
 
       -- TODO: vim-dadbod file
       -- cmp.setup.filetype({ "sql", "mysql", "plsql" }, {
       --   sources = cmp.config.sources({ { name = "vim-dadbod-completion" } }),
       -- })
+
+      -- opts.sorting = vim.tbl_extend("force", opts.sorting, { comparator = { require("cmp-under-comparator").under } })
+
+      local custom_comparators = {
+        under_comparator = require("cmp-under-comparator").under,
+        codeium_prioritize = function(entry1, entry2)
+          if entry1.source.name == "codeium" and entry2.source.name ~= "codeium" then
+            return true
+          elseif entry2.source.name == "codeium" and entry1.source.name ~= "codeium" then
+            return false
+          end
+        end,
+      }
+
+      opts.sorting = {
+        priority_weight = 2,
+        comparators = {
+          -- Below is the default comparator list and order for nvim-cmp
+          cmp.config.compare.offset,
+          cmp.config.compare.exact,
+          -- cmp.config.compare.scopes, -- this is commented in nvim-cmp too
+          cmp.config.compare.score,
+          custom_comparators.codeium_prioritize,
+          -- custom_comparators.emmet_prioritize,
+          custom_comparators.under_comparator,
+          cmp.config.compare.recently_used, ---@diagnostic disable-line: assign-type-mismatch
+          cmp.config.compare.locality, ---@diagnostic disable-line: assign-type-mismatch
+          cmp.config.compare.kind,
+          cmp.config.compare.sort_text, -- this is commented in default nvim-cmp too
+          cmp.config.compare.length,
+          cmp.config.compare.order,
+        },
+      }
 
       opts.formatting = {
         fields = { "kind", "abbr", "menu" },
@@ -124,11 +165,23 @@ return {
             item.menu = "(" .. entry.source.source.client.name .. ")"
           end
 
+          if entry.source.name == "codeium" then
+            item.kind = ""
+            item.abbr = item.abbr .. "..."
+            item.menu = "(codeium)"
+          end
+
           return item
         end,
       }
 
       opts.mapping = vim.tbl_extend("force", opts.mapping, {
+        ["<C-f>"] = cmp.mapping(cmp.mapping.complete({
+          config = { sources = cmp.config.sources({ { name = "codeium" } }) },
+        })),
+
+        ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-d>"] = cmp.mapping.scroll_docs(4),
         ["<C-j>"] = {
           i = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
           c = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),

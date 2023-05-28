@@ -77,9 +77,7 @@ local filerunners = {
 }
 
 return {
-  condition = {
-    filetype = vim.tbl_keys(filerunners),
-  },
+  condition = { filetype = vim.tbl_keys(filerunners) },
   generator = function(_, cb)
     local ft = filerunners[vim.bo.filetype]
     local ret = {}
@@ -90,7 +88,8 @@ return {
           return {
             cmd = ft.filerunner(),
             name = "Running " .. vim.fn.expand("%:t:r"),
-            components = { "default", "unique", "user.start_open" },
+            components = { "default", "unique" },
+            -- components = { "default", "unique", "user.start_open" },
           }
         end,
         priority = 4,
@@ -110,10 +109,10 @@ return {
             name = ft.name .. " REPL " .. ft.num,
             components = {
               "default",
-              {
-                "user.start_open",
-                start_insert = true,
-              },
+              -- {
+              --   "user.start_open",
+              --   start_insert = true,
+              -- },
             },
           }
         end,

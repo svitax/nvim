@@ -7,6 +7,8 @@ return {
   { "echasnovski/mini.bufremove", enabled = false },
   { "catppuccin/nvim", enabled = false },
   { "catppuccin", enabled = false },
+  { "lukas-reineke/indent-blankline.nvim", enabled = false },
+  { "echasnovski/mini.indentscope", enabled = false },
   {
     "nvim-neo-tree/neo-tree.nvim",
     keys = { { "<leader>fe", false }, { "<leader>fE", false }, { "<leader>e", false }, { "<leader>E", false } },

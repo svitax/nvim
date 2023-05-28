@@ -25,7 +25,7 @@ return {
     opts = {
       endwise = { enable = true }, -- See: https://github.com/RRethy/nvim-treesitter-endwise
       -- indent = { enable = false },
-      indent = { enable = true, disable = { "yaml", "python" } },
+      indent = { enable = true, disable = { "yaml", "python", "typescriptreact", "typescript" } },
       incremental_selection = {
         enable = true,
         keymaps = {
@@ -36,7 +36,7 @@ return {
           node_decremental = "<S-CR>",
         },
       },
-      matchup = { enable = true, include_match_words = true }, -- See: https://github.com/andymass/vim-matchup
+      matchup = { enable = true, include_match_words = true, enable_quotes = true }, -- See: https://github.com/andymass/vim-matchup
       playground = { enable = true },
       -- refactor = { highlight_definitions = { enable = true }, highlight_current_scope = { enable = true } },
       textobjects = {
@@ -76,7 +76,7 @@ return {
   },
   -- { "MTDL9/vim-log-highlighting", ft = "log" },
   { "echasnovski/mini.trailspace", event = { "BufReadPost", "BufNewFile" }, main = "mini.trailspace", config = true },
-  { "NMAC427/guess-indent.nvim", event = "BufReadPost", config = true },
+  -- { "NMAC427/guess-indent.nvim", event = "BufReadPost", config = true },
   { "zbirenbaum/neodim", event = "LspAttach", opts = { alpha = 0.60, update_in_insert = { enable = false } } },
   -- highlight arguments' definitions and usages
   {
@@ -84,7 +84,11 @@ return {
     dependencies = { "nvim-treesitter" },
     event = "BufReadPost",
     -- event = "VeryLazy",
-    opts = { paint_arg_declarations = false },
+    opts = {
+      paint_arg_declarations = false,
+      paint_catch_blocks = { declarations = false, usages = true },
+      extras = { named_parameters = false },
+    },
   },
   {
     "folke/todo-comments.nvim",
@@ -118,6 +122,7 @@ return {
         end,
         desc = "Search todo (cwd)",
       },
+      { "<leader>sT", false },
     },
   },
 }

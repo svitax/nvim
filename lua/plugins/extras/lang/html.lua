@@ -2,20 +2,21 @@ return {
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
-      -- { "dcampos/cmp-emmet-vim", dependencies = "mattn/emmet-vim" },
+      { "dcampos/cmp-emmet-vim", dependencies = "mattn/emmet-vim" },
       -- TODO: nvim-cmp-ts-tag-close doesn't work in neovim 0.9
       -- { "buschco/nvim-cmp-ts-tag-close", config = true },
     },
     opts = function(_, opts)
-      -- local cmp = require("cmp")
+      local cmp = require("cmp")
 
-      -- opts.cmp_source_names["emmet_vim"] = "(emmet)"
+      opts.cmp_source_names["emmet_vim"] = "(emmet)"
       -- opts.cmp_source_names["nvim-cmp-ts-tag-close"] = "(tag-close)"
 
-      -- opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-      -- { name = "emmet_vim" },
-      -- { name = "nvim-cmp-ts-tag-close" },
-      -- }, 1, #opts.sources))
+      opts.mapping = vim.tbl_extend("force", opts.mapping, {
+        ["<C-l>"] = cmp.mapping(cmp.mapping.complete({
+          config = { sources = cmp.config.sources({ { name = "emmet_vim" } }) },
+        })),
+      })
     end,
   },
   {
@@ -31,11 +32,11 @@ return {
       servers = {
         ---@type lspconfig.options.html
         html = {},
-        emmet_ls = {
-          filetypes = { "html", "css", "javascriptreact", "typescriptreact" },
-          -- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79
-          -- init_options = { html = { options = {} }, javascriptreact = { options = {} } },
-        },
+        -- emmet_ls = {
+        --   filetypes = { "html", "css", "javascriptreact", "typescriptreact" },
+        --   -- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79
+        --   -- init_options = { html = { options = {} }, javascriptreact = { options = {} } },
+        -- },
       },
     },
   },

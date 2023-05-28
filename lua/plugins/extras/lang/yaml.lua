@@ -23,7 +23,11 @@ return {
     opts = function(_, opts)
       local nls = require("null-ls")
       -- table.insert(opts.sources, nls.builtins.formatting.yamlfmt)
-      table.insert(opts.sources, nls.builtins.diagnostics.yamllint.with({ method = nls.methods.DIAGNOSTICS_ON_SAVE }))
+      table.insert(
+        opts.sources,
+        nls.builtins.diagnostics.yamllint.with({ --[[method = nls.methods.DIAGNOSTICS_ON_SAVE ]]
+        })
+      )
     end,
   },
   {

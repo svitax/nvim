@@ -1,1 +1,1 @@
-vim.cmd.runtime({ "after/ftplugin/javascriptreact.lua", bang = true })
+-- vim.cmd.runtime({ "after/ftplugin/javascriptreact.lua", bang = true })

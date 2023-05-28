@@ -1,5 +1,24 @@
 return {
-
+  -- TODO: how do I make this work only in tailwind projects?
+  {
+    "razak17/tailwind-fold.nvim",
+    ft = { "html", "svelte", "astro", "vue", "typescriptreact", "javascriptreact" },
+    keys = {
+      {
+        "<leader>cc",
+        function()
+          if vim.wo.conceallevel > 0 then
+            return ":set conceallevel=0<cr>"
+          else
+            return ":set conceallevel=1<cr>"
+          end
+        end,
+        desc = "Toggle conceal level",
+        buffer = true,
+        expr = true,
+      },
+    },
+  },
   {
     "neovim/nvim-lspconfig",
     opts = {

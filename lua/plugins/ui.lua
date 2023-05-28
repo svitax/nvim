@@ -78,35 +78,46 @@ return {
     },
   },
   --   -- TODO: kinda jittery. look into fixing that
-  -- {
-  --   "luukvbaal/statuscol.nvim",
-  --   event = "UIEnter",
-  --   opts = function()
-  --     local builtin = require("statuscol.builtin")
-  --     return {
-  --       -- setopt = true,
-  --       relculright = true,
-  --       segments = {
-  --         { sign = { name = { "GitSigns" }, mawidth = 1, auto = true }, click = "v:lua.ScSa" },
-  --         -- { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
-  --         --   { text = { "%s" }, click = "v:lua.ScSa" },
-  --         { sign = { name = { "Diagnostic" }, maxwidth = 1 }, click = "v:lua.ScSa" },
-  --         { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
-  --       },
-  --     }
-  --   end,
-  -- },
+  {
+    "luukvbaal/statuscol.nvim",
+    event = "UIEnter",
+    -- event = "VeryLazy",
+    opts = function()
+      local builtin = require("statuscol.builtin")
+      return {
+        -- setopt = true,
+        relculright = true,
+        segments = {
+          { sign = { name = { "GitSigns" }, mawidth = 1 }, click = "v:lua.ScSa" },
+          -- { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
+          -- { sign = { name = { "Diagnostic", "DapBreakpoint" }, maxwidth = 1 }, click = "v:lua.ScSa" },
+          { sign = { name = { ".*" }, maxwidth = 1 }, click = "v:lua.ScSa" },
+          { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+        },
+      }
+    end,
+  },
   { "Bekaboo/deadcolumn.nvim", event = "VeryLazy", config = true, opts = { warning = { colorcode = "#ea6962" } } },
-  { "stevearc/dressing.nvim", opts = { select = { telescope = require("telescope.themes").get_ivy({ ... }) } } },
+  {
+    "shellRaining/hlchunk.nvim",
+    event = { "UIEnter" },
+    opts = {
+      chunk = { style = "#d4879c" },
+      indent = { enable = false },
+      line_num = { enable = false },
+      blank = { enable = false },
+    },
+  },
+  {
+    "stevearc/dressing.nvim",
+    opts = { select = { telescope = require("telescope.themes").get_ivy({ ... }) }, input = { enabled = false } },
+  },
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    opts = { key_labels = { ["<space>"] = "<spc>", ["<cr>"] = "<ret>" } },
-    config = function(_, opts)
-      local wk = require("which-key")
-      wk.setup(opts)
-      wk.register({
-        mode = { "n", "v" },
+    opts = {
+      key_labels = { ["<space>"] = "<spc>", ["<cr>"] = "<ret>" },
+      defaults = {
         ["g"] = { name = "+goto" },
         ["ga"] = { name = "+text case" },
         ["ge"] = { name = "+text case op" },
@@ -114,7 +125,6 @@ return {
         ["]"] = { name = "+next" },
         ["["] = { name = "+prev" },
         ["<leader><tab>"] = { name = "+tabs" },
-        ["<leader>b"] = { name = "+buffer" },
         ["<leader>bx"] = { name = "+scratch" },
         ["<leader>c"] = { name = "+code" },
         ["<leader>d"] = { name = "+debug" },
@@ -127,14 +137,13 @@ return {
         ["<leader>p"] = { name = "+project" },
         -- ["<leader>q"] = { name = "+quit/session" },
         ["<leader>s"] = { name = "+search" },
-        ["<leader>so"] = { name = "+online" },
-        ["<leader>t"] = { name = "+test" },
+        -- ["<leader>so"] = { name = "+online" },
         ["<leader>u"] = { name = "+ui" },
         ["<leader>w"] = { name = "+windows" },
         ["<leader>x"] = { name = "+diagnostics/quickfix" },
         ["<leader>y"] = { name = "+yank" },
-      })
-    end,
+      },
+    },
   },
   {
     "folke/noice.nvim",
@@ -168,11 +177,6 @@ return {
         { filter = { event = "msg_show", find = "%d+ more lines" }, { opts = { skip = true } } },
       },
       lsp = {
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-          ["cmp.entry.get_documentation"] = true,
-        },
         progress = { enabled = true },
         hover = {
           enabled = true,

@@ -379,6 +379,22 @@ local components = {
     end,
     color = fg("Statement"),
   },
+  -- overseer = {
+  --   "overseer",
+  --   label = "", -- Prefix for task counts
+  --   colored = true, -- Color the task icons and counts
+  --   symbols = {
+  --     ["FAILURE"] = require("shared").task_icons.failure .. " ",
+  --     ["CANCELLED"] = require("shared").task_icons.cancelled .. " ",
+  --     ["SUCCESS"] = require("shared").task_icons.success .. " ",
+  --     ["RUNNING"] = require("shared").task_icons.running .. " ",
+  --   },
+  --   unique = false, -- Unique-ify non-running task count by name
+  --   name = nil, -- List of task names to search for
+  --   name_not = false, -- When true, invert the name search
+  --   status = nil, -- List of task statuses to display
+  --   status_not = false, -- When true, invert the status search
+  -- },
 }
 
 local nightfox_theme = function()
@@ -507,6 +523,7 @@ return {
           },
           lualine_x = {
             components.diagnostics,
+            -- components.overseer,
             components.lsp,
             -- { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = fg("Special") },
           },

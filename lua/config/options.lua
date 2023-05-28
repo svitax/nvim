@@ -11,4 +11,5 @@ vim.opt.listchars:append("lead:⋅")
 vim.opt.listchars:append("leadmultispace:⋅")
 vim.opt.listchars:append("trail:⋅")
 vim.opt.listchars:append("eol:󰌑")
+vim.opt.listchars:append("tab:» ")
 vim.opt.colorcolumn = "120"

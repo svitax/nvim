@@ -1,4 +1,5 @@
 return {
+  -- add typescript to treesitter
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
@@ -7,20 +8,18 @@ return {
       end
     end,
   },
-  -- add typescript to treesitter
+  -- correctly setup lspconfig
   {
     "neovim/nvim-lspconfig",
-    dependencies = { "jose-elias-alvarez/typescript.nvim" },
     opts = {
       -- make sure mason installs the server
       servers = {
         ---@type lspconfig.options.tsserver
         tsserver = {
           settings = {
-            completions = {
-              completeFunctionCalls = true,
-            },
+            completions = { completeFunctionCalls = true },
             typescript = {
+              -- format = { indentSize = vim.o.shiftwidth, convertTabsToSpaces = vim.o.expandtab, tabSize = vim.o.tabstop },
               inlayHints = {
                 includeInlayParameterNameHints = "all",
                 includeInlayParameterNameHintsWhenArgumentMatchesName = false,
@@ -33,6 +32,7 @@ return {
               },
             },
             javascript = {
+              -- format = { indentSize = vim.o.shiftwidth, convertTabsToSpaces = vim.o.expandtab, tabSize = vim.o.tabstop },
               inlayHints = {
                 includeInlayParameterNameHints = "all",
                 includeInlayParameterNameHintsWhenArgumentMatchesName = false,
@@ -65,7 +65,19 @@ return {
       },
     },
   },
-  -- correctly setup lspconfig
+  -- Setup typescripts.nvim to lazy load when in a typescript file.
+  -- We don't add it as an lspconfig dependency as it will always get loaded with lspconfig.
+  -- The lspconfig server settings are added to the opts and used to setup typescript.
+  {
+    "jose-elias-alvarez/typescript.nvim",
+    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+    config = function(_, opts)
+      -- pull in the lspconfig server settings and use them for typescript setup
+      local lsp_opts = require("lazyvim.util").opts("nvim-lspconfig")
+      opts.server = lsp_opts.servers.tsserver
+      require("typescript").setup(opts)
+    end,
+  },
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
@@ -85,7 +97,7 @@ return {
       table.insert(
         opts.sources,
         nls.builtins.formatting.eslint_d.with({
-          method = nls.methods.DIAGNOSTICS_ON_SAVE,
+          -- method = nls.methods.DIAGNOSTICS_ON_SAVE,
           condition = function(utils)
             return utils.root_has_file({
               ".eslintrc.js",

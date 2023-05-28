@@ -14,7 +14,10 @@ return {
           require("dap-python").setup("~/.virtualenvs/debugpy/bin/python", opts)
         end,
       },
+      -- { "LiadOz/nvim-dap-repl-highlights", config = true },
+      -- { "Weissle/persistent-breakpoints.nvim", opts = { load_breakpoints_event = { "BufReadPost" } } },
     },
+    -- event = "VeryLazy",
     keys = { { "<leader>d" } },
     config = function()
       local adapters = require("plugins.dap.adapters")
@@ -63,7 +66,7 @@ return {
         vim.notify("Breakpoints cleared")
       end
 
-      vim.keymap.set("n", "<leader>dC", dap_clear_breakpoints, { desc = "Clear breakpoints" })
+      vim.keymap.set("n", "<leader>dB", dap_clear_breakpoints, { desc = "Clear breakpoints" })
 
       local function dap_end_debug()
         dap.clear_breakpoints()
@@ -132,5 +135,14 @@ return {
         return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
       end
     end,
+  },
+  {
+    "ofirgall/goto-breakpoints.nvim",
+    dependencies = { "mfussenegger/nvim-dap" },
+    keys = {
+      { "]D", "<cmd>lua require('goto-breakpoints').next()<cr>", desc = "Next breakpoint" },
+      { "[S", "<cmd>lua require('goto-breakpoints').prev()<cr>", desc = "Prev breakpoint" },
+      { "]S", "<cmd>lua require('goto-breakpoints').stopped()<cr>", desc = "Dap stopped" },
+    },
   },
 }

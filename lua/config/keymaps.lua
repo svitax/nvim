@@ -26,6 +26,8 @@ vim.keymap.del("n", "<leader>gG")
 vim.keymap.del("n", "<leader>qq")
 vim.keymap.del("n", "<leader>bd")
 vim.keymap.del("n", "<leader>bD")
+vim.keymap.del("n", "<leader>xl")
+vim.keymap.del("n", "<leader>xq")
 
 -- map("n", "gl", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 -- I use jkl; instead of hjkl
@@ -120,6 +122,17 @@ map("n", "gx", function()
   local openCommand = string.format("%s '%s' >/dev/null 2>&1", opener, url)
   os.execute(openCommand)
 end, { desc = "Smart URL Opener" })
+
+-- smart deletion, dd
+-- solves the issue where you want to delete an empty line, but dd will override your last yank
+-- will check you are deleting an empty line, if so - use the black hole register
+map("n", "dd", function()
+  if vim.api.nvim_get_current_line():match("^%s*$") then
+    return '"_dd'
+  else
+    return "dd"
+  end
+end, { noremap = true, expr = true })
 
 -- lua/config/autocmds.lua
 map("n", "<leader>fM", "<cmd>Rename<cr>", { desc = "Rename this file" })

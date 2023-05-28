@@ -20,7 +20,7 @@ return {
       end,
       condition = {
         callback = function()
-          return files.exists("main.py")
+          return files.exists("main.py") or files.exists("__main__.py")
         end,
       },
       priority = 1,

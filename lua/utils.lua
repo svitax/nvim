@@ -381,4 +381,71 @@ function M.blend(fg, bg, alpha)
   return string.format("#%02X%02X%02X", channel(1), channel(2), channel(3))
 end
 
+function M.find(word, ...)
+  for _, str in ipairs({ ... }) do
+    local match_start, match_end = string.find(word, str)
+    if match_start then
+      return str, match_start, match_end
+    end
+  end
+end
+
+--- Call the given function and use `vim.notify` to notify of any errors.
+--- This function is a wrapper around `xpcall` which allows having a single error handler for all errors
+--- @param msg string
+--- @param func function
+--- @vararg any
+--- @return boolean, any
+--- @overload fun(fun: function, ...): boolean, any
+function M.wrap_err(msg, func, ...)
+  local args = { ... }
+  if type(msg) == "function" then
+    args, func, msg = { func, unpack(args) }, msg, nil
+  end
+  return xpcall(func, function(err)
+    msg = msg and string.format("%s:\n%s", msg, err) or err
+    vim.schedule(function()
+      vim.notify(msg, vim.log.levels.ERROR, { title = "ERROR" })
+    end)
+  end, unpack(args))
+end
+
+function M.open_help(tag)
+  M.wrap_err(vim.cmd.help, tag)
+end
+
+--- Stolen from nlua.nvim this function attempts to open vim help docs if an api or vim.fn function
+--- otherwise it shows the lsp hover doc
+--- @param word string
+--- @param callback function
+function M.keyword(word, callback)
+  local original_iskeyword = vim.bo.iskeyword
+
+  vim.bo.iskeyword = vim.bo.iskeyword .. ",."
+  word = word or vim.fn.expand("<cword>")
+
+  vim.bo.iskeyword = original_iskeyword
+
+  local match, _, end_idx = M.find(word, "api.", "vim.api.")
+  if match and end_idx then
+    return M.open_help(word:sub(end_idx + 1))
+  end
+
+  match, _, end_idx = M.find(word, "fn.", "vim.fn.")
+  if match and end_idx then
+    return M.open_help(word:sub(end_idx + 1) .. "()")
+  end
+
+  match, _, end_idx = M.find(word, "^vim.(%w+)")
+  if match and end_idx then
+    return M.open_help(word:sub(1, end_idx))
+  end
+
+  if callback then
+    return callback()
+  end
+
+  vim.lsp.buf.hover()
+end
+
 return M

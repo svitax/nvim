@@ -98,15 +98,16 @@ autocmd("FileType", {
 --   end,
 -- })
 
-augroup("open_swap", { clear = true })
-autocmd("SwapExists", {
-  desc = "Automatically set read-only for files being edited elsewhere",
-  group = "open_swap",
-  nested = true,
-  callback = function()
-    vim.v.swapchoice = "o"
-  end,
-})
+-- augroup("open_swap", { clear = true })
+-- autocmd("SwapExists", {
+--   desc = [[Automatically set read-only for files being edited elsewhere.
+--   Choose recover. If you want to delete the swap write and then call :e and choose delete this time.]],
+--   group = "open_swap",
+--   nested = true,
+--   callback = function()
+--     vim.v.swapchoice = "o"
+--   end,
+-- })
 
 augroup("auto_create_dir", { clear = true })
 autocmd("BufWritePre", {
@@ -127,7 +128,7 @@ autocmd("BufReadPre", {
   group = "reading",
   callback = function(args)
     -- See the treesitter highlight config too
-    if vim.loop.fs_stat(args.file).size > 1000 * 1024 then
+    if vim.loop.fs_stat(args.file).size > 500 * 1024 then
       vim.cmd.syntax("manual")
     end
   end,
@@ -162,43 +163,6 @@ autocmd("User", {
       vim.api.nvim_command("Alpha")
       -- require("close_buffers").wipe({ type = event.buf }) -- close_buffers doesn't provide an event after delete like bufdelete does (BDeletePost)
       vim.api.nvim_command(event.buf .. "Bwipeout")
-    end
-  end,
-})
-
--- Array of file names indicating root directory. Modify to your liking
-local root_names = { ".git", "Makefile", "pyproject.toml" }
--- Cache to use for speed up (at cost of possibly outdated results)
-local root_cache = {}
-augroup("auto_root", {})
-autocmd("BufEnter", {
-  desc = "Auto change current directory (vim-rooter)",
-  group = "auto_root",
-  callback = function()
-    -- Get directory path to start search from
-    local path = vim.api.nvim_buf_get_name(0)
-    if path == "" then
-      return
-    end
-    path = vim.fs.dirname(path)
-
-    -- Try cache and resort to searching upward for root directory
-    local root = root_cache[path]
-    if root == nil then
-      local root_file = vim.fs.find(root_names, { path = path, upward = true })[1]
-      if root_file == nil then
-        return
-      end
-      root = vim.fs.dirname(root_file)
-      root_cache[path] = root
-    end
-
-    -- Set current directory and
-    -- If new cwd has a pyproject.toml file, activate cached venv from venv-selector
-    -- I'm auto activating venvs like this because the DirChanged event isn't firing when I auto root like this
-    -- Downside is we're setting venv every time we navigate to a buffer in a python project, when really we only need to do it once
-    if vim.fn.chdir(root) and (vim.fn.findfile("pyproject.toml", vim.fn.getcwd() .. ";") ~= "") then
-      require("venv-selector").retrieve_from_cache()
     end
   end,
 })
@@ -255,3 +219,40 @@ autocmd({ "CmdlineLeave", "InsertLeave", "TextYankPost", "WinLeave" }, {
   end,
 })
 
+-- Array of file names indicating root directory. Modify to your liking
+local root_names = { ".git", "Makefile", "pyproject.toml" }
+-- Cache to use for speed up (at cost of possibly outdated results)
+local root_cache = {}
+augroup("auto_root", {})
+autocmd("BufEnter", {
+  desc = "Auto change current directory (vim-rooter)",
+  group = "auto_root",
+  callback = function()
+    -- Get directory path to start search from
+    local path = vim.api.nvim_buf_get_name(0)
+    if path == "" then
+      return
+    end
+    path = vim.fs.dirname(path)
+
+    -- Try cache and resort to searching upward for root directory
+    local root = root_cache[path]
+    if root == nil then
+      local root_file = vim.fs.find(root_names, { path = path, upward = true })[1]
+      if root_file == nil then
+        return
+      end
+      root = vim.fs.dirname(root_file)
+      root_cache[path] = root
+    end
+
+    -- Set current directory and
+    vim.fn.chdir(root)
+    -- If new cwd has a pyproject.toml file, activate cached venv from venv-selector
+    -- I'm auto activating venvs like this because the DirChanged event isn't firing when I auto root like this
+    -- Downside is we're setting venv every time we navigate to a buffer in a python project, when really we only need to do it once
+    -- if vim.fn.chdir(root) and (vim.fn.findfile("pyproject.toml", vim.fn.getcwd() .. ";") ~= "") then
+    --   require("venv-selector").retrieve_from_cache()
+    -- end
+  end,
+})

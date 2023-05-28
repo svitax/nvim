@@ -1,4 +1,13 @@
 return {
+  task_icons = {
+    -- 
+    -- 
+    -- 
+    running = "",
+    success = "",
+    failure = "",
+    cancelled = "󰜺",
+  },
   diagnostic_icons = {
     error = "",
     warning = "",

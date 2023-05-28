@@ -18,35 +18,41 @@ return {
         lspFeatures = {
           enabled = true,
           languages = { "r", "python", "julia", "bash", "lua" },
-          chunks = "all", -- 'curly' or 'all'
+          chunks = "curly", -- 'curly' or 'all'
           diagnostics = { enabled = true, triggers = { "BufWritePost" } },
           completion = { enabled = true },
         },
         keymap = { hover = "K", definition = "gd" },
       })
-      vim.api.nvim_create_autocmd({ "FileType" }, {
-        pattern = "markdown",
-        callback = function()
-          vim.cmd("QuartoActivate")
-        end,
-      })
+      -- vim.api.nvim_create_autocmd({ "FileType" }, {
+      --   pattern = "markdown",
+      --   callback = function()
+      --     vim.cmd("QuartoActivate")
+      --   end,
+      -- })
     end,
   },
   {
     "hrsh7th/nvim-cmp",
-    dependencies = { "jmbuhr/otter.nvim", "kdheepak/cmp-latex-symbols", "jc-doyle/cmp-pandoc-references" },
+    dependencies = {
+      -- "kdheepak/cmp-latex-symbols",
+      "amarakon/nvim-cmp-lua-latex-symbols",
+      "jc-doyle/cmp-pandoc-references",
+    },
     opts = function(_, opts)
       local cmp = require("cmp")
 
       opts.cmp_source_names["otter"] = "(otter)"
-      opts.cmp_source_names["latex_symbols"] = "(latex)"
+      -- opts.cmp_source_names["latex_symbols"] = "(latex)"
+      opts.cmp_source_names["lua-latex-symbols"] = "(latex)"
       opts.cmp_source_names["pandoc_references"] = "(ref)"
 
-      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-        { name = "otter", group_index = 1 },
-        { name = "latex_symbols", group_index = 2 },
-        { name = "pandoc_references", group_index = 2 },
-      }, 1, #opts.sources))
+      cmp.setup.filetype({ "tex", "plaintex", "markdown", "text" }, {
+        sources = cmp.config.sources(vim.list_extend(opts.sources, {
+          { name = "lua-latex-symbols", group_index = 2, option = { cache = true } },
+          { name = "pandoc_references", group_index = 2 },
+        })),
+      })
     end,
   },
   {
@@ -55,7 +61,7 @@ return {
     name = "zk",
     -- ft = "markdown",
     cmd = { "ZkNew", "ZkNotes", "ZkTags", "ZkMatch" },
-    opts = { picker = "telescope" },
+    opts = { picker = "telescope", lsp = { auto_attach = { filetypes = { "markdown", "quarto" } } } },
     keys = {
       -- Find notes.
       { "<leader>fn", "<cmd>ZkNotes { sort = {'modified'}}<cr>", desc = "Find notes" },
@@ -209,4 +215,60 @@ return {
       -- )
     end,
   },
+  -- BUG: doesn't detect markdown treesitter parser
+  -- {
+  --   "lukas-reineke/headlines.nvim",
+  --   dependencies = "nvim-treesitter/nvim-treesitter",
+  --   ft = { "markdown" },
+  --   opts = {
+  --     markdown = {
+  --       query = vim.treesitter.query.parse(
+  --         "markdown",
+  --         [[
+  --                           (atx_heading [
+  --                               (atx_h1_marker)
+  --                               (atx_h2_marker)
+  --                               (atx_h3_marker)
+  --                               (atx_h4_marker)
+  --                               (atx_h5_marker)
+  --                               (atx_h6_marker)
+  --                           ] @headline)
+  --
+  --                           (thematic_break) @dash
+  --
+  --                           (fenced_code_block) @codeblock
+  --
+  --                           (block_quote_marker) @quote
+  --                           (block_quote (paragraph (inline (block_continuation) @quote)))
+  --                       ]]
+  --       ),
+  --       headline_highlights = {
+  --         "Headline1",
+  --         "Headline2",
+  --         "Headline3",
+  --         "Headline4",
+  --         "Headline5",
+  --         "Headline6",
+  --       },
+  --       codeblock_highlight = "CodeBlock",
+  --       dash_highlight = "Dash",
+  --       dash_string = "-",
+  --       quote_highlight = "Quote",
+  --       quote_string = "┃",
+  --       fat_headlines = true,
+  --       fat_headline_upper_string = "▃",
+  --       fat_headline_lower_string = "🬂",
+  --     },
+  --   },
+  --   config = function(_, opts)
+  --     require("headlines").setup(opts)
+  --     vim.api.nvim_set_hl(0, "Headline1", { fg = "#cb7676", bg = "#402626", italic = false })
+  --     vim.api.nvim_set_hl(0, "Headline2", { fg = "#c99076", bg = "#66493c", italic = false })
+  --     vim.api.nvim_set_hl(0, "Headline3", { fg = "#80a665", bg = "#3d4f2f", italic = false })
+  --     vim.api.nvim_set_hl(0, "Headline4", { fg = "#4c9a91", bg = "#224541", italic = false })
+  --     vim.api.nvim_set_hl(0, "Headline5", { fg = "#6893bf", bg = "#2b3d4f", italic = false })
+  --     vim.api.nvim_set_hl(0, "Headline6", { fg = "#d3869b", bg = "#6b454f", italic = false })
+  --     vim.api.nvim_set_hl(0, "CodeBlock", { bg = "#444444" })
+  --   end,
+  -- },
 }

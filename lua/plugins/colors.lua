@@ -17,13 +17,13 @@ return {
             -- Shade.new(base, bright, dim, light)
             black = Shade.new("#0d0e0f", "#4e5157", "#282a30"),
             red = Shade.new("#ea6962", "#eb746b", "#543834"),
-            green = Shade.new("#a9b665", "#8eb2af", "#3f3f29"),
-            yellow = Shade.new("#d8a657", "#fdb292", "#d78b6c"),
-            blue = Shade.new("#7daea3", "#73a3b7", "#4d7d90"),
-            magenta = Shade.new("#d4879c", "#b97490", "#934e69"),
+            green = Shade.new("#a9b665", "#8eb2af", "#3d4f2f"),
+            yellow = Shade.new("#d8a657", "#fdb292", "#826434"),
+            blue = Shade.new("#7daea3", "#73a3b7", "#2b3d4f"),
+            magenta = Shade.new("#d4879c", "#b97490", "#6b454f"),
             cyan = Shade.new("#83a598", "#afd4de", "#89aeb8"),
             white = Shade.new("#e7d7ad", "#eeeeee", "#c8c8c8"),
-            orange = Shade.new("#e78a4e", "#ff9664", "#d96f3e"),
+            orange = Shade.new("#e78a4e", "#ff9664", "#66493c"),
             pink = Shade.new("#d38d97", "#d38d97", "#ad6771"),
 
             comment = "#665c54",
@@ -126,6 +126,19 @@ return {
 
             ["@text.strong"] = { fg = "palette.orange", style = "bold" },
             ["@text.emphasis"] = { fg = "palette.orange", style = "italic" },
+
+            ["@text.title.1.markdown"] = { fg = "palette.red", bg = "palette.red.dim" },
+            ["@text.title.2.markdown"] = { fg = "palette.orange", bg = "palette.orange.dim" },
+            ["@text.title.3.markdown"] = { fg = "palette.yellow", bg = "palette.yellow.dim" },
+            ["@text.title.4.markdown"] = { fg = "palette.green", bg = "palette.green.dim" },
+            ["@text.title.5.markdown"] = { fg = "palette.blue", bg = "palette.blue.dim" },
+            ["@text.title.6.markdown"] = { fg = "palette.magenta", bg = "palette.magenta.dim" },
+            ["@text.title.1.marker.markdown"] = { fg = "palette.red", bg = "palette.red.dim" },
+            ["@text.title.2.marker.markdown"] = { fg = "palette.orange", bg = "palette.orange.dim" },
+            ["@text.title.3.marker.markdown"] = { fg = "palette.yellow", bg = "palette.yellow.dim" },
+            ["@text.title.4.marker.markdown"] = { fg = "palette.green", bg = "palette.green.dim" },
+            ["@text.title.5.marker.markdown"] = { fg = "palette.blue", bg = "palette.blue.dim" },
+            ["@text.title.6.marker.markdown"] = { fg = "palette.magenta", bg = "palette.magenta.dim" },
           },
         },
       }

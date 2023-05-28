@@ -5,14 +5,19 @@ return {
     init = function()
       -- change/add/delete lazyvim lsp keymaps
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
+
       keys[#keys + 1] = { "<leader>ca", false }
       keys[#keys + 1] = { "<leader>cd", false }
+
       keys[#keys + 1] = { "<leader>cA", vim.lsp.codelens.run, desc = "Codelens" }
       keys[#keys + 1] = { "gl", vim.diagnostic.open_float, desc = "Line diagnostics" }
+      -- keys[#keys + 1] = { "K", require("utils").keyword, desc = "Hover" }
     end,
     opts = {
-      autoformat = false,
+      autoformat = true,
       diagnostics = {
+        underline = true,
+        update_in_insert = false,
         virtual_text = false,
         float = {
           focusable = false,
@@ -58,8 +63,8 @@ return {
           local navbuddy = require("nvim-navbuddy")
           local actions = require("nvim-navbuddy.actions")
           opts.mappings = {
-            ["l"] = actions.parent,
-            [";"] = actions.children,
+            ["l"] = actions.parent(), -- move to left panel
+            [";"] = actions.children(), -- move to right panel
           }
           navbuddy.setup(opts)
         end,
@@ -67,38 +72,38 @@ return {
       },
     },
   },
-  {
-    "hrsh7th/nvim-gtd",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = "neovim/nvim-lspconfig",
-    keys = {
-      {
-        "gf",
-        function()
-          require("gtd").exec({ command = "edit" })
-        end,
-        desc = "Go to definition or file",
-      },
-    },
-    ---@type gtd.kit.App.Config.Schema
-    opts = {
-      sources = {
-        { name = "findup" },
-        {
-          name = "walk",
-          root_markers = {
-            ".git",
-            ".neoconf.json",
-            "Makefile",
-            "tsconfig.json",
-            "package.json",
-          },
-          ignore_patterns = { "/node_modules", "/.git" },
-        },
-        { name = "lsp" },
-      },
-    },
-  },
+  -- {
+  --   "hrsh7th/nvim-gtd",
+  --   event = { "BufReadPre", "BufNewFile" },
+  --   dependencies = "neovim/nvim-lspconfig",
+  --   keys = {
+  --     {
+  --       "gf",
+  --       function()
+  --         require("gtd").exec({ command = "edit" })
+  --       end,
+  --       desc = "Go to definition or file",
+  --     },
+  --   },
+  --   ---@type gtd.kit.App.Config.Schema
+  --   opts = {
+  --     sources = {
+  --       { name = "findup" },
+  --       {
+  --         name = "walk",
+  --         root_markers = {
+  --           ".git",
+  --           ".neoconf.json",
+  --           "Makefile",
+  --           "tsconfig.json",
+  --           "package.json",
+  --         },
+  --         ignore_patterns = { "/node_modules", "/.git" },
+  --       },
+  --       { name = "lsp" },
+  --     },
+  --   },
+  -- },
   {
     "lvimuser/lsp-inlayhints.nvim",
     event = "LspAttach",

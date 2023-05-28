@@ -1,3 +1,6 @@
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
+
 return {
   {
     "linux-cultist/venv-selector.nvim",
@@ -5,6 +8,44 @@ return {
     cmd = "VenvSelect",
     keys = { { "<leader>pv", "<cmd>VenvSelect<cr>", desc = "Switch venv" } },
     opts = { search_workspace = true, search = false, dap_enabled = true, name = { ".venv" } },
+    -- init = function()
+    --   -- Array of file names indicating root directory. Modify to your liking
+    --   local root_names = { ".git", "Makefile", "pyproject.toml" }
+    --   -- Cache to use for speed up (at cost of possibly outdated results)
+    --   local root_cache = {}
+    --   augroup("auto_root", {})
+    --   autocmd("BufEnter", {
+    --     desc = "Auto change current directory (vim-rooter)",
+    --     group = "auto_root",
+    --     callback = function()
+    --       -- Get directory path to start search from
+    --       local path = vim.api.nvim_buf_get_name(0)
+    --       if path == "" then
+    --         return
+    --       end
+    --       path = vim.fs.dirname(path)
+    --
+    --       -- Try cache and resort to searching upward for root directory
+    --       local root = root_cache[path]
+    --       if root == nil then
+    --         local root_file = vim.fs.find(root_names, { path = path, upward = true })[1]
+    --         if root_file == nil then
+    --           return
+    --         end
+    --         root = vim.fs.dirname(root_file)
+    --         root_cache[path] = root
+    --       end
+    --
+    --       -- Set current directory and
+    --       -- If new cwd has a pyproject.toml file, activate cached venv from venv-selector
+    --       -- I'm auto activating venvs like this because the DirChanged event isn't firing when I auto root like this
+    --       -- Downside is we're setting venv every time we navigate to a buffer in a python project, when really we only need to do it once
+    --       if vim.fn.chdir(root) and (vim.fn.findfile("pyproject.toml", vim.fn.getcwd() .. ";") ~= "") then
+    --         require("venv-selector").retrieve_from_cache()
+    --       end
+    --     end,
+    --   })
+    -- end,
   },
   -- {
   --   "AckslD/swenv.nvim",
@@ -39,49 +80,51 @@ return {
       ---@type lspconfig.options
       servers = {
         ---@type lspconfig.options.pylsp
-        -- pylsp = {
-        --   settings = {
-        --     pylsp = {
-        --       plugins = {
-        --         pyflakes = { enabled = false },
-        --         mccabe = { enabled = false },
-        --         pycodestyle = {
-        --           maxLineLength = 99,
-        --           ignore = {
-        --             "E226",
-        --             "E266",
-        --             "E302",
-        --             "E303",
-        --             "E304",
-        --             "E305",
-        --             "E402",
-        --             "C0103",
-        --             "W0104",
-        --             "W0621",
-        --             "W391",
-        --             "W503",
-        --             "W504",
-        --           },
-        --         },
-        --         pydocstyle = { enabled = false },
-        --         autopep8 = { enabled = false },
-        --         yapf = { enabled = true },
-        --         flake8 = { enabled = false },
-        --         pylint = { enabled = false },
-        --         rope = { enabled = true },
-        --         rope_completion = { enabled = false },
-        --         rope_autoimport = { enabled = false },
-        --         ruff = { enabled = true },
-        --         -- mypy = { enabled = false },
-        --         black = { enabled = true },
-        --       },
-        --     },
-        --   },
-        -- },
+        pylsp = {
+          settings = {
+            pylsp = {
+              plugins = {
+                pyflakes = { enabled = false },
+                mccabe = { enabled = false },
+                pycodestyle = {
+                  maxLineLength = 99,
+                  ignore = {
+                    "E226",
+                    "E266",
+                    "E302",
+                    "E303",
+                    "E304",
+                    "E305",
+                    "E402",
+                    "C0103",
+                    "W0104",
+                    "W0621",
+                    "W391",
+                    "W503",
+                    "W504",
+                  },
+                },
+                pydocstyle = { enabled = false },
+                autopep8 = { enabled = false },
+                yapf = { enabled = false },
+                flake8 = { enabled = false },
+                pylint = { enabled = false },
+                rope = { enabled = true },
+                rope_completion = { enabled = false },
+                rope_autoimport = { enabled = false },
+                ruff = { enabled = true },
+                -- mypy = { enabled = false },
+                black = { enabled = true },
+                isort = { enabled = true },
+              },
+            },
+          },
+        },
         -- will be automatically installed with mason and loaded with lspconfig
         ---@type lspconfig.options.pyright
         pyright = {
           settings = {
+            -- pyright = { autoImportCompletions = true },
             python = {
               analysis = {
                 autoSearchPaths = true,
@@ -100,7 +143,7 @@ return {
                 --         reportUnusedVariable = "none",
                 --         reportMissingTypeStubs = "none",
                 --       },
-                --       autoImportCompletions = false,
+                -- autoImportCompletions = false,
               },
             },
           },
@@ -124,7 +167,7 @@ return {
         --     end
         --   end)
         -- end,
-        sourcery_lsp = function(_, opts)
+        sourcery = function(_, opts)
           require("lazyvim.util").on_attach(function(client, buffer)
             local rc = client.server_capabilities
             if client.name == "sourcery" then
@@ -132,25 +175,26 @@ return {
             end
           end)
         end,
-        -- pyright = function(_, opts)
-        --   require("lazyvim.util").on_attach(function(client, buffer)
-        --     local rc = client.server_capabilities
-        --     if client.name == "pyright" then
-        --       rc.definitionProvider = false
-        --       rc.completionProvider = false
-        --       rc.signatureHelpProvider = false
-        --     end
-        --   end)
-        -- end,
-        -- pylsp = function(_, opts)
-        --   require("lazyvim.util").on_attach(function(client, buffer)
-        --     local rc = client.server_capabilities
-        --     if client.name == "pylsp" then
-        --       rc.renameProvider = false
-        --       rc.hoverProvider = false
-        --     end
-        --   end)
-        -- end,
+        pyright = function(_, opts)
+          require("lazyvim.util").on_attach(function(client, buffer)
+            local rc = client.server_capabilities
+            if client.name == "pyright" then
+              rc.definitionProvider = false
+              rc.signatureHelpProvider = false
+              -- rc.completionProvider = false
+            end
+          end)
+        end,
+        pylsp = function(_, opts)
+          require("lazyvim.util").on_attach(function(client, buffer)
+            local rc = client.server_capabilities
+            if client.name == "pylsp" then
+              rc.renameProvider = false
+              rc.hoverProvider = false
+              rc.completionProvider = false
+            end
+          end)
+        end,
       },
     },
   },
@@ -171,6 +215,8 @@ return {
         -- "pyright", -- installed by including in nvim-lspconfig opts
         -- "sourcery", -- installed by including in nvim-lspconfig opts
       }, 0, #opts.ensure_installed)
+      -- This is needed for pylint to work in a virtualenv. See https://github.com/williamboman/mason.nvim/issues/668#issuecomment-1320859097
+      -- PATH = "append"
     end,
     ---@param opts MasonSettings | {ensure_installed: string[]}
     config = function(plugin, opts)
@@ -214,7 +260,7 @@ return {
         nls.builtins.diagnostics.mypy.with({
           prefer_local = ".venv/bin",
           extra_args = { "--strict" },
-          method = nls.methods.DIAGNOSTICS_ON_SAVE,
+          -- method = nls.methods.DIAGNOSTICS_ON_SAVE,
         })
       )
       -- table.insert(opts.sources, nls.builtins.formatting.black)

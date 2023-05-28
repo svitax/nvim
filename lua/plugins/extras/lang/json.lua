@@ -47,7 +47,7 @@ return {
         opts.sources,
         nls.builtins.diagnostics.jsonlint.with({
           extra_filetypes = { "jsonc" },
-          method = nls.methods.DIAGNOSTICS_ON_SAVE,
+          -- method = nls.methods.DIAGNOSTICS_ON_SAVE,
         })
       )
     end,

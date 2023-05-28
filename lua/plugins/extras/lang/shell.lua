@@ -10,11 +10,11 @@ return {
       opts.cmp_source_names["env"] = "(env)"
 
       cmp.setup.filetype({ "sh", "zsh" }, {
-        sources = cmp.config.sources({ { name = "env" }, { name = "zsh" } }),
+        sources = cmp.config.sources(opts.sources, { { name = "env" }, { name = "zsh" } }),
       })
 
       cmp.setup.filetype({ "fish" }, {
-        sources = cmp.config.sources({ { name = "env" }, { name = "fish", priority = 10 } }),
+        sources = cmp.config.sources(opts.sources, { { name = "env" }, { name = "fish", priority = 10 } }),
       })
 
       -- opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {

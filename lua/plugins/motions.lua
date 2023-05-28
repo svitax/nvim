@@ -75,20 +75,20 @@ return {
       { "<A-K>", "<cmd>STSSwapPrevVisual<cr>", mode = { "v" }, desc = "Swap with previous node" },
     },
   },
-  {
-    -- TODO: better ftype local mapping with after/ftplugin
-    "harrisoncramer/jump-tag",
-    dependencies = { "nvim-treesitter" },
-    ft = { "html", "javascriptreact", "typescriptreact", "vue" },
-    -- config = function()
-    --   vim.keymap.set(
-    --     { "n", "i" },
-    --     "<A-l>",
-    --     "<cmd>lua require('jump-tag').jumpParent()<cr>",
-    --     { buffer = true, desc = "Jump to parent node" }
-    --   )
-    -- end,
-  },
+  -- {
+  --   -- TODO: better ftype local mapping with after/ftplugin
+  --   "harrisoncramer/jump-tag",
+  --   dependencies = { "nvim-treesitter" },
+  --   ft = { "html", "javascriptreact", "typescriptreact", "vue" },
+  --   -- config = function()
+  --   --   vim.keymap.set(
+  --   --     { "n", "i" },
+  --   --     "<A-l>",
+  --   --     "<cmd>lua require('jump-tag').jumpParent()<cr>",
+  --   --     { buffer = true, desc = "Jump to parent node" }
+  --   --   )
+  --   -- end,
+  -- },
   {
     "axieax/urlview.nvim",
     opts = { jump = { prev = "[u", next = "]u" } },

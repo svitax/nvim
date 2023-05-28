@@ -2,6 +2,7 @@ vim.keymap.set("n", "<leader>bs", "<cmd>up!<cr>", { desc = "Save buffer" })
 vim.keymap.set("n", "<c-s>", "<cmd>up!<cr>", { desc = "Save buffer" })
 
 return {
+  { "folke/which-key.nvim", optional = true, opts = { defaults = { ["<leader>t"] = { name = "+test" } } } },
   {
     "sQVe/bufignore.nvim",
     event = "BufEnter",
@@ -58,6 +59,7 @@ return {
       { "<leader>bw", "<cmd>Bwipeout<cr>", desc = "Wipeout buffer" },
     },
   },
+  { "folke/which-key.nvim", optional = true, opts = { defaults = { ["<leader>bx"] = { name = "+scratch" } } } },
   {
     "m-demare/attempt.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
