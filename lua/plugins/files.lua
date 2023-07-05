@@ -8,6 +8,7 @@ return {
   --   end,
   -- },
   {
+    -- Read and write files with sudo
     "lambdalisue/suda.vim",
     event = "BufRead",
     cmd = { "SudaRead", "SudaWrite" },
@@ -17,6 +18,7 @@ return {
     },
   },
   {
+    -- Lets you use your favorite terminal file managers
     "is0n/fm-nvim",
     opts = { mappings = { q = ":q<CR>" } },
     keys = {

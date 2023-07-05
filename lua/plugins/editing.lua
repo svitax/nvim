@@ -4,6 +4,7 @@
 local u = require("utils")
 return {
   {
+    -- Macro manager
     "ecthelionvi/NeoComposer.nvim",
     dependencies = { "kkharji/sqlite.lua" },
     cmd = { "EditMacros", "ClearNeoComposer", "ToggleDelay" },
@@ -46,6 +47,7 @@ return {
   --   },
   -- },
   {
+    -- Split and join blocks of code
     "Wansmer/treesj",
     dependencies = { "nvim-treesitter" },
     event = "BufReadPost",
@@ -66,6 +68,7 @@ return {
     end,
   },
   {
+    -- Operator to replace and exchange text
     "gbprod/substitute.nvim",
     event = "BufReadPost",
     -- dependencies = { "gbprod/yanky.nvim" },
@@ -89,8 +92,8 @@ return {
       { "Sx", "<cmd>lua require('substitute.exchange').visual()<cr>", mode = { "x" }, desc = "Exchange selecion" },
     },
   },
-  -- operator for smart duplication of lines and selections
   {
+    -- Operator for smart duplication of lines and selections
     "smjonas/duplicate.nvim",
     keys = { "yd", "R", { "R", mode = "x" } },
     config = function()

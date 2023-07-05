@@ -2,13 +2,19 @@ vim.keymap.set("n", "<leader>bs", "<cmd>up!<cr>", { desc = "Save buffer" })
 vim.keymap.set("n", "<c-s>", "<cmd>up!<cr>", { desc = "Save buffer" })
 
 return {
-  { "folke/which-key.nvim", optional = true, opts = { defaults = { ["<leader>t"] = { name = "+test" } } } },
   {
+    "folke/which-key.nvim",
+    optional = true,
+    opts = { defaults = { ["<leader>t"] = { name = "+test" }, ["<leader>bx"] = { name = "+scratch" } } },
+  },
+  {
+    -- Unlist hidden buffers matching specified ignore sources
     "sQVe/bufignore.nvim",
     event = "BufEnter",
     opts = { ignore_sources = { git = true, patterns = { "/%.git/", "/%node_modules/" } } },
   },
   {
+    -- Automatically close unedited buffers in bufferlist when it becomes too long
     "axkirillov/hbac.nvim",
     event = "BufEnter",
     opts = { autoclose = true, threshold = 10 },
@@ -18,6 +24,7 @@ return {
     },
   },
   {
+    -- Persistent file tags within a project scope to provide immediate navigation to important files
     "cbochs/grapple.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     cmd = {
@@ -41,8 +48,8 @@ return {
       { "<leader>bT", "<cmd>GrappleToggle<cr>", desc = "Tag buffer" },
     },
   },
-  -- <A-o> and <A-i> to jump to previous and next buffer on jumplist (mirrors <C-o> and <C-i>.)
   {
+    -- <A-o> and <A-i> to jump to previous and next buffer on jumplist (mirrors <C-o> and <C-i>.)
     "kwkarlwang/bufjump.nvim",
     config = true,
     keys = {
@@ -59,8 +66,8 @@ return {
       { "<leader>bw", "<cmd>Bwipeout<cr>", desc = "Wipeout buffer" },
     },
   },
-  { "folke/which-key.nvim", optional = true, opts = { defaults = { ["<leader>bx"] = { name = "+scratch" } } } },
   {
+    -- Temporary scratch buffers
     "m-demare/attempt.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
     config = function(_, opts)

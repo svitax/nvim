@@ -10,6 +10,14 @@ return {
     end,
   },
   {
+    "neovim/nvim-lspconfig",
+    opts = {
+      lua_ls = {
+        settings = { Lua = { workspace = { checkThirdParty = false }, completion = { callSnippet = "Replace" } } },
+      },
+    },
+  },
+  {
     "jose-elias-alvarez/null-ls.nvim",
     opts = function(_, opts)
       local nls = require("null-ls")

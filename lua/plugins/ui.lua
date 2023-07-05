@@ -48,6 +48,7 @@ return {
         [".prettier.toml"] = { icon = "", color = "#334651", name = "Prettier" },
         ["prettier.config.js"] = { icon = "", color = "#334651", name = "Prettier" },
         ["prettier.config.cjs"] = { icon = "", color = "#334651", name = "Prettier" },
+        qmd = { icon = "", color = "#73a3b7", name = "Prettier" },
         ["README"] = { icon = "", color = "#73a3b7", name = "README" },
         rmd = { icon = "", color = "#73a3b7", name = "RMarkdown" },
         stylelintrc = { icon = "", color = "#ffffff", name = "Stylelint" },
@@ -98,16 +99,16 @@ return {
     end,
   },
   { "Bekaboo/deadcolumn.nvim", event = "VeryLazy", config = true, opts = { warning = { colorcode = "#ea6962" } } },
-  {
-    "shellRaining/hlchunk.nvim",
-    event = { "UIEnter" },
-    opts = {
-      chunk = { style = "#d4879c" },
-      indent = { enable = false },
-      line_num = { enable = false },
-      blank = { enable = false },
-    },
-  },
+  -- {
+  --   "shellRaining/hlchunk.nvim",
+  --   event = { "UIEnter" },
+  --   opts = {
+  --     chunk = { style = "#d4879c" },
+  --     indent = { enable = false },
+  --     line_num = { enable = false },
+  --     blank = { enable = false },
+  --   },
+  -- },
   {
     "stevearc/dressing.nvim",
     opts = { select = { telescope = require("telescope.themes").get_ivy({ ... }) }, input = { enabled = false } },

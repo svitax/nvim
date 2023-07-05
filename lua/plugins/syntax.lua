@@ -75,11 +75,29 @@ return {
     },
   },
   -- { "MTDL9/vim-log-highlighting", ft = "log" },
-  { "echasnovski/mini.trailspace", event = { "BufReadPost", "BufNewFile" }, main = "mini.trailspace", config = true },
+  -- { "lark-parser/vim-lark-syntax", ft = "lark" },
+  {
+    "echasnovski/mini.trailspace",
+    event = { "BufReadPost", "BufNewFile" },
+    main = "mini.trailspace",
+    opts = { blacklist = { "lazy" } },
+    config = function(_, opts)
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = opts.blacklist,
+        callback = function()
+          vim.b.minitrailspace_disable = true
+          MiniTrailspace.unhighlight() -- force an update?
+          -- vim.schedule(MiniTrailspace.unhighlight)
+        end,
+      })
+
+      require("mini.trailspace").setup()
+    end,
+  },
   -- { "NMAC427/guess-indent.nvim", event = "BufReadPost", config = true },
   { "zbirenbaum/neodim", event = "LspAttach", opts = { alpha = 0.60, update_in_insert = { enable = false } } },
-  -- highlight arguments' definitions and usages
   {
+    -- highlight arguments' definitions and usages
     "m-demare/hlargs.nvim",
     dependencies = { "nvim-treesitter" },
     event = "BufReadPost",

@@ -1,5 +1,6 @@
 return {
   {
+    -- Highlight hex/rgb/css colors
     "brenoprata10/nvim-highlight-colors",
     opts = { render = "background", enable_named_colors = true },
     event = "BufReadPost",

@@ -23,13 +23,13 @@ return {
     end,
   },
   -- http.nvim support for codeium
-  { "jcdickinson/http.nvim", build = "cargo build --workspace --release" },
+  -- { "jcdickinson/http.nvim", build = "cargo build --workspace --release" },
   -- then: setup supertab in cmp
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
       "hrsh7th/cmp-cmdline",
-      { "jcdickinson/codeium.nvim", dependencies = { "jcdickinson/http.nvim" }, config = true },
+      -- { "jcdickinson/codeium.nvim", dependencies = { "jcdickinson/http.nvim" }, config = true },
       -- vim.call('coc#rpc#ready')
       -- "PaterJason/cmp-conjure",
       { "dcampos/cmp-emmet-vim", dependencies = "mattn/emmet-vim" },
@@ -93,9 +93,9 @@ return {
       opts.sources = {
         -- cmp groups. if we can't find anything in one group, look in the next
         -- NOTE: do I find myself needing the buffer completions a lot? should I put it back in the first group?
-        -- { name = "nvim_lsp", group_index = 1 },
+        { name = "nvim_lsp", group_index = 1 },
         { name = "otter", group_index = 1 },
-        { name = "codeium", group_index = 1 },
+        -- { name = "codeium", group_index = 1 },
         { name = "luasnip", group_index = 1 },
         { name = "path", option = { trailing_slash = true }, group_index = 1 },
         { name = "nerdfont", group_index = 2 },
@@ -229,6 +229,7 @@ return {
     end,
   },
   {
+    -- Annotation generator
     "danymat/neogen",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = { snippet_engine = "luasnip" },
