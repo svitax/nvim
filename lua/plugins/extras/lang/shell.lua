@@ -1,21 +1,25 @@
 return {
   {
     "hrsh7th/nvim-cmp",
-    dependencies = { "mtoohey31/cmp-fish", "tamago324/cmp-zsh", "bydlw98/cmp-env" },
+    dependencies = {
+      -- "mtoohey31/cmp-fish",
+      "tamago324/cmp-zsh",
+      "bydlw98/cmp-env",
+    },
     opts = function(_, opts)
       local cmp = require("cmp")
 
       opts.cmp_source_names["zsh"] = "(zsh)"
-      opts.cmp_source_names["fish"] = "(fish)"
+      -- opts.cmp_source_names["fish"] = "(fish)"
       opts.cmp_source_names["env"] = "(env)"
 
       cmp.setup.filetype({ "sh", "zsh" }, {
         sources = cmp.config.sources(opts.sources, { { name = "env" }, { name = "zsh" } }),
       })
 
-      cmp.setup.filetype({ "fish" }, {
-        sources = cmp.config.sources(opts.sources, { { name = "env" }, { name = "fish", priority = 10 } }),
-      })
+      -- cmp.setup.filetype({ "fish" }, {
+      --   sources = cmp.config.sources(opts.sources, { { name = "env" }, { name = "fish", priority = 10 } }),
+      -- })
 
       -- opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
       --   { name = "fish", priority = 10 },
@@ -26,7 +30,10 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
-        vim.list_extend(opts.ensure_installed, { "bash", "fish" })
+        vim.list_extend(opts.ensure_installed, {
+          "bash",
+          -- "fish"
+        })
       end
     end,
   },
@@ -60,9 +67,9 @@ return {
       --   nls.builtins.diagnostics.dotenv_linter.with({ filetypes = "dotenv", extra_args = { "--skip", "UnorderedKey" } })
       -- )
       -- table.insert(opts.sources, nls.builtins.diagnostics.shellcheck.with({ diagnostics_format = "SC#{c}:#{m}" }))
-      table.insert(opts.sources, nls.builtins.diagnostics.fish)
+      -- table.insert(opts.sources, nls.builtins.diagnostics.fish)
       table.insert(opts.sources, nls.builtins.diagnostics.zsh)
-      table.insert(opts.sources, nls.builtins.formatting.fish_indent)
+      -- table.insert(opts.sources, nls.builtins.formatting.fish_indent)
       table.insert(opts.sources, nls.builtins.formatting.shfmt.with({ extra_filetypes = { "zsh" } }))
       table.insert(opts.sources, nls.builtins.formatting.shellharden.with({ extra_filetypes = { "zsh" } }))
       -- table.insert(opts.sources, nls.builtins.code_actions.shellcheck)
