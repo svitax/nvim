@@ -22,6 +22,7 @@ return {
       { "iw", "<cmd>lua require('various-textobjs').subword(true)<cr>", mode = { "o", "x" }, desc = "inner word" },
     },
   },
+  { "folke/flash.nvim", opts = { modes = { char = { keys = { "f", "F", "t", "T", [";"] = "L", [","] = "H" } } } } },
   -- {
   --   "ggandor/flit.nvim",
   --   commit = "5c9a78b97f7f4301473ea5e37501b5b1d4da167b", -- BUG: This fixes Too many arguments for function: strcharpart
