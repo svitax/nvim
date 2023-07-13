@@ -22,29 +22,29 @@ return {
       { "iw", "<cmd>lua require('various-textobjs').subword(true)<cr>", mode = { "o", "x" }, desc = "inner word" },
     },
   },
-  {
-    "ggandor/flit.nvim",
-    commit = "5c9a78b97f7f4301473ea5e37501b5b1d4da167b", -- BUG: This fixes Too many arguments for function: strcharpart
-  },
-  {
-    "ggandor/leap.nvim",
-    commit = "8facf2eb6a378fd7691dce8c8a7b2726823e2408", -- BUG: This fixes Too many arguments for function: strcharpart
-    config = function(_, opts)
-      local leap = require("leap")
-      for k, v in pairs(opts) do
-        leap.opts[k] = v
-      end
-      leap.add_default_mappings(true)
-      vim.keymap.del({ "x", "o" }, "x")
-      vim.keymap.del({ "x", "o" }, "X")
-      vim.keymap.del({ "n", "x", "o" }, "S")
-      vim.keymap.set({ "n", "x", "o" }, "s", function()
-        require("leap").leap({ target_windows = { vim.fn.win_getid() } })
-      end, { desc = "Leap" })
-      -- override any colorschemes highlights for leap (nightfox doesn't let me change it for some reason)
-      leap.init_highlight(true)
-    end,
-  },
+  -- {
+  --   "ggandor/flit.nvim",
+  --   commit = "5c9a78b97f7f4301473ea5e37501b5b1d4da167b", -- BUG: This fixes Too many arguments for function: strcharpart
+  -- },
+  -- {
+  --   "ggandor/leap.nvim",
+  --   commit = "8facf2eb6a378fd7691dce8c8a7b2726823e2408", -- BUG: This fixes Too many arguments for function: strcharpart
+  --   config = function(_, opts)
+  --     local leap = require("leap")
+  --     for k, v in pairs(opts) do
+  --       leap.opts[k] = v
+  --     end
+  --     leap.add_default_mappings(true)
+  --     vim.keymap.del({ "x", "o" }, "x")
+  --     vim.keymap.del({ "x", "o" }, "X")
+  --     vim.keymap.del({ "n", "x", "o" }, "S")
+  --     vim.keymap.set({ "n", "x", "o" }, "s", function()
+  --       require("leap").leap({ target_windows = { vim.fn.win_getid() } })
+  --     end, { desc = "Leap" })
+  --     -- override any colorschemes highlights for leap (nightfox doesn't let me change it for some reason)
+  --     leap.init_highlight(true)
+  --   end,
+  -- },
   {
     "ziontee113/syntax-tree-surfer",
     config = true,
