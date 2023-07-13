@@ -8,7 +8,7 @@ return {
         "jmbuhr/otter.nvim",
         dev = false,
         config = function()
-          require("otter.config").setup({})
+          require("otter").setup({})
         end,
       },
     },
@@ -24,6 +24,7 @@ return {
         },
         keymap = { hover = "K", definition = "gd" },
       })
+      vim.keymap.set("n", "<leader>nQ", "<cmd>QuartoActivate<cr>", { desc = "Quarto activate" })
     end,
   },
   {

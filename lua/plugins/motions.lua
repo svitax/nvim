@@ -23,7 +23,12 @@ return {
     },
   },
   {
+    "ggandor/flit.nvim",
+    commit = "5c9a78b97f7f4301473ea5e37501b5b1d4da167b", -- BUG: This fixes Too many arguments for function: strcharpart
+  },
+  {
     "ggandor/leap.nvim",
+    commit = "8facf2eb6a378fd7691dce8c8a7b2726823e2408", -- BUG: This fixes Too many arguments for function: strcharpart
     config = function(_, opts)
       local leap = require("leap")
       for k, v in pairs(opts) do

@@ -17,15 +17,18 @@ return {
     },
     opts = {
       templates = { "builtin", "rewriter", "user" },
-      strategy = { "jobstart", preserve_output = true, use_terminal = true },
-      -- strategy = "terminal",
+      -- strategy = { "jobstart", preserve_output = true, use_terminal = true },
+      strategy = "terminal",
+      -- strategy = "toggleterm",
       -- strategy = {
       --   "toggleterm",
       --   use_shell = false,
+      --   auto_scroll = false,
       --   close_on_exit = false,
+      --   quit_on_exit = "never",
       --   open_on_start = true,
       --   hidden = true,
-      --   auto_scroll = false,
+      --   on_create = function() end,
       -- },
       log = {
         { type = "echo", level = vim.log.levels.WARN },
