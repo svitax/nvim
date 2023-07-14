@@ -45,7 +45,7 @@ return {
         "<leader>,",
         lv_utils.telescope("buffers", {
           -- NOTE: override default lv_utils.telescope cwd opt
-          cwd = "",
+          -- cwd = "",
           initial_mode = "normal",
           -- sort_lastused = false,
           -- sort_mru = true,
@@ -73,7 +73,7 @@ return {
         "<leader>bb",
         lv_utils.telescope("buffers", {
           -- NOTE: override default lv_utils.telescope cwd opt
-          cwd = "",
+          -- cwd = "",
           initial_mode = "normal",
           -- sort_lastused = false,
           -- sort_mru = true,

@@ -6,11 +6,11 @@ return {
       -- change/add/delete lazyvim lsp keymaps
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
 
-      keys[#keys + 1] = { "<leader>ca", false }
-      keys[#keys + 1] = { "<leader>cd", false }
+      keys[#keys + 1] = { "<leader>ca", false, mode = "n" }
+      keys[#keys + 1] = { "<leader>cd", false, mode = "n" }
 
-      keys[#keys + 1] = { "<leader>cA", vim.lsp.codelens.run, desc = "Codelens" }
-      keys[#keys + 1] = { "gl", vim.diagnostic.open_float, desc = "Line diagnostics" }
+      keys[#keys + 1] = { "<leader>cA", vim.lsp.codelens.run, desc = "Codelens", mode = "n" }
+      keys[#keys + 1] = { "gl", vim.diagnostic.open_float, desc = "Line diagnostics", mode = "n" }
       -- keys[#keys + 1] = { "K", require("utils").keyword, desc = "Hover" }
     end,
     opts = {

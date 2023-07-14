@@ -2,17 +2,65 @@ return {
   {
     "mfussenegger/nvim-dap",
     dependencies = {
-      "jay-babu/mason-nvim-dap.nvim",
-      "rcarriga/nvim-dap-ui",
       "mxsdev/nvim-dap-vscode-js",
       { "theHamsta/nvim-dap-virtual-text", opts = {} },
-      "jbyuki/one-small-step-for-vimkind",
       {
-        "mfussenegger/nvim-dap-python",
-        opts = { include_configs = true, console = "internalConsole" },
-        config = function(_, opts)
-          require("dap-python").setup("~/.virtualenvs/debugpy/bin/python", opts)
-        end,
+        "jbyuki/one-small-step-for-vimkind",
+        keys = {
+          -- stylua: ignore
+          { "<leader>daL", function() require("osv").launch({ port = 8086 }) end, desc = "Adapter Lua Server" },
+          -- stylua: ignore
+          { "<leader>dal", function() require("osv").run_this() end, desc = "Adapter Lua" },
+        },
+      },
+      {
+        "jay-babu/mason-nvim-dap.nvim",
+        dependencies = "mason.nvim",
+        cmd = { "DapInstall", "DapUninstall" },
+        opts = {
+          -- Makes a best effort to setup the various debuggers with
+          -- reasonable debug configurations
+          automatic_installation = true,
+          -- You can provide additional configuration to the handlers,
+          -- see mason-nvim-dap README for more information
+          handlers = {},
+          -- You'll need to check that you have the required things installed
+          -- online, please don't ask me how to install them :)
+          ensure_installed = {
+            -- Update this to ensure that you have the debuggers for the langs you want
+          },
+        },
+      },
+      {
+        "rcarriga/nvim-dap-ui",
+        keys = {
+          {
+            "<leader>du",
+            function()
+              require("dapui").toggle({})
+            end,
+            desc = "Toggle Dap UI",
+          },
+          {
+            "<leader>dE",
+            function()
+              require("dapui").eval({})
+            end,
+            desc = "Dap eval",
+            mode = { "n", "v" },
+          },
+        },
+      },
+
+      {
+        "folke/which-key.nvim",
+        optional = true,
+        opts = {
+          defaults = {
+            ["<leader>d"] = { name = "+debug" },
+            ["<leader>da"] = { name = "+adapters" },
+          },
+        },
       },
       -- { "LiadOz/nvim-dap-repl-highlights", config = true },
       -- { "Weissle/persistent-breakpoints.nvim", opts = { load_breakpoints_event = { "BufReadPost" } } },
@@ -51,23 +99,10 @@ return {
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-o>", false, true, true), "n", false)
         ui.toggle({})
       end
-
-      vim.keymap.set("n", "<leader>ds", dap_start_debugging, { desc = "Start debugging" })
-      vim.keymap.set("n", "<leader>dl", require("dap.ui.widgets").hover, { desc = "Hover" })
-      vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Continue" })
-      vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
-      vim.keymap.set("n", "<leader>dn", dap.step_over, { desc = "Step over" })
-      vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Step into" })
-      vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "Step out" })
-      -- vim.keymap.set("n", "<leader>dL", "<cmd>Telescope dap list_breakpoints<cr>", { desc = "List breakpoints" })
-
       local function dap_clear_breakpoints()
         dap.clear_breakpoints()
         vim.notify("Breakpoints cleared")
       end
-
-      vim.keymap.set("n", "<leader>dB", dap_clear_breakpoints, { desc = "Clear breakpoints" })
-
       local function dap_end_debug()
         dap.clear_breakpoints()
         ui.toggle({})
@@ -78,7 +113,29 @@ return {
         end)
       end
 
+      vim.keymap.set("n", "<leader>dB", function()
+        dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+      end, { desc = "Breakpoint condition" })
+      vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+      vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Continue" })
+      vim.keymap.set("n", "<leader>dC", dap.run_to_cursor, { desc = "Run to cursor" })
       vim.keymap.set("n", "<leader>de", dap_end_debug, { desc = "End debug" })
+      vim.keymap.set("n", "<leader>dg", dap.goto_, { desc = "Go to line (no execute)" })
+      vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Step into" })
+      vim.keymap.set("n", "<leader>dj", dap.down, { desc = "Down" })
+      vim.keymap.set("n", "<leader>dk", dap.up, { desc = "Up" })
+      vim.keymap.set("n", "<leader>dK", require("dap.ui.widgets").hover, { desc = "Hover/Widgets" })
+      vim.keymap.set("n", "<leader>dl", dap.run_last, { desc = "Run last" })
+      vim.keymap.set("n", "<leader>dL", dap_clear_breakpoints, { desc = "Clear breakpoints" })
+      vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "Step out" })
+      vim.keymap.set("n", "<leader>dO", dap.step_over, { desc = "Step over" })
+      vim.keymap.set("n", "<leader>dp", dap.pause, { desc = "Pause" })
+      vim.keymap.set("n", "<leader>dp", dap.repl.toggle, { desc = "Toggle REPL" })
+      vim.keymap.set("n", "<leader>ds", dap_start_debugging, { desc = "Start debugging" })
+      vim.keymap.set("n", "<leader>dS", dap.session, { desc = "Session" })
+      vim.keymap.set("n", "<leader>dt", dap.terminate, { desc = "Terminate" })
+
+      -- vim.keymap.set("n", "<leader>dn", dap.step_over, { desc = "Step over" })
 
       -- Python adapter
       require("dap-python")
@@ -115,7 +172,7 @@ return {
       { "<leader>dG", "<cmd>Telescope dap configurations<cr>", desc = "List configurations" },
       { "<leader>dV", "<cmd>Telescope dap variables<cr>", desc = "List variables" },
       { "<leader>dF", "<cmd>Telescope dap frames<cr>", desc = "List frames" },
-      { "<leader>dL", "<cmd>Telescope dap list_breakpoints<cr>", desc = "List breakpoints" },
+      { "<leader>df", "<cmd>Telescope dap list_breakpoints<cr>", desc = "List breakpoints" },
     },
   },
   {

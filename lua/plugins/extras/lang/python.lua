@@ -270,4 +270,25 @@ return {
       -- table.insert(opts.sources, nls.builtins.diagnostics.pylint)
     end,
   },
+  {
+    "mfussenegger/nvim-dap",
+    optional = true,
+    dependencies = {
+      {
+        "mfussenegger/nvim-dap-python",
+        opts = { include_configs = true, console = "internalConsole" },
+        keys = {
+          -- stylua: ignore
+          { "<leader>dPt", function() require("dap-python").test_method() end, desc = "Debug Method" },
+          -- stylua: ignore
+          { "<leader>dPc", function() require("dap-python").test_class() end, desc = "Debug Class" },
+        },
+        config = function(_, opts)
+          local path = require("mason-registry").get_package("debugpy"):get_install_path()
+          -- require("dap-python").setup("~/.virtualenvs/debugpy/bin/python", opts)
+          require("dap-python").setup(path .. "venv/bin/python", opts)
+        end,
+      },
+    },
+  },
 }
