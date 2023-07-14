@@ -95,7 +95,7 @@ return {
   {
     -- Operator for smart duplication of lines and selections
     "smjonas/duplicate.nvim",
-    keys = { "yd", "R", { "R", mode = "x" } },
+    keys = { "yd", "R", { "R", mode = "x" }, { "R", mode = "v" } },
     config = function()
       require("duplicate").setup({
         operator = { normal_mode = "yd", visual_mode = "R", line = "R" },

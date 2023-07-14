@@ -10,8 +10,9 @@ return {
   {
     "EdenEast/nightfox.nvim",
     opts = function()
-      -- local C = require("nightfox.lib.color")
+      local C = require("nightfox.lib.color")
       local Shade = require("nightfox.lib.shade")
+      local specs = require("nightfox.spec").load("terafox")
       return {
         palettes = {
           terafox = {
@@ -26,6 +27,17 @@ return {
             white = Shade.new("#e7d7ad", "#eeeeee", "#c8c8c8"),
             orange = Shade.new("#e78a4e", "#ff9664", "#66493c"),
             pink = Shade.new("#d38d97", "#d38d97", "#ad6771"),
+
+            git_add = "#a9b665",
+            git_removed = "#ea6962",
+            git_changed = "#d8a657",
+            git_conflict = "#e78a4e",
+            git_ignored = "#665c54",
+
+            diff_add = C("#171a1a"):blend(C("#a9b665"), 0.2):to_css(), -- bg1, green
+            diff_delete = C("#171a1a"):blend(C("#ea6962"), 0.25):to_css(), -- bg1, red
+            diff_change = C("#171a1a"):blend(C("#d8a657"), 0.2):to_css(), -- bg1, yellow
+            diff_text = C("#171a1a"):blend(C("#d8a657"), 0.35):to_css(), -- bg1, yellow
 
             comment = "#665c54",
 
@@ -124,6 +136,88 @@ return {
 
             PackageInfoOutdatedVersion = { fg = "palette.orange" },
             PackageInfoUpToDateVersion = { fg = "palette.comment" },
+
+            NeogitBranch = { fg = "palette.magenta" },
+            NeogitRemote = { fg = "palette.green" },
+            NeogitHunkHeader = { fg = "palette.comment", bg = "palette.bg2" },
+            NeogitHunkHeaderHighlight = { fg = "palette.fg2", bg = "palette.bg3" },
+            NeogitDiffContext = { fg = "palette.comment", bg = "palette.bg0" },
+            -- NeogitDiffAdd = { fg = "palette.git_add", bg = "palette.diff_add" },
+            -- NeogitDiffDelete = { fg = "palette.git_removed", bg = "palette.diff_delete" },
+            NeogitDiffAdd = { bg = "palette.bg0" },
+            NeogitDiffDelete = { bg = "palette.bg0" },
+            NeogitDiffContextHighlight = { bg = "palette.bg0" },
+            NeogitDiffAddHighlight = { fg = "palette.git_add", bg = "palette.diff_add" },
+            NeogitDiffDeleteHighlight = { fg = "palette.git_removed", bg = "palette.diff_delete" },
+
+            -- NeogitGraphRed = { fg = palette.red },
+            -- NeogitGraphWhite = { fg = palette.white },
+            -- NeogitGraphOrange = { fg = palette.orange },
+            -- NeogitGraphYellow = { fg = palette.yellow },
+            -- NeogitGraphGreen = { fg = palette.green },
+            -- NeogitGraphCyan = { fg = palette.cyan },
+            -- NeogitGraphBlue = { fg = palette.blue },
+            -- NeogitGraphPurple = { fg = palette.purple },
+            -- NeogitGraphGray = { fg = palette.grey },
+
+            -- NeogitGraphBoldRed = { fg = palette.red, gui = "bold" },
+            -- NeogitGraphBoldWhite = { fg = palette.white, gui = "bold" },
+            -- NeogitGraphBoldOrange = { fg = palette.orange, gui = "bold" },
+            -- NeogitGraphBoldYellow = { fg = palette.yellow, gui = "bold" },
+            -- NeogitGraphBoldGreen = { fg = palette.green, gui = "bold" },
+            -- NeogitGraphBoldCyan = { fg = palette.cyan, gui = "bold" },
+            -- NeogitGraphBoldBlue = { fg = palette.blue, gui = "bold" },
+            -- NeogitGraphBoldPurple = { fg = palette.purple, gui = "bold" },
+            -- NeogitGraphBoldGray = { fg = palette.grey, gui = "bold" },
+
+            -- NeogitPopupSectionTitle = { link = "Function" },
+            -- NeogitPopupBranchName = { link = "String" },
+            -- NeogitPopupBold = { gui = "bold" },
+            -- NeogitPopupSwitchKey = { fg = palette.purple },
+            -- NeogitPopupSwitchEnabled = { link = "SpecialChar" },
+            -- NeogitPopupSwitchDisabled = { link = "Comment" },
+            -- NeogitPopupOptionKey = { fg = palette.purple },
+            -- NeogitPopupOptionEnabled = { link = "SpecialChar" },
+            -- NeogitPopupOptionDisabled = { link = "Comment" },
+            -- NeogitPopupConfigKey = { fg = palette.purple },
+            -- NeogitPopupConfigEnabled = { link = "SpecialChar" },
+            -- NeogitPopupConfigDisabled = { link = "Comment" },
+            -- NeogitPopupActionKey = { fg = palette.purple },
+            -- NeogitPopupActionDisabled = { link = "Comment" },
+            -- NeogitFilePath = { fg = "palette.blue" },
+            -- NeogitCommitViewHeader = { bg = palette.bg_cyan, fg = palette.bg0 },
+            -- NeogitDiffHeader = { bg = palette.bg3, fg = palette.blue, gui = "bold" },
+            -- NeogitDiffHeaderHighlight = { bg = palette.bg3, fg = palette.orange, gui = "bold" },
+            -- NeogitNotificationInfo = { link = "DiagnosticInfo" },
+            -- NeogitNotificationWarning = { link = "DiagnosticWarn" },
+            -- NeogitNotificationError = { link = "DiagnosticError" },
+            -- NeogitCommandText = { link = "Comment" },
+            -- NeogitCommandTime = { link = "Comment" },
+            -- NeogitCommandCodeNormal = { link = "String" },
+            -- NeogitCommandCodeError = { link = "Error" },
+            -- NeogitUnmergedInto = { link = "Function" },
+            -- NeogitUnpulledFrom = { link = "Function" },
+            -- NeogitObjectId = { link = "Comment" },
+            -- NeogitStash = { link = "Comment" },
+            -- NeogitRebaseDone = { link = "Comment" },
+            NeogitCursorLine = { bg = "palette.bg3" },
+            -- NeogitFold = { fg = "None", bg = "None" },
+            -- NeogitChangeModified = { fg = palette.bg_blue, gui = "italic,bold" },
+            -- NeogitChangeAdded = { fg = palette.bg_green, gui = "italic,bold" },
+            -- NeogitChangeDeleted = { fg = palette.bg_red, gui = "italic,bold" },
+            -- NeogitChangeRenamed = { fg = palette.bg_purple, gui = "italic,bold" },
+            -- NeogitChangeUpdated = { fg = palette.bg_orange, gui = "italic,bold" },
+            -- NeogitChangeCopied = { fg = palette.bg_cyan, gui = "italic,bold" },
+            -- NeogitChangeBothModified = { fg = palette.bg_yellow, gui = "italic,bold" },
+            -- NeogitChangeNewFile = { fg = palette.bg_green, gui = "italic,bold" },
+            -- NeogitUntrackedfiles = { fg = palette.bg_purple, gui = "bold" },
+            -- NeogitUnstagedchanges = { fg = palette.bg_purple, gui = "bold" },
+            -- NeogitUnmergedchanges = { fg = palette.bg_purple, gui = "bold" },
+            -- NeogitUnpulledchanges = { fg = palette.bg_purple, gui = "bold" },
+            -- NeogitRecentcommits = { fg = palette.bg_purple, gui = "bold" },
+            -- NeogitStagedchanges = { fg = palette.bg_purple, gui = "bold" },
+            -- NeogitStashes = { fg = palette.bg_purple, gui = "bold" },
+            -- NeogitRebasing = { fg = palette.bg_purple, gui = "bold" },
 
             ["@text.strong"] = { fg = "palette.orange", style = "bold" },
             ["@text.emphasis"] = { fg = "palette.orange", style = "italic" },

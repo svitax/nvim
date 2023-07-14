@@ -30,6 +30,12 @@ return {
     keys = { { "<leader>gg", "<cmd>LazyGitCurrentFile<cr>", desc = "Lazygit" } },
   },
   {
+    "NeogitOrg/neogit",
+    dependencies = "nvim-lua/plenary.nvim",
+    opts = { disable_commit_confirmation = true, use_telescope = true },
+    keys = { { "<leader>gn", "<cmd>Neogit<cr>", desc = "Neogit" } },
+  },
+  {
     "sindrets/diffview.nvim",
     dependencies = "nvim-lua/plenary.nvim",
     cmd = { "DiffviewFileHistory", "DiffviewOpen" },
