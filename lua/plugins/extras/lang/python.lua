@@ -202,7 +202,7 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
-        "mypy",
+        -- "mypy",
         -- "black",
         -- "ruff",
         -- "usort",
@@ -255,14 +255,14 @@ return {
     "jose-elias-alvarez/null-ls.nvim",
     opts = function(_, opts)
       local nls = require("null-ls")
-      table.insert(
-        opts.sources,
-        nls.builtins.diagnostics.mypy.with({
-          prefer_local = ".venv/bin",
-          extra_args = { "--strict" },
-          -- method = nls.methods.DIAGNOSTICS_ON_SAVE,
-        })
-      )
+      -- table.insert(
+      --   opts.sources,
+      --   nls.builtins.diagnostics.mypy.with({
+      --     prefer_local = ".venv/bin",
+      --     extra_args = { "--strict" },
+      --     -- method = nls.methods.DIAGNOSTICS_ON_SAVE,
+      --   })
+      -- )
       -- table.insert(opts.sources, nls.builtins.formatting.black)
       -- TODO: use usort until ruff_lsp supports sorting imports with vim.lsp.buf.format() and not just code actions
       -- table.insert(opts.sources, nls.builtins.formatting.usort)

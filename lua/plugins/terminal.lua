@@ -12,6 +12,7 @@ return {
       prompt_end = "> ", -- powershell/fish
     },
   },
+  -- { "rebelot/terminal.nvim", opts = {}, cmd = { "TermOpen" } },
   {
     "akinsho/toggleterm.nvim",
     opts = {

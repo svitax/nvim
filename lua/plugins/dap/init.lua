@@ -51,22 +51,17 @@ return {
           },
         },
       },
-
-      {
-        "folke/which-key.nvim",
-        optional = true,
-        opts = {
-          defaults = {
-            ["<leader>d"] = { name = "+debug" },
-            ["<leader>da"] = { name = "+adapters" },
-          },
-        },
-      },
       -- { "LiadOz/nvim-dap-repl-highlights", config = true },
       -- { "Weissle/persistent-breakpoints.nvim", opts = { load_breakpoints_event = { "BufReadPost" } } },
     },
     -- event = "VeryLazy",
-    keys = { { "<leader>d" } },
+    keys = {
+      -- { "<leader>d" },
+      -- stylua: ignore
+      { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = { "Toggle breakpoint" } },
+      -- stylua: ignore
+      { "<leader>dc", function() require("dap").continue() end, desc = { "Continue" } },
+    },
     config = function()
       local adapters = require("plugins.dap.adapters")
       local configurations = require("plugins.dap.configs")
