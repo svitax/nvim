@@ -1,8 +1,8 @@
 return {
   {
     "Olical/conjure",
-    event = "VeryLazy",
-    -- ft = { "python", "hy" },
+    -- event = "VeryLazy",
+    ft = { "python", "hy" },
     -- keys = { { "<localleader>" } },
     init = function()
       vim.api.nvim_create_autocmd("BufNewFile", {
@@ -14,6 +14,13 @@ return {
         desc = "Conjure Log disable LSP diagnostics",
       })
       vim.g["conjure#extract#tree_sitter#enabled"] = true
+
+      -- TODO: add virtualenv support
+      -- vim.g["conjure#client#python#stdio#command"] = "ipython --classic -i"
+      vim.g["conjure#client#python#stdio#command"] = "python3 -iq"
+      vim.g["conjure#client#python#stdio#mapping#start"] = "s"
+      vim.g["conjure#client#python#stdio#mapping#stop"] = "d"
+
       -- vim.g["conjure#mapping#prefix"] = "<localleader>"
       -- vim.cmd([[let g:conjure#mapping#prefix="h"]])
       -- vim.g.maplocalleader = "h"
@@ -21,19 +28,6 @@ return {
       -- vim.g["conjure#client#python#stdio#mapping#start"] = "ca"
     end,
   },
-  -- {
-  --   "folke/which-key.nvim",
-  --   -- optional = true,
-  --   opts = {
-  --     defaults = {
-  --       ["<leader>m"] = { name = "+localleader" },
-  --       -- ["<localleader>e"] = { name = "+evaluate" },
-  --       -- ["<localleader>l"] = { name = "+logs" },
-  --       -- ["<localleader>g"] = { name = "+goto" },
-  --       -- ["<localleader>r"] = { name = "+reset" },
-  --     },
-  --   },
-  -- },
   -- {
   --   "dccsillag/magma-nvim",
   --   build = ":UpdateRemotePlugins",

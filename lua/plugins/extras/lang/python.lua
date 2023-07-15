@@ -2,6 +2,7 @@ local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
 return {
+  { "gabenespoli/vim-jupycent", event = "VeryLazy" },
   {
     "linux-cultist/venv-selector.nvim",
     dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim" },
