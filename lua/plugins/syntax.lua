@@ -133,7 +133,7 @@ return {
         desc = "Todo/Fix/Fixme (cwd)",
       },
       {
-        "<leader>st",
+        "<leader>sT",
         function()
           local command = "TodoTelescope cwd=" .. vim.fn.expand("%:p:h")
           vim.api.nvim_command(command)

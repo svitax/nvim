@@ -65,7 +65,7 @@ return {
       { "<C-7>", "<cmd>6ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 7" },
       { "<C-8>", "<cmd>6ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 8" },
       { "<C-9>", "<cmd>6ToggleTerm<cr>", mode = { "n", "i", "t" }, desc = "Toggle terminal 9" },
-      { "<leader>ft", "<cmd>TermSelect<cr>", desc = "Find terminal" },
+      { "<leader>st", "<cmd>TermSelect<cr>", desc = "Find terminal" },
       { "<A-t>", "<cmd>ToggleTermSetName<cr>", desc = "Rename terminal" },
       -- { "<leader>gt", "<cmd>lua _lazygit_toggle()<CR>", mode = { "n" }, desc = "Toggle lazygit" },
       -- { "<leader>hn", "<cmd>lua _navi_toggle()<CR>", mode = { "n" }, desc = "Toggle navi" },
