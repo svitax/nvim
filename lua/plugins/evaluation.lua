@@ -2,7 +2,7 @@ return {
   {
     "Olical/conjure",
     -- event = "VeryLazy",
-    ft = { "python", "hy" },
+    ft = { "python", "hy", "markdown" },
     -- keys = { { "<localleader>" } },
     init = function()
       vim.api.nvim_create_autocmd("BufNewFile", {

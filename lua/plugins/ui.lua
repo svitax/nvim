@@ -100,16 +100,21 @@ return {
     end,
   },
   { "Bekaboo/deadcolumn.nvim", event = "VeryLazy", config = true, opts = { warning = { colorcode = "#ea6962" } } },
-  -- {
-  --   "shellRaining/hlchunk.nvim",
-  --   event = { "UIEnter" },
-  --   opts = {
-  --     chunk = { style = "#d4879c" },
-  --     indent = { enable = false },
-  --     line_num = { enable = false },
-  --     blank = { enable = false },
-  --   },
-  -- },
+  {
+    "shellRaining/hlchunk.nvim",
+    event = { "UIEnter" },
+    opts = {
+      exclude_filetypes = {
+        NeogitStatus = true,
+        NeogitCommitMessage = true,
+        NeogitConsole = true,
+      },
+      chunk = { style = "#d4879c" },
+      indent = { enable = false },
+      line_num = { enable = false },
+      blank = { enable = false },
+    },
+  },
   {
     "stevearc/dressing.nvim",
     opts = { select = { telescope = require("telescope.themes").get_ivy({ ... }) }, input = { enabled = false } },
@@ -132,7 +137,7 @@ return {
         ["<leader>d"] = { name = "+debug" },
         ["<leader>f"] = { name = "+file/find" },
         ["<leader>g"] = { name = "+git" },
-        ["<leader>gh"] = { name = "+hunks" },
+        -- ["<leader>gh"] = { name = "+hunks" },
         ["<leader>h"] = { name = "+help" },
         ["<leader>m"] = { name = "+<localleader>" },
         ["<leader>me"] = { name = "+evaluate" },

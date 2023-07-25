@@ -4,7 +4,6 @@ local lv_utils = require("lazyvim.util")
 return {
   {
     "nvim-telescope/telescope.nvim",
-    cmd = "Telescope",
     dependencies = { { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
     -- apply the config and additionally load fzf-native
     config = function(_, opts)
@@ -14,11 +13,11 @@ return {
 
       -- Custom picker
       local custom = require("plugins.telescope.pickers")
-      vim.keymap.set("n", "<leader>gb", custom.delta_branches_picker, { desc = "Git branches" })
-      vim.keymap.set("n", "<leader>gc", custom.delta_commits_picker, { desc = "Git commits" })
-      vim.keymap.set("n", "<leader>gC", custom.delta_bcommits_picker, { desc = "Git bcommits" })
-      vim.keymap.set("n", "<leader>gs", custom.delta_status_picker, { desc = "Git status" })
-      vim.keymap.set("n", "<leader>gS", custom.delta_stash_picker, { desc = "Git stash" })
+      vim.keymap.set("n", "<leader>gb", custom.delta_branches_picker, { desc = "Checkout Git branches" })
+      vim.keymap.set("n", "<leader>gc", custom.delta_commits_picker, { desc = "Checkout Git commits" })
+      vim.keymap.set("n", "<leader>gC", custom.delta_bcommits_picker, { desc = "Checkout Git bcommits" })
+      vim.keymap.set("n", "<leader>gt", custom.delta_status_picker, { desc = "Git status" })
+      vim.keymap.set("n", "<leader>gT", custom.delta_stash_picker, { desc = "Git stash" })
     end,
     keys = {
       { "<leader>/", false },
@@ -215,6 +214,12 @@ return {
         live_grep_args = {
           auto_quoting = true, -- enable/disable auto-quoting
         },
+        smart_open = { match_algorithm = "fzf" },
+        advanced_git_search = {
+          diff_plugin = "diffview",
+          telescope_theme = { search_log_content = { layout_config = { height = 0.80, preview_width = 0.75 } } },
+        },
+        -- bookmarks = { selected_browser = "edge", buku_include_tags = true },
       },
       defaults = require("telescope.themes").get_ivy({
         -- wrap_results = true,
@@ -243,19 +248,19 @@ return {
       }),
     },
   },
-  {
-    -- NOTE: oldfiles are only saved when the program is closed. so if you open a file you haven't
-    -- worked on before, the builtin telescope oldfiles picker will not show it.
-    "smartpde/telescope-recent-files",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    config = function()
-      require("telescope").load_extension("recent_files")
-    end,
-    keys = {
-      { "<leader>fr", "<cmd>Telescope recent_files pick<cr>", desc = "Recent files" },
-      { "<leader>fR", "<cmd>Telescope recent_files pick only_cwd=true<cr>", desc = "Recent files (cwd)" },
-    },
-  },
+  -- {
+  --   -- NOTE: oldfiles are only saved when the program is closed. so if you open a file you haven't
+  --   -- worked on before, the builtin telescope oldfiles picker will not show it.
+  --   "smartpde/telescope-recent-files",
+  --   dependencies = { "nvim-telescope/telescope.nvim" },
+  --   config = function()
+  --     require("telescope").load_extension("recent_files")
+  --   end,
+  --   keys = {
+  --     { "<leader>fr", "<cmd>Telescope recent_files pick<cr>", desc = "Recent files" },
+  --     { "<leader>fR", "<cmd>Telescope recent_files pick only_cwd=true<cr>", desc = "Recent files (cwd)" },
+  --   },
+  -- },
   {
     "tsakirist/telescope-lazy.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
@@ -398,4 +403,31 @@ return {
       },
     },
   },
+  {
+    "danielfalk/smart-open.nvim",
+    dependencies = { "kkharji/sqlite.lua", "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("smart_open")
+    end,
+    keys = {
+      { "<leader>fr", "<cmd>Telescope smart_open<cr>", desc = "Find recent files" },
+      { "<leader>fR", "<cmd>Telescope smart_open cwd_only=true<cr>", desc = "Find recent files (cwd)" },
+    },
+  },
+  -- {
+  --   "dhruvmanila/browser-bookmarks.nvim",
+  --   version = "*",
+  --   -- Only required to override the default options
+  --   -- opts = { selected_browser = "edge" },
+  --   dependencies = {
+  --     "nvim-telescope/telescope.nvim",
+  --     "kkharji/sqlite.lua", -- Only if your selected browser is Firefox, Waterfox or buku
+  --   },
+  --   config = function(_, opts)
+  --     require("telescope").load_extension("bookmarks")
+  --   end,
+  --   keys = {
+  --     { "<leader>fk", "<cmd>Telescope bookmarks<cr>", desc = "Find bookmarks" },
+  --   },
+  -- },
 }

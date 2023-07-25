@@ -37,18 +37,16 @@ return {
       },
     },
   },
-  {
-    "williamboman/mason.nvim",
-    cmd = "Mason",
-    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
-  },
+  -- { "dgagn/diagflow.nvim", event = { "DiagnosticChanged" }, opts = { toggle_event = { "InsertEnter" } } },
+  { "williamboman/mason.nvim", cmd = "Mason", keys = { { "<leader>cM", "<cmd>Mason<cr>", desc = "Mason" } } },
   {
     "DNLHC/glance.nvim",
     config = true,
     keys = {
-      { "<leader>ci", "<cmd>Glance implementations<cr>", desc = "Find implementations" },
       { "<leader>cd", "<cmd>Glance definitions<cr>", desc = "Jump to definition" },
-      { "<leader>cD", "<cmd>Glance references<cr>", desc = "Jump to references" },
+      { "<leader>cm", "<cmd>Glance references<cr>", desc = "Jump to references" },
+      { "<leader>cy", "<cmd>Glance type_definitions<cr>", desc = "Jump to type definitions" },
+      { "<leader>ci", "<cmd>Glance implementations<cr>", desc = "Find implementations" },
     },
   },
   -- NOTE: nvim-navbuddy
@@ -104,24 +102,24 @@ return {
   --     },
   --   },
   -- },
-  {
-    "lvimuser/lsp-inlayhints.nvim",
-    event = "LspAttach",
-    opts = {},
-    config = function(_, opts)
-      require("lsp-inlayhints").setup(opts)
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("LspAttach_inlayhints", {}),
-        callback = function(args)
-          if not (args.data and args.data.client_id) then
-            return
-          end
-          local client = vim.lsp.get_client_by_id(args.data.client_id)
-          require("lsp-inlayhints").on_attach(client, args.buf, false)
-        end,
-      })
-    end,
-  },
+  -- {
+  --   "lvimuser/lsp-inlayhints.nvim",
+  --   event = "LspAttach",
+  --   opts = {},
+  --   config = function(_, opts)
+  --     require("lsp-inlayhints").setup(opts)
+  --     vim.api.nvim_create_autocmd("LspAttach", {
+  --       group = vim.api.nvim_create_augroup("LspAttach_inlayhints", {}),
+  --       callback = function(args)
+  --         if not (args.data and args.data.client_id) then
+  --           return
+  --         end
+  --         local client = vim.lsp.get_client_by_id(args.data.client_id)
+  --         require("lsp-inlayhints").on_attach(client, args.buf, false)
+  --       end,
+  --     })
+  --   end,
+  -- },
   -- {
   --   "kosayoda/nvim-lightbulb",
   --   event = { "BufReadPre", "BufNewFile" },

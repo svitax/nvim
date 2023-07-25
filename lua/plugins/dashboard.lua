@@ -19,10 +19,15 @@ return {
         dashboard.button("f", " " .. " Find file", [[:lua require('lazyvim.util').telescope('files')()<cr>]]),
         dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert<cr>"),
         dashboard.button("p", " " .. " Projects", [[:lua require('telescope').extensions.repo.list()<cr>]]),
+        -- dashboard.button(
+        --   "r",
+        --   " " .. " Recent files",
+        --   [[:lua require('telescope').extensions.recent_files.pick()<cr>]]
+        -- ),
         dashboard.button(
           "r",
           " " .. " Recent files",
-          [[:lua require('telescope').extensions.recent_files.pick()<cr>]]
+          [[:lua require('telescope').extensions.smart_open.smart_open()<cr>]]
         ),
         dashboard.button("g", " " .. " Find text", [[:lua require('lazyvim.util').telescope('live_grep')()<cr>]]),
         dashboard.button("l", "鈴" .. " Plugins", ":Lazy<cr>"),

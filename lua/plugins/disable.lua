@@ -9,8 +9,6 @@ return {
   { "catppuccin", enabled = false },
   { "lukas-reineke/indent-blankline.nvim", enabled = false },
   { "echasnovski/mini.indentscope", enabled = false },
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    keys = { { "<leader>fe", false }, { "<leader>fE", false }, { "<leader>e", false }, { "<leader>E", false } },
-  },
+  { "folke/flash.nvim", keys = { { "R", mode = { "o", "x" }, false } } },
+  { "LazyVim/LazyVim", opts = { defaults = { keymaps = false } } },
 }

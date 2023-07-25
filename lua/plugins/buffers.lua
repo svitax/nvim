@@ -66,21 +66,21 @@ return {
       { "<leader>bw", "<cmd>Bwipeout<cr>", desc = "Wipeout buffer" },
     },
   },
-  {
-    -- Temporary scratch buffers
-    "m-demare/attempt.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    config = function(_, opts)
-      require("attempt").setup(opts)
-      require("telescope").load_extension("attempt")
-    end,
-    keys = {
-      { "<leader>bxd", "<cmd>lua require('attempt').delete_buf()<cr>", desc = "Delete scratch buffer" },
-      { "<leader>bxe", "<cmd>lua require('attempt').run()<cr>", desc = "Eval scratch buffer" },
-      { "<leader>bxf", "<cmd>Telescope attempt<cr>", desc = "Find scratch buffers" },
-      { "<leader>bxn", "<cmd>lua require('attempt').new_input_ext()<cr>", desc = "New scratch buffer (input)" },
-      { "<leader>bxN", "<cmd>lua require('attempt').new_select()<cr>", desc = "New scratch buffer (select)" },
-      { "<leader>bxr", "<cmd>lua require('attempt').rename_buf()<cr>", desc = "Rename scratch buffer" },
-    },
-  },
+  -- {
+  --   -- Temporary scratch buffers
+  --   "m-demare/attempt.nvim",
+  --   dependencies = { "nvim-telescope/telescope.nvim" },
+  --   config = function(_, opts)
+  --     require("attempt").setup(opts)
+  --     require("telescope").load_extension("attempt")
+  --   end,
+  --   keys = {
+  --     { "<leader>bxd", "<cmd>lua require('attempt').delete_buf()<cr>", desc = "Delete scratch buffer" },
+  --     { "<leader>bxe", "<cmd>lua require('attempt').run()<cr>", desc = "Eval scratch buffer" },
+  --     { "<leader>bxf", "<cmd>Telescope attempt<cr>", desc = "Find scratch buffers" },
+  --     { "<leader>bxn", "<cmd>lua require('attempt').new_input_ext()<cr>", desc = "New scratch buffer (input)" },
+  --     { "<leader>bxN", "<cmd>lua require('attempt').new_select()<cr>", desc = "New scratch buffer (select)" },
+  --     { "<leader>bxr", "<cmd>lua require('attempt').rename_buf()<cr>", desc = "Rename scratch buffer" },
+  --   },
+  -- },
 }

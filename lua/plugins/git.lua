@@ -6,30 +6,61 @@ return {
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
-      { "petertriho/cmp-git", dependencies = "nvim-lua/plenary.nvim", opts = { github = { pull_requests = 10 } } },
+      -- { "davidsierradz/cmp-conventionalcommits", opts = {} },
+      -- { "Cassin01/cmp-gitcommit", opts = {} },
+      {
+        "petertriho/cmp-git",
+        dependencies = "nvim-lua/plenary.nvim",
+        opts = { filetypes = { "gitcommit", "octo", "NeogitCommitMessage" }, github = { pull_requests = 10 } },
+      },
     },
     opts = function(_, opts)
       local cmp = require("cmp")
 
       opts.cmp_source_names["git"] = "(git)"
+      -- opts.cmp_source_names["conventionalcommits"] = "(cc)"
+      -- opts.cmp_source_names["gitcommit"] = "(cc)"
 
-      cmp.setup.filetype({ "gitcommit" }, {
-        sources = cmp.config.sources({ { name = "git" } }),
-      })
+      -- cmp.setup.filetype({ "gitcommit", "NeogitCommitMessage" }, {
+      --   sources = cmp.config.sources({ { name = "git" }, { name = "gitcommit" } }),
+      -- })
 
-      -- opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-      --   { name = "git", priority = 10 },
-      -- }, 1, #opts.sources))
+      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
+        -- { name = "gitcommit" },
+        -- { name = "conventionalcommits" },
+        { name = "git", priority = 10 },
+      }, 1, #opts.sources))
     end,
   },
+  { "folke/which-key.nvim", optional = true, opts = { defaults = { ["<leader>gs"] = { name = "+git search" } } } },
   {
-    "kdheepak/lazygit.nvim",
-    init = function()
-      vim.g.lazygit_floating_window_winblend = 5
+    "aaronhallaert/advanced-git-search.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "sindrets/diffview.nvim" },
+    config = function()
+      require("telescope").load_extension("advanced_git_search")
     end,
-    cmd = { "LazyGit", "LazyGitFilter", "LazyGitFilterCurrentFile" },
-    keys = { { "<leader>gg", "<cmd>LazyGitCurrentFile<cr>", desc = "Lazygit" } },
+    keys = {
+      { "<leader>gsc", "<cmd>AdvancedGitSearch search_log_content<cr>", desc = "Search repo log content" },
+      { "<leader>gsC", "<cmd>AdvancedGitSearch search_log_content_file<cr>", desc = "Search file log content" },
+      { "<leader>gsf", "<cmd>AdvancedGitSearch diff_commit_file<cr>", desc = "Diff current file with commit" },
+      {
+        "<leader>gsl",
+        "<cmd>AdvancedGitSearch diff_commit_line<cr>",
+        desc = "Diff current file with selected line history",
+      },
+      { "<leader>gsb", "<cmd>AdvancedGitSearch diff_branch_file<cr>", desc = "Diff file with branch" },
+      { "<leader>gsB", "<cmd>AdvancedGitSearch changed_on_branch<cr>", desc = "Changed on current branch" },
+      { "<leader>gsr", "<cmd>AdvancedGitSearch checkout_reflog<cr>", desc = "Checkout from reflog" },
+    },
   },
+  -- {
+  --   "kdheepak/lazygit.nvim",
+  --   init = function()
+  --     vim.g.lazygit_floating_window_winblend = 5
+  --   end,
+  --   cmd = { "LazyGit", "LazyGitFilter", "LazyGitFilterCurrentFile" },
+  --   keys = { { "<leader>gg", "<cmd>LazyGitCurrentFile<cr>", desc = "Lazygit" } },
+  -- },
   {
     "NeogitOrg/neogit",
     dependencies = "nvim-lua/plenary.nvim",

@@ -34,7 +34,7 @@ return {
       -- "PaterJason/cmp-conjure",
       { "dcampos/cmp-emmet-vim", dependencies = "mattn/emmet-vim" },
       "chrisgrieser/cmp-nerdfont",
-      "hrsh7th/cmp-nvim-lsp-document-symbol",
+      -- "hrsh7th/cmp-nvim-lsp-document-symbol",
       -- "hrsh7th/cmp-omni",
       "jmbuhr/otter.nvim",
       -- "f3fora/cmp-spell",
@@ -85,7 +85,10 @@ return {
 
       cmp.setup.cmdline({ "/", "?", "@" }, {
         -- cmp groups. if we can't find anything in one group, look in the next
-        sources = cmp.config.sources({ { name = "nvim_lsp_document_symbol" } }, { { name = "buffer" } }),
+        sources = cmp.config.sources(
+          -- { { name = "nvim_lsp_document_symbol" } },
+          { { name = "buffer" } }
+        ),
         formatting = { max_width = 30 },
       })
 
