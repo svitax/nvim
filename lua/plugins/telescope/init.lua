@@ -405,7 +405,10 @@ return {
   },
   {
     "danielfalk/smart-open.nvim",
-    dependencies = { "kkharji/sqlite.lua", "nvim-telescope/telescope.nvim" },
+    dependencies = {
+      "kkharji/sqlite.lua", -- need export DYLD_LIBRARY_PATH=/usr/local/opt/sqlite/lib:/usr/lib to work on macos
+      "nvim-telescope/telescope.nvim",
+    },
     config = function()
       require("telescope").load_extension("smart_open")
     end,
