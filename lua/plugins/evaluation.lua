@@ -14,6 +14,8 @@ return {
         desc = "Conjure Log disable LSP diagnostics",
       })
       vim.g["conjure#extract#tree_sitter#enabled"] = true
+      vim.g["conjure#mapping#def_word"] = false
+      vim.g["conjure#mapping#doc_word"] = false
 
       -- TODO: add virtualenv support
       -- vim.g["conjure#client#python#stdio#command"] = "ipython --classic -i"
