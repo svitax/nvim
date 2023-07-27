@@ -543,4 +543,5 @@ return {
       }
     end,
   },
+  -- { "Bekaboo/dropbar.nvim", event = "VeryLazy", opts = {} },
 }

@@ -50,26 +50,26 @@ return {
     },
   },
   -- NOTE: nvim-navbuddy
-  {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      {
-        "SmiteshP/nvim-navbuddy",
-        dependencies = { "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
-        opts = { lsp = { auto_attach = true } },
-        config = function(_, opts)
-          local navbuddy = require("nvim-navbuddy")
-          local actions = require("nvim-navbuddy.actions")
-          opts.mappings = {
-            ["l"] = actions.parent(), -- move to left panel
-            [";"] = actions.children(), -- move to right panel
-          }
-          navbuddy.setup(opts)
-        end,
-        keys = { { "<leader>co", "<cmd>Navbuddy<cr>", desc = "Symbols outline" } },
-      },
-    },
-  },
+  -- {
+  --   "neovim/nvim-lspconfig",
+  --   dependencies = {
+  --     {
+  --       "SmiteshP/nvim-navbuddy",
+  --       dependencies = { "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
+  --       opts = { lsp = { auto_attach = true } },
+  --       config = function(_, opts)
+  --         local navbuddy = require("nvim-navbuddy")
+  --         local actions = require("nvim-navbuddy.actions")
+  --         opts.mappings = {
+  --           ["l"] = actions.parent(), -- move to left panel
+  --           [";"] = actions.children(), -- move to right panel
+  --         }
+  --         navbuddy.setup(opts)
+  --       end,
+  --       keys = { { "<leader>co", "<cmd>Navbuddy<cr>", desc = "Symbols outline" } },
+  --     },
+  --   },
+  -- },
   -- {
   --   "hrsh7th/nvim-gtd",
   --   event = { "BufReadPre", "BufNewFile" },
@@ -102,24 +102,26 @@ return {
   --     },
   --   },
   -- },
-  -- {
-  --   "lvimuser/lsp-inlayhints.nvim",
-  --   event = "LspAttach",
-  --   opts = {},
-  --   config = function(_, opts)
-  --     require("lsp-inlayhints").setup(opts)
-  --     vim.api.nvim_create_autocmd("LspAttach", {
-  --       group = vim.api.nvim_create_augroup("LspAttach_inlayhints", {}),
-  --       callback = function(args)
-  --         if not (args.data and args.data.client_id) then
-  --           return
-  --         end
-  --         local client = vim.lsp.get_client_by_id(args.data.client_id)
-  --         require("lsp-inlayhints").on_attach(client, args.buf, false)
-  --       end,
-  --     })
-  --   end,
-  -- },
+  {
+    "lvimuser/lsp-inlayhints.nvim",
+    init = function()
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("LspAttach_inlayhints", {}),
+        callback = function(args)
+          if not (args.data and args.data.client_id) then
+            return
+          end
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client.server_capabilities.inlayHintProvider then
+            local inlayhints = require("lsp-inlayhints")
+            inlayhints.on_attach(client, args.buf)
+            vim.keymap.set("n", "<leader>uH", inlayhints.toggle, { buffer = args.buf, desc = "Toggle inlay hints" })
+          end
+        end,
+      })
+    end,
+    opts = {},
+  },
   -- {
   --   "kosayoda/nvim-lightbulb",
   --   event = { "BufReadPre", "BufNewFile" },

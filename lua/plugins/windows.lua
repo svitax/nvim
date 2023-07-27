@@ -30,10 +30,10 @@ return {
       { "<leader>wk", "<cmd>lua require('windex').switch_window('up')<cr>", desc = "Switch window up" },
       { "<leader>w;", "<cmd>lua require('windex').switch_window('up')<cr>", desc = "Switch window right" },
 
-      { "<leader>wz", "<cmd>lua require('windex').toggle_maximize()<cr>", desc = "Maximize window" },
+      -- { "<leader>wz", "<cmd>lua require('windex').toggle_maximize()<cr>", desc = "Maximize window" },
 
-      { "<leader>wS", "<cmd>lua require('windex').create_pane('horizontal')<cr>", desc = "Split tmux pane" },
-      { "<leader>wV", "<cmd>lua require('windex').create_pane('vertical')<cr>", desc = "Vsplit tmux pane" },
+      -- { "<leader>wS", "<cmd>lua require('windex').create_pane('horizontal')<cr>", desc = "Split tmux pane" },
+      -- { "<leader>wV", "<cmd>lua require('windex').create_pane('vertical')<cr>", desc = "Vsplit tmux pane" },
     },
   },
   {
@@ -45,6 +45,35 @@ return {
       { "<leader>wJ", "<cmd>WinShift down<cr>", desc = "Shift window down" },
       { "<leader>wK", "<cmd>WinShift up<cr>", desc = "Shift window up" },
       { "<leader>w:", "<cmd>WinShift right<cr>", desc = "Shift window right" },
+    },
+  },
+  {
+    "anuvyklack/windows.nvim",
+    dependencies = {
+      "anuvyklack/middleclass",
+      -- "anuvyklack/animation.nvim" -- need for animation
+    },
+    cmd = {
+      "WindowsMaximize",
+      "WindowsMaximizeVertically",
+      "WindowsMaximizeHorizontally",
+      "WindowsEqualize",
+      "WindowsEnableAutowidth",
+      "WindowsDisableAutowidth",
+      "WindowsToggleAutowidth",
+    },
+    opts = { animation = { enable = false } },
+    config = function(_, opts)
+      -- vim.o.winwidth = 10 -- animation
+      -- vim.o.winminwidth = 10 -- animation
+      -- vim.o.equalalways = false -- animation
+      require("windows").setup(opts)
+    end,
+    keys = {
+      { "<leader>wz", "<cmd>WindowsMaximize<cr>", desc = "Maximize window" },
+      { "<leader>wV", "<cmd>WindowsMaximizeVertically<cr>", desc = "Maximize window vertically" },
+      { "<leader>wS", "<cmd>WindowsMaximizeHorizontally<cr>", desc = "Maximize window horizontally" },
+      { "<leader>w=", "<cmd>WindowsEqualize<cr>", desc = "Equalize windows" },
     },
   },
 }

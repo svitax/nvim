@@ -1,4 +1,26 @@
+local utils = require("utils")
+
+local function on_file_remove(args)
+  local ts_clients = vim.lsp.get_active_clients({ name = "tsserver" })
+  for _, ts_client in ipairs(ts_clients) do
+    ts_client.request("workspace/executeCommand", {
+      command = "_typescript.applyRenameFile",
+      arguments = { { sourceUri = vim.uri_from_fname(args.source), targetUri = vim.uri_from_fname(args.destination) } },
+    })
+  end
+end
+
 return {
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    opts = {
+      event_handlers = {
+        { event = require("neo-tree.events").FILE_MOVED, handler = on_file_remove },
+        { event = require("neo-tree.events").FILE_RENAMED, handler = on_file_remove },
+      },
+    },
+  },
+
   -- add typescript to treesitter
   {
     "nvim-treesitter/nvim-treesitter",
@@ -96,23 +118,39 @@ return {
     "jose-elias-alvarez/null-ls.nvim",
     opts = function(_, opts)
       local nls = require("null-ls")
+
+      local has_prettier = function(util)
+        return utils.check_json_key_exists(vim.fn.getcwd() .. "/package.json", "prettier")
+          or util.root_has_file(".prettierrc")
+          or util.root_has_file(".prettierrc.json")
+          or util.root_has_file(".prettierrc.yml")
+          or util.root_has_file(".prettierrc.yaml")
+          or util.root_has_file(".prettierrc.json5")
+          or util.root_has_file(".prettierrc.js")
+          or util.root_has_file(".prettierrc.cjs")
+          or util.root_has_file("prettier.config.js")
+          or util.root_has_file("prettier.config.cjs")
+          or util.root_has_file(".prettierrc.toml")
+      end
+
+      local has_eslint = function(util)
+        return util.root_has_file(".eslintrc.js")
+          or util.root_has_file(".eslintrc.cjs")
+          or util.root_has_file(".eslintrc.yaml")
+          or util.root_has_file(".eslintrc.yml")
+          or util.root_has_file(".eslintrc.json")
+          or utils.check_json_key_exists(vim.fn.getcwd() .. "/package.json", "eslintConfig")
+      end
       -- table.insert(opts.sources, require("typescript.extensions.null-ls.code-actions"))
-      table.insert(opts.sources, nls.builtins.formatting.prettierd.with({ disabled_filetypes = { "yaml" } }))
+      table.insert(
+        opts.sources,
+        nls.builtins.formatting.prettierd.with({ disabled_filetypes = { "yaml" }, condition = has_prettier })
+      )
       table.insert(
         opts.sources,
         nls.builtins.formatting.eslint_d.with({
+          condition = has_eslint,
           -- method = nls.methods.DIAGNOSTICS_ON_SAVE,
-          condition = function(utils)
-            return utils.root_has_file({
-              ".eslintrc.js",
-              ".eslintrc.json",
-              ".eslintrc.cjs",
-              ".eslintrc.ts",
-              ".eslintrc.yaml",
-              ".eslintrc.yml",
-              "eslint.config.js",
-            })
-          end,
         })
       )
     end,
