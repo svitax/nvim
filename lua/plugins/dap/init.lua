@@ -72,7 +72,8 @@ return {
 
       dap.set_log_level("TRACE")
 
-      mason_dap.setup({ ensure_installed = { "node2", "js", "python" } })
+      -- mason_dap.setup({ ensure_installed = { "node2", "js", "python" } })
+      mason_dap.setup({ ensure_installed = { "node2", "js" } })
 
       adapters.setup(dap)
       configurations.setup(dap)
@@ -133,7 +134,7 @@ return {
       -- vim.keymap.set("n", "<leader>dn", dap.step_over, { desc = "Step over" })
 
       -- Python adapter
-      require("dap-python")
+      -- require("dap-python")
 
       -- UI Settings
       ui.setup({

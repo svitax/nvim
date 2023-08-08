@@ -62,7 +62,12 @@ return {
       { "<leader>fn", "<cmd>ZkNotes { sort = {'modified'}}<cr>", desc = "Find notes" },
       { "<leader>nn", "<cmd>ZkNotes { sort = {'modified'}}<cr>", desc = "Find notes" },
       -- Search for the notes matching the current visual selection.
-      { "<leader>nF", "<cmd><,'>ZkMatch<cr>", mode = "v", desc = "Find note (selection)" },
+      {
+        "<leader>nF",
+        "<cmd><,'>ZkMatch<cr>",
+        mode = "v",
+        desc = "Find note (selection)",
+      },
       -- "Refresh zk index"
       { "<leader>ni", "<cmd>ZkIndex<cr>", desc = "Refresh index" },
       -- Create a new note after asking for its title.
@@ -252,6 +257,11 @@ return {
           extra_args = { "--disable", "trailing-spaces", "no-multiple-blanks", "line-length" },
         })
       )
+      table.insert(
+        opts.sources,
+        nls.builtins.formatting.trim_whitespace.with({ filetypes = { "markdown", "text", "quarto" } })
+      )
+      -- table.insert(opts.sources, nls.builtins.formatting.mdformat)
       -- table.insert(opts.sources, nls.builtins.formatting.cbfmt)
       -- table.insert(opts.sources, nls.builtins.diagnostics.codespell.with({ filetypes = { "text", "markdown" } }))
       -- table.insert(
