@@ -478,6 +478,7 @@ local nightfox_theme = function()
 end
 
 return {
+  -- { "Bekaboo/dropbar.nvim", event = "VeryLazy", opts = {} },
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
@@ -543,5 +544,4 @@ return {
       }
     end,
   },
-  -- { "Bekaboo/dropbar.nvim", event = "VeryLazy", opts = {} },
 }
