@@ -32,6 +32,7 @@ local lv_utils = require("lazyvim.util")
 -- vim.keymap.del("n", "<leader>xl")
 -- vim.keymap.del("n", "<leader>xq")
 
+map("n", "<esc>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
 -- map("n", "gl", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 -- I use jkl; instead of hjkl
 map({ "n", "x" }, ";", "l", { desc = "Right" })
