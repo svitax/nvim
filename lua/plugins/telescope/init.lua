@@ -404,6 +404,41 @@ return {
     },
   },
   {
+    -- NOTE: need "cargo install ast-grep"
+    "Marskey/telescope-sg",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("telescope").load_extension("ast_grep")
+    end,
+    keys = { { "<leader>sa", "<cmd>Telescope ast_grep<cr>", desc = "Search AST nodes" } },
+  },
+  {
+    "luckasRanarison/nvim-devdocs",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    cmd = {
+      "DevdocsFetch",
+      "DevdocsInstall",
+      "DevdocsUninstall",
+      "DevdocsOpen",
+      "DevdocsOpenFloat",
+      "DevdocsUpdate",
+      'DevdocsUpdateAll',
+    },
+    opts = { previewer_cmd = "glow", cmd_args = { "-s", "dark", "-w", "80" } },
+    keys = {
+      { "<leader>hd" },
+      { "<leader>hdi", "<cmd>DevdocsInstall<cr>", desc = "Install Devdocs" },
+      { "<leader>hdm", "<cmd>DevdocsOpenFloat scikit_learn<cr>", desc = "scikit-learn" },
+      { "<leader>hdp", "<cmd>DevdocsOpenFloat python<cr>", desc = "Python" },
+      { "<leader>hdj", "<cmd>DevdocsOpenFloat javascript<cr>", desc = "JavaScript" },
+      { "<leader>hdn", "<cmd>DevdocsOpenFloat node<cr>", desc = "Node" },
+    },
+  },
+  {
     "danielfalk/smart-open.nvim",
     dependencies = {
       "kkharji/sqlite.lua", -- need export DYLD_LIBRARY_PATH=/usr/local/opt/sqlite/lib:/usr/lib to work on macos

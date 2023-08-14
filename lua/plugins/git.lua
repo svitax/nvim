@@ -2,6 +2,8 @@ vim.keymap.set("n", "<leader>gB", "<cmd>Gitsigns toggle_current_line_blame<cr>",
 vim.keymap.set("n", "<leader>gL", "<cmd>Gitsigns blame_line<cr>", { desc = "Blame line popup" })
 vim.keymap.set({ "o", "x" }, "ih", ":<C-u>Gitsigns select_hunk<cr>", { desc = "Git hunk" })
 
+local icons = require("shared").misc
+
 return {
   {
     "hrsh7th/nvim-cmp",
@@ -64,7 +66,33 @@ return {
   {
     "NeogitOrg/neogit",
     dependencies = "nvim-lua/plenary.nvim",
-    opts = { disable_commit_confirmation = true, use_telescope = true },
+    cmd = "Neogit",
+    opts = {
+      console_timeout = 10000,
+      auto_show_console = true,
+      disable_hint = true,
+      disable_commit_confirmation = true,
+      disable_insert_on_commit = true,
+      kind = "tab",
+      use_per_project_settings = true,
+      remember_settings = true,
+      ignored_settings = {
+        "NeogitPushPopup--force-with-lease",
+        "NeogitPushPopup--force",
+        "NeogitCommitPopup--allow-empty",
+      },
+      integrations = {
+        telescope = true,
+        diffview = true,
+      },
+      signs = {
+        section = { icons.collapsed, icons.expanded },
+        item = { icons.collapsed, icons.expanded },
+      },
+      commit_popup = { kind = "auto" },
+      mappings = { status = { ["l"] = "Toggle", ["h"] = "Toggle" } },
+      -- use_telescope = true,
+    },
     keys = { { "<leader>gn", "<cmd>Neogit<cr>", desc = "Neogit" } },
   },
   {

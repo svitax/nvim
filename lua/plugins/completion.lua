@@ -28,6 +28,7 @@ return {
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
+      "FelipeLema/cmp-async-path",
       "hrsh7th/cmp-cmdline",
       -- { "jcdickinson/codeium.nvim", dependencies = { "jcdickinson/http.nvim" }, config = true },
       -- vim.call('coc#rpc#ready')
@@ -37,6 +38,7 @@ return {
       -- "hrsh7th/cmp-nvim-lsp-document-symbol",
       -- "hrsh7th/cmp-omni",
       "jmbuhr/otter.nvim",
+      -- "lukas-reineke/cmp-rg",
       -- "f3fora/cmp-spell",
       -- { "abecodes/tabout.nvim", branch = "feature/tabout-md", opts = {} },
       "lukas-reineke/cmp-under-comparator",
@@ -59,6 +61,7 @@ return {
 
       -- local cmp_source_names = {
       opts.cmp_source_names = {
+        async_path = "(path)",
         buffer = "(buffer)",
         cmdline = "(cmd)",
         -- conjure = "(conjure)",
@@ -67,24 +70,40 @@ return {
         nerdfont = "(nerdfont)",
         nvim_lsp = "(lsp)",
         -- nvim_lsp_document_symbol = "(symbol)",
-        path = "(path)",
+        -- path = "(path)",
+        -- rg = "(rg)",
         -- spell = "(spell)",
       }
 
       local luasnip = require("luasnip")
       local cmp = require("cmp")
 
-      -- If you want insert `(` after select function or method item
-      -- local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-      -- cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+      -- Insert parens `(` after selecting function or method item
+      -- nvim-autopairs only
+      -- cmp.event:on(
+      --   "confirm_done",
+      --   require("nvim-autopairs.completion.cmp").on_confirm_done({
+      --     filetypes = {
+      --       ruby = false,
+      --       ["*"] = {
+      --         ["("] = {
+      --           kind = { cmp.lsp.CompletionItemKind.Function, cmp.lsp.CompletionItemKind.Method },
+      --           handler = require("nvim-autopairs.completion.handlers")["*"],
+      --         },
+      --       },
+      --     },
+      --   })
+      -- )
 
       cmp.setup.cmdline(":", {
-        sources = { { name = "cmdline" }, { name = "path" } },
+        mapping = cmp.mapping.preset.cmdline(),
+        -- cmp groups. if we can't find anything in one group, look in the next
+        sources = { { name = "cmdline", max_item_count = 30 }, { name = "async_path", max_item_count = 20 } },
         formatting = { max_width = 30 },
       })
 
       cmp.setup.cmdline({ "/", "?", "@" }, {
-        -- cmp groups. if we can't find anything in one group, look in the next
+        mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources(
           -- { { name = "nvim_lsp_document_symbol" } },
           { { name = "buffer" } }
@@ -100,7 +119,8 @@ return {
         { name = "otter", group_index = 1 },
         -- { name = "codeium", group_index = 1 },
         { name = "luasnip", group_index = 1 },
-        { name = "path", option = { trailing_slash = true }, group_index = 1 },
+        -- { name = "path", option = { trailing_slash = true }, group_index = 1 },
+        { name = "async_path", option = { trailing_slash = true }, group_index = 1 },
         { name = "nerdfont", group_index = 2 },
         {
           name = "buffer",
@@ -113,6 +133,13 @@ return {
           },
           group_index = 2,
         },
+        -- {
+        --   name = "rg",
+        --   keyword_length = 4,
+        --   max_item_count = 5,
+        --   priority_weight = 60,
+        --   option = { additional_arguments = "--smart-case" },
+        -- },
         -- need to set spell for this to show up
         -- { name = "spell", option = { keep_all_entries = false }, group_index = 2 },
       }

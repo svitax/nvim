@@ -35,6 +35,17 @@ return {
           ["i"] = "switch_to_git_status",
           ["l"] = "nav_to_parent",
           [";"] = "nav_to_child",
+          ["s"] = "open_split",
+          ["v"] = "open_vsplit",
+          ["."] = "toggle_hidden",
+          ["<c-c>"] = "clear_filter",
+          ["/"] = "filter_on_submit",
+          ["f"] = "fuzzy_finder",
+          -- ["dd"] = "delete_node_without_confirm",
+          -- ["d"] = "none",
+          -- ["yy"] = "copy_to_clipboard",
+          -- ["y"] = "none",
+          -- ["Y"] = "copy_relative_path",
         },
         fuzzy_finder_mappings = { -- define keymaps for filter popup window in fuzzy_finder_mode
           ["<down>"] = "move_cursor_down",
@@ -45,14 +56,18 @@ return {
           ["<C-k>"] = "move_cursor_up",
         },
       },
+
       filesystem = {
+        follow_current_file = { enabled = true },
+        use_libuv_file_watcher = true,
+
         hijack_netrw_behavior = "open_current",
         window = { mappings = { ["o"] = "system_open" } },
         components = {
           grapple_index = function(config, node, state)
             local grapple = require("grapple")
             local path = node.path
-            print(grapple.find({ file_path = path }))
+            -- print(grapple.find({ file_path = path }))
             local tag = grapple.find({ file_path = path })
             local success, key = pcall(grapple.key, tag)
             if success and key then
@@ -64,10 +79,31 @@ return {
               return {}
             end
           end,
+          icon_padding = function()
+            return { text = " " }
+          end,
+          commands = {
+            delete_node_without_confirm = function(state, callback)
+              require("neo-tree.sources.filesystem.lib.fs_actions").delete_node(
+                state.tree:get_node().path,
+                callback,
+                true
+              )
+            end,
+            copy_relative_path = function(state)
+              local path, _ = string.gsub(state.tree:get_node():get_id(), vim.fn.getcwd() .. "/", "")
+              path, _ = string.gsub(path, "[\n\r]", "")
+
+              vim.notify("Copied: '" .. path .. "'")
+              vim.api.nvim_command("silent !echo '" .. path .. "' | pbcopy")
+            end,
+          },
         },
         renderers = {
           directory = {
+            { "icon_padding" },
             { "icon" },
+            { "icon_padding" },
             { "current_filter" },
             {
               "container",
@@ -85,7 +121,9 @@ return {
             },
           },
           file = {
+            { "icon_padding" },
             { "icon" },
+            { "icon_padding" },
             {
               "container",
               content = {
@@ -105,6 +143,13 @@ return {
             },
             { "grapple_index" },
           },
+        },
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          hide_gitignored = true,
+          hide_by_name = { ".DS_Store" },
+          never_show = { ".DS_Store", "node_modules" },
         },
       },
       commands = {
@@ -166,6 +211,27 @@ return {
             vim.api.nvim_command("silent !open -g " .. path)
           end
         end,
+      },
+      default_component_configs = {
+        indent = {
+          indent_size = 2,
+          padding = 0,
+          with_expanders = nil,
+          with_markers = true,
+          indent_marker = "│ ",
+          last_indent_marker = "╰─ ",
+          highlight = "NeoTreeIndentMarker",
+        },
+        name = {
+          trailing_slash = true,
+          use_git_status_colors = true,
+        },
+        -- icon = {
+        --   folder_empty = require("shared").misc.folder_empty,
+        --   folder_closed = require("shared").misc.folder_closed,
+        --   folder_open = require("shared").misc.folder_open,
+        --   default = require("shared").misc.file,
+        -- },
       },
       -- zk = { follow_current_file = true, window = { mappings = { ["n"] = "change_query" } } },
     },

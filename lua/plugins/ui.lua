@@ -1,3 +1,5 @@
+-- local shared = require("shared")
+
 return {
   {
     "nvim-tree/nvim-web-devicons",
@@ -139,6 +141,7 @@ return {
         ["<leader>g"] = { name = "+git" },
         -- ["<leader>gh"] = { name = "+hunks" },
         ["<leader>h"] = { name = "+help" },
+        ["<leader>hd"] = { name = "+devdocs" },
         ["<leader>m"] = { name = "+<localleader>" },
         ["<leader>me"] = { name = "+evaluate" },
         ["<leader>ml"] = { name = "+logs" },
@@ -258,4 +261,17 @@ return {
       },
     },
   },
+  -- {
+  --   -- BUG: treesitter-context covers it up
+  --   "ivanjermakov/troublesum.nvim",
+  --   event = "VeryLazy",
+  --   opts = {
+  --     severity_format = {
+  --       shared.diagnostic_icons.bold_error,
+  --       shared.diagnostic_icons.bold_warning,
+  --       shared.diagnostic_icons.bold_info,
+  --       shared.diagnostic_icons.bold_hint,
+  --     },
+  --   },
+  -- },
 }

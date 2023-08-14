@@ -40,6 +40,16 @@ return {
   -- { "dgagn/diagflow.nvim", event = { "DiagnosticChanged" }, opts = { toggle_event = { "InsertEnter" } } },
   { "williamboman/mason.nvim", cmd = "Mason", keys = { { "<leader>cM", "<cmd>Mason<cr>", desc = "Mason" } } },
   {
+    "adoyle-h/lsp-toggle.nvim",
+    event = "LspAttach",
+    cmd = { "ToggleLSP", "ToggleNullLSP" },
+    keys = {
+      { "<leader>ct", "<cmd>ToggleLSP<cr>", desc = "Toggle LSP" },
+      { "<leader>cT", "<cmd>ToggleLSP<cr>", desc = "Toggle NullLSP" },
+    },
+    opts = {},
+  },
+  {
     "DNLHC/glance.nvim",
     config = true,
     keys = {

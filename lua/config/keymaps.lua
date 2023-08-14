@@ -32,24 +32,37 @@ local lv_utils = require("lazyvim.util")
 -- vim.keymap.del("n", "<leader>xl")
 -- vim.keymap.del("n", "<leader>xq")
 
+-- stop highlighting from search
 map("n", "<esc>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
+
 -- map("n", "gl", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 -- I use jkl; instead of hjkl
 map({ "n", "x" }, ";", "l", { desc = "Right" })
 map({ "n", "x" }, "l", "h", { desc = "Left" })
+
 -- since I don't use h to move cursor, might as well use it to enter command mode
 map({ "n", "v" }, "h", ":", { desc = "Command" })
+
 -- ergonmic mappings for end of line and beginning of line (my terminal has Cmd+Left mapped to Shift+Left and Cmd+Right mapped to Shift+Right)
 map({ "n", "v" }, "<S-Left>", "_", { desc = "First non-whitespace character" })
 map({ "n", "v" }, "<S-Right>", "$", { desc = "End of line" })
+-- map({ "n" }, "H", "_", { desc = "First non-whitespace character" })
+-- map({ "n" }, "L", "$", { desc = "End of line" })
+
+-- readline style bindings
+map({ "i" }, "<c-e>", "_", { desc = "First non-whitespace character" })
+map({ "i" }, "<c-a>", "$", { desc = "End of line" })
+
 -- <C-Bs> maps to <C-h> in terminals, but I like to have <C-bs> delete the previous word.
 -- map({ "i", "c" }, "<C-h>", "<C-w>", { desc = "Delete previous word (<C-bs>)" })
 -- map({ "i", "c" }, "<C-bs>", "<C-w>", { desc = "Delete previous word (<C-bs>)" })
 -- <A-bs> is mapped to delete previous word on my keyboard (macos), make that consistent inside nvim
 -- map({ "i" }, "<A-bs>", "<C-w>", { desc = "Delete previous word" })
+
 -- select all
 map({ "i" }, "<A-a>", "<esc>ggVG$", { desc = "Select all" })
 map({ "n", "v" }, "<A-a>", "ggVG$", { desc = "Select all" })
+
 -- Move lines with <C-a-j/k> because I'm already using <A-j/k> and <S-A-j/k> for treeclimber
 map("n", "<C-A-j>", "<cmd>m .+1<cr>==", { desc = "Move down" })
 map("n", "<C-A-k>", "<cmd>m .-2<cr>==", { desc = "Move up" })
@@ -57,18 +70,26 @@ map("i", "<C-A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
 map("i", "<C-A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
 map("v", "<C-A-j>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
 map("v", "<C-A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
+
 -- TODO: check if default in lazyvim
 -- keep cursor centered when using n(next) and N(previous)
 -- map({ "n", "v" }, "n", "nzzzv", { description = "Go to next match (centered)" })
 -- map({ "n", "v" }, "N", "Nzzzv", { description = "Go to previous match (centered)" })
+
 -- TODO: check if default in lazyvim
 -- Undo break points (for a finer-grained undo command)
--- map({ "i" }, ",", ",<c-g>u", { description = "" })
--- map({ "i" }, ".", ".<c-g>u", { description = "" })
--- map({ "i" }, "!", "!<c-g>u", { description = "" })
--- map({ "i" }, "?", "?<c-g>u", { description = "" })
--- map({ "i" }, "<cr>", "<cr>c-g>u", { description = "" })
--- map({ "i" }, "<space>", "<space><c-g>u", { description = "" })
+map({ "i" }, ",", ",<c-g>u", { desc = "" })
+map({ "i" }, ".", ".<c-g>u", { desc = "" })
+map({ "i" }, "!", "!<c-g>u", { desc = "" })
+map({ "i" }, "?", "?<c-g>u", { desc = "" })
+map({ "i" }, "<cr>", "<cr><c-g>u", { desc = "" })
+map({ "i" }, "<space>", "<space><c-g>u", { desc = "" })
+
+-- vv selects the whole line
+map({ "n" }, "vv", "V", { desc = "Select whole line" })
+-- V select until the end of the line
+map({ "n" }, "V", "v$", { desc = "Select to end of line" })
+
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
 
 -- Use , key for matching parens
@@ -76,6 +97,12 @@ map({ "n", "x" }, ",", "%", { remap = true, desc = "jump to paren" })
 
 -- Quick substitute within selected area
 map("x", "<leader>sg", ":s///gc<Left><Left><Left><Left>", { desc = "Substitute within selection" })
+
+-- Basic autocomplete for command mode
+map("c", "(", "()<left>", { silent = false })
+map("c", "[", "[]<left>", { silent = false })
+map("c", '"', [[""<left>]], { silent = false })
+map("c", "'", [[''<left>]], { silent = false })
 
 -- i to indent properly on empty lines
 map({ "n", "v", "x" }, "i", function()

@@ -1,4 +1,4 @@
-local utils = require("utils")
+-- local utils = require("utils")
 
 return {
   -- NOTE: I need this for overseer to work properly
@@ -20,9 +20,9 @@ return {
       -- autochdir = true,
       size = function(term)
         if term.direction == "horizontal" then
-          return math.floor(vim.opt.lines:get() * 0.25)
+          return math.floor(vim.opt.lines:get() * 0.30)
         elseif term.direction == "vertical" then
-          return math.floor(vim.opt.columns:get() * 0.25)
+          return math.floor(vim.opt.columns:get() * 0.30)
         end
       end,
       direction = "horizontal",
@@ -69,16 +69,13 @@ return {
       { "<A-t>", "<cmd>ToggleTermSetName<cr>", desc = "Rename terminal" },
       -- { "<leader>gt", "<cmd>lua _lazygit_toggle()<CR>", mode = { "n" }, desc = "Toggle lazygit" },
       -- { "<leader>hn", "<cmd>lua _navi_toggle()<CR>", mode = { "n" }, desc = "Toggle navi" },
-      { "<leader>hn", utils.float_term("navi", { count = 7 }), mode = { "n" }, desc = "Cheatsheet (navi)" },
-      { "<leader>ht", utils.float_term("btop", { count = 8 }), mode = { "n" }, desc = "Resource monitor (btop)" },
-      { "<leader>gu", utils.float_term("ugit", { count = 9 }), mode = { "n" }, desc = "Undo git commands (ugit)" },
-      { "<leader>ga", utils.float_term("git-absorb", { count = 10 }), mode = { "n" }, desc = "git-absorb" },
-      {
-        "<leader>gD",
-        utils.float_term("gh poi --dry-run", { count = 11 }),
-        mode = { "n" },
-        desc = "Clean branches (poi)",
-      },
+      -- { "<leader>hn", utils.float_term("navi", { count = 7 }), mode = { "n" }, desc = "Cheatsheet (navi)" },
+      { "<leader>hn", require("plugins.terminal.toggleterms").navi, mode = { "n" }, desc = "Cheatsheet (navi)" },
+      { "<leader>ht", require("plugins.terminal.toggleterms").btop, mode = { "n" }, desc = "Resource monitor (btop)" },
+      { "<leader>ht", require("plugins.terminal.toggleterms").btop, mode = { "n" }, desc = "Resource monitor (btop)" },
+      { "<leader>gu", require("plugins.terminal.toggleterms").ugit, mode = { "n" }, desc = "Undo git commands (ugit)" },
+      { "<leader>ga", require("plugins.terminal.toggleterms").git_absorb, mode = { "n" }, desc = "git-absorb" },
+      { "<leader>gD", require("plugins.terminal.toggleterms").gh_poi, mode = { "n" }, desc = "Clean branches (poi)" },
       { "<leader>pt", "<cmd>TermSelect<cr>", desc = "Find terminal" },
       { "<leader>pT", "<cmd>ToggleTermSetName<cr>", desc = "Rename terminal" },
       -- { "<leader>tt", "<cmd>ToggleTerm direction='horizontal'<cr>", desc = "Toggle terminal" },

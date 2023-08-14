@@ -55,6 +55,15 @@ return {
     gutter = "▍",
   },
   dap_icons = { breakpoint = "ﴫ", log_point = "", stopped = "" },
+  misc = {
+    expanded = "",
+    collapsed = "",
+    folder_empty = "󱧴",
+    folder_closed = "",
+    folder_open = "",
+    file = "",
+    v_border = "▐",
+  },
   mode_colors = {
     ["i"] = "#a9b665",
     ["c"] = "#d8a657",

@@ -1,25 +1,26 @@
 local utils = require("utils")
 local shared = require("shared")
+local c = require("config.colors").gruvfox
 
 -- TODO: get this to change color based on current nightfox theme
 -- maybe this is done using the fg() func in this file
-local function get_spec(spec)
-  local function split_nightfox_spec(str)
-    local chunks = {}
-    for substring in str:gmatch("([^%.]+)") do
-      table.insert(chunks, substring)
-    end
-    return chunks
-  end
-
-  spec = split_nightfox_spec(spec)
-  local specs = {}
-  local valid_colorschemes = { "nightfox", "dayfox", "dawnfox", "duskfox", "nordfox", "terafox", "carbonfox" }
-  if vim.tbl_contains(valid_colorschemes, vim.g.colors_name) then
-    specs = require("nightfox.spec").load(vim.g.colors_name)
-  end
-  return vim.tbl_get(specs, unpack(spec))
-end
+-- local function get_spec(spec)
+--   local function split_nightfox_spec(str)
+--     local chunks = {}
+--     for substring in str:gmatch("([^%.]+)") do
+--       table.insert(chunks, substring)
+--     end
+--     return chunks
+--   end
+--
+--   spec = split_nightfox_spec(spec)
+--   local specs = {}
+--   local valid_colorschemes = { "nightfox", "dayfox", "dawnfox", "duskfox", "nordfox", "terafox", "carbonfox" }
+--   if vim.tbl_contains(valid_colorschemes, vim.g.colors_name) then
+--     specs = require("nightfox.spec").load(vim.g.colors_name)
+--   end
+--   return vim.tbl_get(specs, unpack(spec))
+-- end
 
 local function hide_in_width()
   return vim.fn.winwidth(0) > 90
@@ -29,33 +30,52 @@ local modeline_icons = shared.modeline_icons
 local git_icons = shared.git_icons
 local diagnostic_icons = shared.diagnostic_icons
 
-local function fg(name)
-  return function()
-    ---@type {foreground?:number}?
-    local hl = vim.api.nvim_get_hl_by_name(name, true)
-    return hl and hl.foreground and { fg = string.format("#%06x", hl.foreground) }
-  end
+-- local function fg(name)
+--   return function()
+--     ---@type {foreground?:number}?
+--     local hl = vim.api.nvim_get_hl_by_name(name, true)
+--     return hl and hl.foreground and { fg = string.format("#%06x", hl.foreground) }
+--   end
+-- end
+
+local function mode_color()
+  local color_table = {
+    n = c.green,
+    i = c.blue,
+    v = c.purple,
+    [""] = c.purple,
+    V = c.purple,
+    c = c.orange,
+    no = c.red,
+    s = c.orange,
+    S = c.orange,
+    [""] = c.orange,
+    ic = c.yellow,
+    R = c.red,
+    Rv = c.red,
+    cv = c.red,
+    ce = c.red,
+    r = c.red,
+    rm = c.red,
+    ["r?"] = c.cyan,
+    ["!"] = c.red,
+    t = c.yellow,
+  }
+
+  return { fg = color_table[vim.fn.mode()], bg = c.bg0 }
 end
 
 local components = {
-  grapple = {
-    function()
-      local key = require("grapple").key()
-      return modeline_icons.tag .. " [" .. key .. "]"
-    end,
-    cond = require("grapple").exists,
-    color = function(_)
-      return { fg = get_spec("syntax.ident") }
-    end,
-  },
   gutter = {
     function()
       return git_icons.gutter
     end,
-    padding = { left = 0, right = 0 },
-    color = function(_)
-      return { fg = get_spec("syntax.builtin0"), bg = get_spec("bg0") }
-    end,
+    padding = { left = 0, right = 1 },
+    color = mode_color,
+    -- color = { fg = colors.red, bg = colors.bg },
+    -- color = function(_)
+    --   return { fg = get_spec("syntax.builtin0"), bg = get_spec("bg0") }
+    -- end,
   },
   mode = {
     function()
@@ -68,7 +88,8 @@ local components = {
     -- color = function(_)
     --   return { fg = get_spec("bg0") }
     -- end,
-    padding = { left = 1, right = 1 },
+    padding = { right = 1 },
+    color = mode_color,
   },
   search_count = {
     function()
@@ -87,21 +108,25 @@ local components = {
       local total = ((count.total > count.maxcount) and too_many) or count.total
       return ("%s/%s"):format(count.current, total)
     end,
-    color = function(_)
-      return { bg = get_spec("bg0") }
-    end,
+    -- color = { bg = colors.bg },
+    -- color = function(_)
+    --   return { bg = get_spec("bg0") }
+    -- end,
+    color = { fg = c.blue, bg = c.bg0 },
   },
   buf_size = {
     function()
       return utils.filesize(vim.fn.wordcount().bytes, { round = 1 })
     end,
-    color = function(_)
-      return { bg = get_spec("bg0") }
-    end,
+    -- color = { bg = colors.bg },
+    -- color = function(_)
+    --   return { bg = get_spec("bg0") }
+    -- end,
     cond = function()
       -- not a toggleterm buf
       return (not utils.is_buf_filetype("toggleterm")) and hide_in_width()
     end,
+    color = { fg = c.fg, bg = c.bg0, gui = "bold" },
   },
   toggleterm = {
     function()
@@ -111,9 +136,21 @@ local components = {
     cond = function()
       return utils.is_buf_filetype("toggleterm")
     end,
-    color = function(_)
-      return { fg = get_spec("syntax.ident") }
+    color = { fg = c.blue, bg = c.bg0 },
+    -- color = function(_)
+    --   return { fg = get_spec("syntax.ident") }
+    -- end,
+  },
+  grapple = {
+    function()
+      local key = require("grapple").key()
+      return modeline_icons.tag .. " [" .. key .. "]"
     end,
+    cond = require("grapple").exists,
+    color = { fg = c.blue, bg = c.bg0 },
+    -- color = function(_)
+    --   return { fg = get_spec("syntax.ident") }
+    -- end,
   },
   buf_modified = {
     function()
@@ -138,12 +175,21 @@ local components = {
       return mod
     end,
     -- color = "lualine_filename_status"
+    -- color = function(_)
+    --   return {
+    --     fg = (vim.bo.modified and get_spec("syntax.builtin0"))
+    --       or (not vim.bo.modifiable and get_spec("syntax.keyword"))
+    --       or (utils.is_buf_newfile() and get_spec("syntax.ident"))
+    --       or (utils.is_buf_unnamed() and get_spec("syntax.ident")),
+    --   }
+    -- end,
     color = function(_)
       return {
-        fg = (vim.bo.modified and get_spec("syntax.builtin0"))
-          or (not vim.bo.modifiable and get_spec("syntax.keyword"))
-          or (utils.is_buf_newfile() and get_spec("syntax.ident"))
-          or (utils.is_buf_unnamed() and get_spec("syntax.ident")),
+        fg = (vim.bo.modified and c.red)
+          or (not vim.bo.modifiable and c.green)
+          or (utils.is_buf_newfile() and c.blue)
+          or (utils.is_buf_unnamed() and c.blue),
+        bg = c.bg0,
       }
     end,
     cond = function()
@@ -157,13 +203,23 @@ local components = {
     end,
     padding = { left = 1, right = 0 },
     -- color = "lualine_filename_status",
+    -- color = function(_)
+    --   return {
+    --     fg = (vim.bo.modified and get_spec("syntax.builtin0"))
+    --       or (not vim.bo.modifiable and get_spec("syntax.keyword"))
+    --       or (utils.is_buf_newfile() and get_spec("syntax.ident"))
+    --       or (utils.is_buf_unnamed() and get_spec("syntax.ident"))
+    --       or get_spec("syntax.string"),
+    --   }
+    -- end,
     color = function(_)
       return {
-        fg = (vim.bo.modified and get_spec("syntax.builtin0"))
-          or (not vim.bo.modifiable and get_spec("syntax.keyword"))
-          or (utils.is_buf_newfile() and get_spec("syntax.ident"))
-          or (utils.is_buf_unnamed() and get_spec("syntax.ident"))
-          or get_spec("syntax.string"),
+        fg = (vim.bo.modified and c.red)
+          or (not vim.bo.modifiable and c.green)
+          or (utils.is_buf_newfile() and c.blue)
+          or (utils.is_buf_unnamed() and c.blue)
+          or c.green,
+        bg = c.bg0,
       }
     end,
     cond = function()
@@ -185,35 +241,66 @@ local components = {
     end,
     file_status = false,
     padding = { left = 0, right = 0 },
-    color = function(_)
-      return {
-        fg = get_spec("fg1"),
-        gui = "bold",
-      }
-    end,
+    -- color = function(_)
+    --   return {
+    --     fg = get_spec("fg1"),
+    --     gui = "bold",
+    --   }
+    -- end,
+    color = { fg = c.fg, bg = c.bg0, gui = "bold" },
     cond = function()
       -- not a toggleterm buf
       return not utils.is_buf_filetype("toggleterm")
     end,
   },
-  branch = {
-    "b:gitsigns_head",
-    icon = git_icons.branch,
-  },
-  diff = {
-    "diff",
-    source = function()
-      local gitsigns = vim.b.gitsigns_status_dict
-      if vim.b.gitsigns_status_dict then
-        return { added = gitsigns.added, modified = gitsigns.changed, removed = gitsigns.removed }
-      end
+  location = {
+    "location",
+    cond = function()
+      -- not a toggleterm buf
+      return (not utils.is_buf_filetype("toggleterm")) and hide_in_width()
     end,
-    symbols = {
-      added = git_icons.bold_added .. " ",
-      modified = git_icons.bold_modified .. " ",
-      removed = git_icons.bold_removed .. " ",
-    },
-    cond = hide_in_width,
+    color = { bg = c.bg0 },
+  },
+  progress = {
+    "progress",
+    fmt = function()
+      return "%P"
+      -- return "%P/%L"
+    end,
+    cond = function()
+      -- not a toggleterm buf
+      return (not utils.is_buf_filetype("toggleterm")) and hide_in_width()
+    end,
+    color = { bg = c.bg0 },
+  },
+  showcmd = {
+    function()
+      return require("noice").api.status.command.get()
+    end,
+    cond = function()
+      return package.loaded["noice"]
+        and require("noice").api.status.command.has()
+        and not utils.is_buf_filetype("toggleterm")
+    end,
+    -- color = fg("Statement"),
+    color = { fg = c.green, bg = c.bg0 },
+  },
+  showmode = {
+    function()
+      return require("noice").api.status.mode.get()
+    end,
+    cond = function()
+      return package.loaded["noice"] and require("noice").api.status.mode.has()
+    end,
+    -- color = fg("Constant"),
+    color = { fg = c.red, bg = c.bg0 },
+  },
+  showmacro = {
+    function()
+      return require("NeoComposer.ui").status_recording()
+    end,
+    -- color = fg("Constant"),
+    color = { fg = c.red, bg = c.bg0 },
   },
   diagnostics = {
     "diagnostics",
@@ -225,7 +312,9 @@ local components = {
       hint = diagnostic_icons.bold_hint .. " ",
     },
     cond = hide_in_width,
+    color = { bg = c.bg0 },
   },
+  -- { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
   lsp = {
     function(msg)
       local active_clients = vim.lsp.get_active_clients()
@@ -294,15 +383,8 @@ local components = {
 
       return language_servers
     end,
-    color = { gui = "bold" },
+    color = { fg = c.fg, bg = c.bg0, gui = "bold" },
   },
-  spaces = {
-    function()
-      local shiftwidth = vim.api.nvim_buf_get_option(0, "shiftwidth")
-      return modeline_icons.tab .. " " .. shiftwidth
-    end,
-  },
-  -- { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
   filetype = {
     "filetype",
     fmt = function(filetype, context)
@@ -312,6 +394,7 @@ local components = {
       -- end
       return filetype
     end,
+    color = { fg = c.grey_dim, bg = c.bg0 },
   },
   python_env = {
     function()
@@ -328,57 +411,41 @@ local components = {
       end
       return ""
     end,
-    color = function(_)
-      return { fg = get_spec("syntax.comment") }
-    end,
+    -- color = function(_)
+    --   return { fg = get_spec("syntax.comment") }
+    -- end,
+    color = { fg = c.grey_dim, bg = c.bg0 },
     cond = function()
       return (utils.is_buf_filetype("python") and hide_in_width())
     end,
   },
-  location = {
-    "location",
-    cond = function()
-      -- not a toggleterm buf
-      return (not utils.is_buf_filetype("toggleterm")) and hide_in_width()
-    end,
+  branch = {
+    "b:gitsigns_head",
+    icon = git_icons.branch,
+    color = { fg = c.purple, bg = c.bg0 },
   },
-  progress = {
-    "progress",
-    fmt = function()
-      return "%P"
-      -- return "%P/%L"
-    end,
-    cond = function()
-      -- not a toggleterm buf
-      return (not utils.is_buf_filetype("toggleterm")) and hide_in_width()
-    end,
-  },
-  showmode = {
-    function()
-      return require("noice").api.status.mode.get()
-    end,
-    cond = function()
-      return package.loaded["noice"] and require("noice").api.status.mode.has()
-    end,
-    color = fg("Constant"),
-  },
-  showmacro = {
-    function()
-      return require("NeoComposer.ui").status_recording()
-    end,
-    color = fg("Constant"),
-  },
-  showcmd = {
-    function()
-      return require("noice").api.status.command.get()
-    end,
-    cond = function()
-      return package.loaded["noice"]
-        and require("noice").api.status.command.has()
-        and not utils.is_buf_filetype("toggleterm")
-    end,
-    color = fg("Statement"),
-  },
+  -- diff = {
+  --   "diff",
+  --   source = function()
+  --     local gitsigns = vim.b.gitsigns_status_dict
+  --     if vim.b.gitsigns_status_dict then
+  --       return { added = gitsigns.added, modified = gitsigns.changed, removed = gitsigns.removed }
+  --     end
+  --   end,
+  --   symbols = {
+  --     added = git_icons.bold_added .. " ",
+  --     modified = git_icons.bold_modified .. " ",
+  --     removed = git_icons.bold_removed .. " ",
+  --   },
+  --   cond = hide_in_width,
+  -- },
+  -- spaces = {
+  --   function()
+  --     local shiftwidth = vim.api.nvim_buf_get_option(0, "shiftwidth")
+  --     return modeline_icons.tab .. " " .. shiftwidth
+  --   end,
+  -- },
+
   -- overseer = {
   --   "overseer",
   --   label = "", -- Prefix for task counts
@@ -493,6 +560,7 @@ return {
         --[[add your custom lualine config here]]
         extensions = { "neo-tree" },
         options = {
+          -- theme = "onedark",
           theme = nightfox_theme(),
           -- theme = "auto",
           -- theme = require("nightfox.util.lualine")("carbonfox")
