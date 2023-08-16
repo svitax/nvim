@@ -10,6 +10,7 @@ M.special_filetypes = {
   "NeogitStatus",
   "NeogitPopup",
   "TelescopePrompt",
+  "NeogitCommitMessage",
 }
 
 M.termcodes = function(str)

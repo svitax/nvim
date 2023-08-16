@@ -153,26 +153,31 @@ local components = {
     -- end,
   },
   buf_modified = {
-    function()
-      -- local fg = ""
-      local mod = ""
-      if vim.bo.modified then
-        mod = modeline_icons.save
+    function(props)
+      if vim.api.nvim_get_option_value("modified", { buf = props.buf }) then
+        return "● "
+      else
+        return ""
       end
-      if not vim.bo.modifiable then
-        mod = modeline_icons.lock
-      end
-      if utils.is_buf_newfile() then
-        mod = modeline_icons.new_file
-      end
-      if utils.is_buf_unnamed() then
-        mod = modeline_icons.checkbox_blank
-      end
-      if utils.is_buf_filetype("alpha") then
-        mod = modeline_icons.evil
-      end
-      -- vim.cmd("hi! lualine_filename_status gui=bold guifg=" .. fg)
-      return mod
+      -- -- local fg = ""
+      -- local mod = ""
+      -- if vim.bo.modified then
+      --   mod = modeline_icons.save
+      -- end
+      -- if not vim.bo.modifiable then
+      --   mod = modeline_icons.lock
+      -- end
+      -- if utils.is_buf_newfile() then
+      --   mod = modeline_icons.new_file
+      -- end
+      -- if utils.is_buf_unnamed() then
+      --   mod = modeline_icons.checkbox_blank
+      -- end
+      -- if utils.is_buf_filetype("alpha") then
+      --   mod = modeline_icons.evil
+      -- end
+      -- -- vim.cmd("hi! lualine_filename_status gui=bold guifg=" .. fg)
+      -- return mod
     end,
     -- color = "lualine_filename_status"
     -- color = function(_)
@@ -184,17 +189,19 @@ local components = {
     --   }
     -- end,
     color = function(_)
-      return {
-        fg = (vim.bo.modified and c.red)
-          or (not vim.bo.modifiable and c.green)
-          or (utils.is_buf_newfile() and c.blue)
-          or (utils.is_buf_unnamed() and c.blue),
-        bg = c.bg0,
-      }
+      return { fg = c.yellow }
+      -- return {
+      --   fg = (vim.bo.modified and c.red)
+      --     or (not vim.bo.modifiable and c.green)
+      --     or (utils.is_buf_newfile() and c.blue)
+      --     or (utils.is_buf_unnamed() and c.blue),
+      --   bg = c.bg0,
+      -- }
     end,
     cond = function()
+      return utils.is_buf_filetype("NeogitCommitMessage")
       -- not a toggleterm buf
-      return not utils.is_buf_filetype("toggleterm")
+      -- return not utils.is_buf_filetype("toggleterm")
     end,
   },
   dir = {
@@ -716,7 +723,7 @@ return {
             -- components.buf_size,
             components.toggleterm,
             -- components.grapple,
-            -- components.buf_modified,
+            components.buf_modified,
             -- components.dir,
             -- components.filename,
           },
