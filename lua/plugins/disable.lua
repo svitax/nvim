@@ -11,4 +11,5 @@ return {
   { "echasnovski/mini.indentscope", enabled = false },
   { "folke/flash.nvim", keys = { { "R", mode = { "o", "x" }, false } } },
   { "LazyVim/LazyVim", opts = { defaults = { keymaps = false } } },
+  -- { "folke/noice.nvim", enabled = false },
 }

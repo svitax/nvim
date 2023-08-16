@@ -178,25 +178,25 @@ map("n", "<leader>fD", "<cmd>Delete<cr>", { desc = "Delete this file" })
 -- { "<leader>pX", desc = "Switch to scratch buffer" },
 
 -- toggle options
-map("n", "<leader>uf", require("lazyvim.plugins.lsp.format").toggle, { desc = "Toggle format on Save" })
+map("n", "<leader>uf", require("lazyvim.plugins.lsp.format").toggle, { desc = "Toggle format on save" })
 map("n", "<leader>us", function()
   lv_utils.toggle("spell")
-end, { desc = "Toggle Spelling" })
+end, { desc = "Toggle spelling" })
 map("n", "<leader>uw", function()
   lv_utils.toggle("wrap")
-end, { desc = "Toggle Word Wrap" })
+end, { desc = "Toggle word wrap" })
 map("n", "<leader>ul", function()
   lv_utils.toggle_number()
-end, { desc = "Toggle Line Numbers" })
-map("n", "<leader>ud", lv_utils.toggle_diagnostics, { desc = "Toggle Diagnostics" })
+end, { desc = "Toggle line numbers" })
+map("n", "<leader>ud", lv_utils.toggle_diagnostics, { desc = "Toggle diagnostics" })
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
 map("n", "<leader>uc", function()
   lv_utils.toggle("conceallevel", false, { 0, conceallevel })
-end, { desc = "Toggle Conceal" })
+end, { desc = "Toggle conceal" })
 if vim.lsp.inlay_hint then
   map("n", "<leader>uh", function()
     vim.lsp.inlay_hint(0, nil)
-  end, { desc = "Toggle Inlay Hints" })
+  end, { desc = "Toggle inlay hints" })
 end
 
 -- vim.cmd "colorscheme terafox"

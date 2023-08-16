@@ -66,6 +66,22 @@ autocmd("FileType", {
   end,
 })
 
+-- term keymaps
+augroup("terminal_keymappings", { clear = true })
+autocmd("TermOpen", {
+  desc = "Keymappings for the terminal filetype",
+  group = "terminal_keymappings",
+  callback = function(event)
+    vim.keymap.set("t", "<c-j>", [[<Cmd>wincmd j<CR>]], { buffer = true, desc = "Switch window down" })
+    vim.keymap.set("t", "<c-k>", [[<Cmd>wincmd k<CR>]], { buffer = true, desc = "Switch window up" })
+    vim.keymap.set("t", "<c-l>", [[<Cmd>wincmd h<CR>]], { buffer = true, desc = "Switch window left" })
+    vim.keymap.set("t", "<c-h>", [[<Cmd>wincmd l<CR>]], { buffer = true, desc = "Switch window right" })
+    vim.keymap.set("t", "<ESC>", [[<c-\><c-n>]], { buffer = true, desc = "Exit terminal mode" })
+    vim.keymap.set("t", "<C-h>", "<C-w>", { buffer = true, desc = "Delete previous word (<C-bs>)" })
+    vim.keymap.set("t", "<C-bs>", "<C-w>", { buffer = true, desc = "Delete previous word (<C-bs>)" })
+  end,
+})
+
 -- wrap and check for spell in text filetypes
 -- vim.api.nvim_create_autocmd("FileType", {
 --   group = vim.api.nvim_create_augroup("wrap_spell", { clear = true }),

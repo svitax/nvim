@@ -1,14 +1,24 @@
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
+-- local augroup = vim.api.nvim_create_augroup
+-- local autocmd = vim.api.nvim_create_autocmd
 
 return {
   { "gabenespoli/vim-jupycent", event = "VeryLazy" },
   {
     "linux-cultist/venv-selector.nvim",
-    dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim" },
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "nvim-telescope/telescope.nvim", --[["mfussenegger/nvim-dap-python"]]
+    },
     cmd = "VenvSelect",
-    keys = { { "<leader>pv", "<cmd>VenvSelect<cr>", desc = "Switch venv" } },
-    opts = { search_workspace = true, search = false, dap_enabled = true, name = { ".venv" } },
+    keys = {
+      { "<leader>pv", "<cmd>VenvSelect<cr>", desc = "Switch venv" },
+      { "<leader>pV", "<cmd>lua require('venv-selector').deactivate_venv()<cr>", desc = "Deactivate venv" },
+    },
+    opts = {
+      search_workspace = true,
+      search = false, --[[dap_enabled = true,]]
+      name = { ".venv" },
+    },
     -- init = function()
     --   -- Array of file names indicating root directory. Modify to your liking
     --   local root_names = { ".git", "Makefile", "pyproject.toml" }
@@ -71,16 +81,16 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    -- dependencies = "rafi/neoconf-venom.nvim",
+    -- dependencies = { "folke/neoconf.nvim", "rafi/neoconf-venom.nvim" },
     -- config = function(_, opts)
     --   require("venom").setup()
-    --   require('lazy.core.config').plugins["nvim-lspconfig"].config()
+    --   require("lazy.core.config").plugins["nvim-lspconfig"].config()
     -- end,
-    ---@class PluginLspOpts
+    -- ---@class PluginLspOpts
     opts = {
-      ---@type lspconfig.options
+      -- ---@type lspconfig.options
       servers = {
-        ---@type lspconfig.options.pylsp
+        -- ---@type lspconfig.options.pylsp
         pylsp = {
           settings = {
             pylsp = {
@@ -122,7 +132,7 @@ return {
           },
         },
         -- will be automatically installed with mason and loaded with lspconfig
-        ---@type lspconfig.options.pyright
+        -- ---@type lspconfig.options.pyright
         pyright = {
           settings = {
             -- pyright = { autoImportCompletions = true },
@@ -219,7 +229,7 @@ return {
       -- This is needed for pylint to work in a virtualenv. See https://github.com/williamboman/mason.nvim/issues/668#issuecomment-1320859097
       -- PATH = "append"
     end,
-    ---@param opts MasonSettings | {ensure_installed: string[]}
+    -- ---@param opts MasonSettings | {ensure_installed: string[]}
     config = function(plugin, opts)
       require("mason").setup(opts)
       local mr = require("mason-registry")

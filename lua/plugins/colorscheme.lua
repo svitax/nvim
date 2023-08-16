@@ -204,6 +204,8 @@ return {
             NeogitHunkHeader = { fg = "palette.fg2", bg = "palette.bg3", gui = "bold" },
             NeogitHunkHeaderHighlight = { bg = "palette.magenta", fg = "palette.bg1", gui = "bold" },
 
+            HighlightUndo = { bg = "palette.magenta", fg = "palette.bg1" },
+
             ["@text.strong"] = { fg = "palette.orange", style = "bold" },
             ["@text.emphasis"] = { fg = "palette.orange", style = "italic" },
 

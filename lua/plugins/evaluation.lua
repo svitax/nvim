@@ -1,35 +1,70 @@
 return {
   {
-    "Olical/conjure",
-    -- event = "VeryLazy",
-    ft = { "python", "hy", "markdown" },
-    -- keys = { { "<localleader>" } },
-    init = function()
-      vim.api.nvim_create_autocmd("BufNewFile", {
-        group = vim.api.nvim_create_augroup("conjure_log_disable_lsp", { clear = true }),
-        pattern = { "conjure-log-*" },
-        callback = function(event)
-          vim.diagnostic.disable(event.buf)
+    "GCBallesteros/NotebookNavigator.nvim",
+    dependencies = { "echasnovski/mini.comment", "echasnovski/mini.ai", "Vigemus/iron.nvim", "anuvyklack/hydra.nvim" },
+    keys = {
+      {
+        "]h",
+        function()
+          require("notebook-navigator").move_cell("d")
         end,
-        desc = "Conjure Log disable LSP diagnostics",
-      })
-      vim.g["conjure#extract#tree_sitter#enabled"] = true
-      vim.g["conjure#mapping#def_word"] = false
-      vim.g["conjure#mapping#doc_word"] = false
-
-      -- TODO: add virtualenv support
-      -- vim.g["conjure#client#python#stdio#command"] = "ipython --classic -i"
-      vim.g["conjure#client#python#stdio#command"] = "python3 -iq"
-      vim.g["conjure#client#python#stdio#mapping#start"] = "s"
-      vim.g["conjure#client#python#stdio#mapping#stop"] = "d"
-
-      -- vim.g["conjure#mapping#prefix"] = "<localleader>"
-      -- vim.cmd([[let g:conjure#mapping#prefix="h"]])
-      -- vim.g.maplocalleader = "h"
-      -- vim.g["conjure#mapping#prefix"] = " m"
-      -- vim.g["conjure#client#python#stdio#mapping#start"] = "ca"
+      },
+      {
+        "[h",
+        function()
+          require("notebook-navigator").move_cell("u")
+        end,
+      },
+      { "<leader>meX", "<cmd>lua require('notebook-navigator').run_cell()<cr>" },
+      { "<leader>mex", "<cmd>lua require('notebook-navigator').run_and_move()<cr>" },
+    },
+    event = "VeryLazy",
+    config = function()
+      local nn = require("notebook-navigator")
+      local ai = require("mini.ai")
+      nn.setup({ activate_hydra_keys = "<leader>meh" })
+      ai.setup({ custom_textobjects = { h = nn.miniai_spec } })
     end,
   },
+  {
+    "Vigemus/iron.nvim",
+    main = "iron.core",
+    opts = function(_, opts)
+      return { config = { repl_open_cmd = require("iron.view").split("40%") } }
+    end,
+  },
+
+  -- {
+  --   "Olical/conjure",
+  --   -- event = "VeryLazy",
+  --   ft = { "python", "hy", "markdown" },
+  --   -- keys = { { "<localleader>" } },
+  --   init = function()
+  --     vim.api.nvim_create_autocmd("BufNewFile", {
+  --       group = vim.api.nvim_create_augroup("conjure_log_disable_lsp", { clear = true }),
+  --       pattern = { "conjure-log-*" },
+  --       callback = function(event)
+  --         vim.diagnostic.disable(event.buf)
+  --       end,
+  --       desc = "Conjure Log disable LSP diagnostics",
+  --     })
+  --     vim.g["conjure#extract#tree_sitter#enabled"] = true
+  --     vim.g["conjure#mapping#def_word"] = false
+  --     vim.g["conjure#mapping#doc_word"] = false
+  --
+  --     -- TODO: add virtualenv support
+  --     -- vim.g["conjure#client#python#stdio#command"] = "ipython --classic -i"
+  --     vim.g["conjure#client#python#stdio#command"] = "python3 -iq"
+  --     vim.g["conjure#client#python#stdio#mapping#start"] = "s"
+  --     vim.g["conjure#client#python#stdio#mapping#stop"] = "d"
+  --
+  --     -- vim.g["conjure#mapping#prefix"] = "<localleader>"
+  --     -- vim.cmd([[let g:conjure#mapping#prefix="h"]])
+  --     -- vim.g.maplocalleader = "h"
+  --     -- vim.g["conjure#mapping#prefix"] = " m"
+  --     -- vim.g["conjure#client#python#stdio#mapping#start"] = "ca"
+  --   end,
+  -- },
   -- {
   --   "dccsillag/magma-nvim",
   --   build = ":UpdateRemotePlugins",
