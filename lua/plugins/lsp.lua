@@ -6,7 +6,13 @@ return {
       -- change/add/delete lazyvim lsp keymaps
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
 
-      keys[#keys + 1] = { "<leader>ca", false, mode = "n" }
+      -- keys[#keys + 1] = { "<leader>ca", false, mode = "n" }
+      keys[#keys + 1] = {
+        "<leader>ca",
+        "<cmd>lua require('actions-preview').code_actions()<cr>",
+        desc = "Code actions",
+        mode = { "n", "v" },
+      }
       keys[#keys + 1] = { "<leader>cd", false, mode = "n" }
 
       keys[#keys + 1] = { "<leader>cA", vim.lsp.codelens.run, desc = "Codelens", mode = "n" }
@@ -37,7 +43,6 @@ return {
       },
     },
   },
-  -- { "dgagn/diagflow.nvim", event = { "DiagnosticChanged" }, opts = { toggle_event = { "InsertEnter" } } },
   { "williamboman/mason.nvim", cmd = "Mason", keys = { { "<leader>cM", "<cmd>Mason<cr>", desc = "Mason" } } },
   {
     "adoyle-h/lsp-toggle.nvim",
@@ -48,6 +53,37 @@ return {
       { "<leader>cT", "<cmd>ToggleLSP<cr>", desc = "Toggle NullLSP" },
     },
     opts = {},
+  },
+  {
+    "aznhe21/actions-preview.nvim",
+    opts = {
+      -- diff = { algorithm = "patience", ignore_whitespace = true },
+      telescope = require("telescope.themes").get_ivy({
+        -- wrap_results = true,
+        mappings = {
+          i = {
+            ["<c-h>"] = function()
+              vim.api.nvim_feedkeys(require("utils").termcodes("<c-s-w>"), "i", true)
+            end,
+            ["<c-j>"] = function(...)
+              return require("telescope.actions").move_selection_next(...)
+            end,
+            ["<c-k>"] = function(...)
+              return require("telescope.actions").move_selection_previous(...)
+            end,
+            ["<c-f>"] = function(...)
+              return require("telescope.actions").to_fuzzy_refine(...)
+            end,
+            ["<C-s>"] = function(...)
+              return require("telescope.actions").cycle_previewers_next(...)
+            end,
+            ["<C-a>"] = function(...)
+              return require("telescope.actions").cycle_previewers_prev(...)
+            end,
+          },
+        },
+      }),
+    },
   },
   {
     "DNLHC/glance.nvim",

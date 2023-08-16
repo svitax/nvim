@@ -26,16 +26,16 @@ return {
       endwise = { enable = true }, -- See: https://github.com/RRethy/nvim-treesitter-endwise
       -- indent = { enable = false },
       indent = { enable = true, disable = { "yaml", "python", "typescriptreact", "typescript" } },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = "<CR>",
-          node_incremental = "<CR>",
-          scope_incremental = false,
-          -- scope_incremental = "<S-CR>",
-          node_decremental = "<S-CR>",
-        },
-      },
+      -- incremental_selection = {
+      --   enable = true,
+      --   keymaps = {
+      --     init_selection = "<CR>",
+      --     node_incremental = "<CR>",
+      --     scope_incremental = false,
+      --     -- scope_incremental = "<S-CR>",
+      --     node_decremental = "<S-CR>",
+      --   },
+      -- },
       matchup = { enable = true, include_match_words = true, enable_quotes = true }, -- See: https://github.com/andymass/vim-matchup
       playground = { enable = true },
       -- refactor = { highlight_definitions = { enable = true }, highlight_current_scope = { enable = true } },

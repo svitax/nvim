@@ -81,6 +81,23 @@ return {
       -- override_by_filename = {},
     },
   },
+  {
+    "dgagn/diagflow.nvim",
+    event = { "LspAttach" },
+    opts = {
+      format = function(diagnostic)
+        local code = diagnostic.code or (diagnostic.user_data and diagnostic.user_data.lsp.code)
+        if code then
+          return string.format("%s [%s]", diagnostic.message, code):gsub("1. ", "")
+        end
+        return diagnostic.message
+      end,
+      scope = "line",
+      -- NOTE: doesn't entirely work. maybe is fixed in future
+      toggle_event = { "InsertEnter" },
+      show_sign = true,
+    },
+  },
   --   -- TODO: kinda jittery. look into fixing that
   {
     "luukvbaal/statuscol.nvim",

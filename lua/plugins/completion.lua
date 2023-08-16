@@ -96,14 +96,14 @@ return {
       -- )
 
       cmp.setup.cmdline(":", {
-        mapping = cmp.mapping.preset.cmdline(),
+        -- mapping = cmp.mapping.preset.cmdline(),
         -- cmp groups. if we can't find anything in one group, look in the next
         sources = { { name = "cmdline", max_item_count = 30 }, { name = "async_path", max_item_count = 20 } },
         formatting = { max_width = 30 },
       })
 
       cmp.setup.cmdline({ "/", "?", "@" }, {
-        mapping = cmp.mapping.preset.cmdline(),
+        -- mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources(
           -- { { name = "nvim_lsp_document_symbol" } },
           { { name = "buffer" } }
