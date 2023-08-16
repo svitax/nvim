@@ -10,7 +10,7 @@ return {
     grey_dim = "#665c54",
     -- grey = "NONE",
     -- grey_light = "NONE",
-    fg = "#dcc9aa",
+    fg = "#d4be98",
     fg0 = "#dcc9aa", -- Lighter fg
     fg1 = "#d4be98", -- Default fg
     fg2 = "#ccb386", -- Darker fg (status line)
@@ -37,7 +37,7 @@ return {
     blue = "#8eb2af",
     -- bg_blue = "NONE",
     -- lt_blue = "NONE",
-    -- line_blue = "NONE",
+    line_blue = "NONE",
     purple = "#d4879c",
     -- bg_purple = "NONE",
     -- md_purple = "NONE",

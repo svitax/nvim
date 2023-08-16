@@ -1,5 +1,17 @@
 local M = {}
 
+M.special_filetypes = {
+  "noice",
+  "toggleterm",
+  "neotest-output",
+  "neotest-summary",
+  "git",
+  "dap-float",
+  "NeogitStatus",
+  "NeogitPopup",
+  "TelescopePrompt",
+}
+
 M.termcodes = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
@@ -467,6 +479,82 @@ function M.check_json_key_exists(filename, key)
 
   -- Check if the key exists in the JSON object
   return json[key] ~= nil
+end
+
+function M.get_attached_clients(msg)
+  -- Returns a string with a list of attached LSP clients, including
+  -- formatters and linters from null-ls
+
+  -- don't show anything if buffer is special/invalid filetype
+  if vim.tbl_contains(M.special_filetypes, vim.bo.filetype) then
+    return ""
+  end
+
+  local active_clients = vim.lsp.get_active_clients()
+  if vim.tbl_isempty(active_clients) then
+    if type(msg) == "boolean" or string.len(msg) == 0 then
+      return "[LS Inactive]"
+    end
+    return msg
+  end
+
+  -- if next(active_clients) == nil then
+  --   if type(msg) == "boolean" or string.len(msg) == 0 then
+  --     return "LS Inactive"
+  --   end
+  --   return msg
+  -- end
+
+  -- trims a client name if window too small
+  local function trim(client_name)
+    if vim.fn.winwidth(0) < 100 then
+      return string.sub(client_name, 1, 4)
+    end
+    return client_name
+  end
+
+  local buf_client_names = {}
+  vim.lsp.for_each_buffer_client(0, function(client, _, _)
+    if client.name ~= "null-ls" and client.name ~= "copilot" then
+      local client_name = trim(client.name)
+      table.insert(buf_client_names, client_name)
+    end
+  end)
+
+  local function list_registered_providers_names(filetype)
+    local s = require("null-ls.sources")
+    local available_sources = s.get_available(filetype)
+    local registered = {}
+    for _, source in ipairs(available_sources) do
+      for method in pairs(source.methods) do
+        registered[method] = registered[method] or {}
+        local source_name = trim(source.name)
+        table.insert(registered[method], source_name)
+      end
+    end
+    return registered
+  end
+
+  local function list_registered(filetype, method)
+    local registered_providers = list_registered_providers_names(filetype)
+    return registered_providers[method] or {}
+  end
+
+  local buf_ft = vim.bo.filetype
+  local supported_formatters = list_registered(buf_ft, "NULL_LS_FORMATTING")
+  local supported_linters = list_registered(buf_ft, "NULL_LS_DIAGNOSTICS")
+
+  vim.list_extend(buf_client_names, supported_formatters)
+  vim.list_extend(buf_client_names, supported_linters)
+
+  if vim.tbl_isempty(buf_client_names) then
+    buf_client_names = { "LS Inactive" }
+  end
+
+  local uniq_client_names = vim.fn.uniq(buf_client_names)
+  local language_servers = "[" .. table.concat(uniq_client_names, ", ") .. "]"
+
+  return language_servers
 end
 
 return M

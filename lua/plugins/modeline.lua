@@ -126,7 +126,7 @@ local components = {
       -- not a toggleterm buf
       return (not utils.is_buf_filetype("toggleterm")) and hide_in_width()
     end,
-    color = { fg = c.fg, bg = c.bg0, gui = "bold" },
+    color = { fg = c.fg, bg = c.bg0 },
   },
   toggleterm = {
     function()
@@ -283,7 +283,8 @@ local components = {
         and not utils.is_buf_filetype("toggleterm")
     end,
     -- color = fg("Statement"),
-    color = { fg = c.green, bg = c.bg0 },
+    -- color = { fg = c.green, bg = c.bg0 },
+    color = { fg = c.fg, bg = c.bg0 },
   },
   showmode = {
     function()
@@ -302,84 +303,103 @@ local components = {
     -- color = fg("Constant"),
     color = { fg = c.red, bg = c.bg0 },
   },
-  diagnostics = {
-    "diagnostics",
-    sources = { "nvim_diagnostic" },
-    symbols = {
-      error = diagnostic_icons.bold_error .. " ",
-      warn = diagnostic_icons.bold_warning .. " ",
-      info = diagnostic_icons.bold_info .. " ",
-      hint = diagnostic_icons.bold_hint .. " ",
-    },
-    cond = hide_in_width,
-    color = { bg = c.bg0 },
-  },
+  -- diagnostics = {
+  --   "diagnostics",
+  --   sources = { "nvim_diagnostic" },
+  --   symbols = {
+  --     error = diagnostic_icons.bold_error .. " ",
+  --     warn = diagnostic_icons.bold_warning .. " ",
+  --     info = diagnostic_icons.bold_info .. " ",
+  --     hint = diagnostic_icons.bold_hint .. " ",
+  --   },
+  --   cond = hide_in_width,
+  --   color = { bg = c.bg0 },
+  -- },
   -- { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
   lsp = {
-    function(msg)
-      local active_clients = vim.lsp.get_active_clients()
-      if vim.tbl_isempty(active_clients) then
-        if type(msg) == "boolean" or string.len(msg) == 0 then
-          return "[LS Inactive]"
-        end
-        return msg
+    function()
+      local buf_clients = vim.lsp.get_active_clients({ bufnr = 0 })
+      -- don't show anything if buffer is special/invalid filetype
+      if vim.tbl_contains(utils.special_filetypes, vim.bo.filetype) then
+        return ""
       end
-
-      -- if next(active_clients) == nil then
-      --   if type(msg) == "boolean" or string.len(msg) == 0 then
-      --     return "LS Inactive"
-      --   end
-      --   return msg
-      -- end
-
-      -- trims a client name if window too small
-      local function trim(client_name)
-        if vim.fn.winwidth(0) < 100 then
-          return string.sub(client_name, 1, 4)
-        end
-        return client_name
-      end
-
-      local buf_client_names = {}
-      vim.lsp.for_each_buffer_client(0, function(client, _, _)
-        if client.name ~= "null-ls" and client.name ~= "copilot" then
-          local client_name = trim(client.name)
-          table.insert(buf_client_names, client_name)
-        end
-      end)
-
-      local function list_registered_providers_names(filetype)
-        local s = require("null-ls.sources")
-        local available_sources = s.get_available(filetype)
-        local registered = {}
-        for _, source in ipairs(available_sources) do
-          for method in pairs(source.methods) do
-            registered[method] = registered[method] or {}
-            local source_name = trim(source.name)
-            table.insert(registered[method], source_name)
-          end
-        end
-        return registered
-      end
-
-      local function list_registered(filetype, method)
-        local registered_providers = list_registered_providers_names(filetype)
-        return registered_providers[method] or {}
+      if #buf_clients == 0 then
+        return "LS Inactive"
       end
 
       local buf_ft = vim.bo.filetype
-      local supported_formatters = list_registered(buf_ft, "NULL_LS_FORMATTING")
-      local supported_linters = list_registered(buf_ft, "NULL_LS_DIAGNOSTICS")
+      local buf_client_names = {}
 
-      vim.list_extend(buf_client_names, supported_formatters)
-      vim.list_extend(buf_client_names, supported_linters)
-
-      if vim.tbl_isempty(buf_client_names) then
-        buf_client_names = { "LS Inactive" }
+      -- add client
+      for _, client in pairs(buf_clients) do
+        if client.name ~= "copilot" and client.name ~= "null-ls" then
+          table.insert(buf_client_names, client.name)
+        end
       end
 
-      local uniq_client_names = vim.fn.uniq(buf_client_names)
-      local language_servers = "[" .. table.concat(uniq_client_names, ", ") .. "]"
+      -- Generally, you should use either null-ls or nvim-lint + formatter.nvim, not both.
+
+      -- Add sources (from null-ls)
+      -- null-ls registers each source as a separate attached client, so we need to filter for unique names down below.
+      local null_ls_s, null_ls = pcall(require, "null-ls")
+      if null_ls_s then
+        local sources = null_ls.get_sources()
+        for _, source in ipairs(sources) do
+          if source._validated then
+            for ft_name, ft_active in pairs(source.filetypes) do
+              if ft_name == buf_ft and ft_active then
+                table.insert(buf_client_names, source.name)
+              end
+            end
+          end
+        end
+      end
+
+      -- Add linters (from nvim-lint)
+      local lint_s, lint = pcall(require, "lint")
+      if lint_s then
+        for ft_k, ft_v in pairs(lint.linters_by_ft) do
+          if type(ft_v) == "table" then
+            for _, linter in ipairs(ft_v) do
+              if buf_ft == ft_k then
+                table.insert(buf_client_names, linter)
+              end
+            end
+          elseif type(ft_v) == "string" then
+            if buf_ft == ft_k then
+              table.insert(buf_client_names, ft_v)
+            end
+          end
+        end
+      end
+
+      -- Add formatters (from formatter.nvim)
+      local formatter_s, _ = pcall(require, "formatter")
+      if formatter_s then
+        local formatter_util = require("formatter.util")
+        for _, formatter in ipairs(formatter_util.get_available_formatters_for_ft(buf_ft)) do
+          if formatter then
+            table.insert(buf_client_names, formatter)
+          end
+        end
+      end
+
+      -- This needs to be a string only table so we can use concat below
+      local unique_client_names = {}
+      for _, client_name_target in ipairs(buf_client_names) do
+        local is_duplicate = false
+        for _, client_name_compare in ipairs(unique_client_names) do
+          if client_name_target == client_name_compare then
+            is_duplicate = true
+          end
+        end
+        if not is_duplicate then
+          table.insert(unique_client_names, client_name_target)
+        end
+      end
+
+      local client_names_str = table.concat(unique_client_names, ", ")
+      local language_servers = string.format("[%s]", client_names_str)
 
       return language_servers
     end,
@@ -423,6 +443,33 @@ local components = {
     "b:gitsigns_head",
     icon = git_icons.branch,
     color = { fg = c.purple, bg = c.bg0 },
+  },
+  -- branch_head = {
+  --   function(props)
+  --     local icon = git_icons.branch
+  --     local label = {}
+  --     -- local signs = vim.api.nvim_buf_get_var(props.buf, "gitsigns_head")
+  --     table.insert(label, { icon .. " " .. vim.b.gitsigns_head })
+  --     return label
+  --   end,
+  -- },
+  diff = {
+    function(props)
+      local icons =
+        { removed = git_icons.bold_removed, changed = git_icons.bold_modified, added = git_icons.bold_added }
+      local labels = {}
+      local signs = vim.api.nvim_buf_get_var(props.buf, "gitsigns_status_dict")
+      -- local signs = vim.b.gitsigns_status_dict
+      for name, icon in pairs(icons) do
+        if tonumber(signs[name]) and signs[name] > 0 then
+          table.insert(labels, { icon .. " " .. signs[name] .. " ", group = "Diff" .. name })
+        end
+      end
+      if #labels > 0 then
+        table.insert(labels, { "| " })
+      end
+      return labels
+    end,
   },
   -- diff = {
   --   "diff",
@@ -547,6 +594,100 @@ end
 return {
   -- { "Bekaboo/dropbar.nvim", event = "VeryLazy", opts = {} },
   {
+    "b0o/incline.nvim",
+    event = "VeryLazy",
+    opts = function()
+      local function get_diagnostic_label(props)
+        local icons = { error = "", warn = "", info = "", hint = "" }
+        local label = {}
+
+        for severity, icon in pairs(icons) do
+          local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })
+          if n > 0 then
+            if props.focused then
+              table.insert(label, { icon .. " " .. n .. " ", group = "DiagnosticSign" .. severity })
+            else
+              table.insert(label, { icon .. " " .. n .. " ", group = "Comment" })
+            end
+          end
+        end
+        if #label > 0 then
+          if props.focused then
+            table.insert(label, { "| " })
+          else
+            table.insert(label, { "| ", group = "Comment" })
+          end
+        end
+        return label
+      end
+
+      return {
+        render = function(props)
+          local fname = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
+          local modified = vim.api.nvim_buf_get_option(props.buf, "modified") and "bold,italic" or "bold"
+          local filename = { fname, gui = modified }
+          if props.focused == false then
+            filename = vim.tbl_extend("force", filename, { guifg = c.grey_dim })
+          end
+
+          -- local ft_icon, ft_color = require("nvim-web-devicons").get_icon_color(fname)
+          -- local filetype = { ft_icon }
+          -- if props.focused then
+          --   filetype = vim.tbl_extend("force", filetype, { guifg = ft_color })
+          -- else
+          --   filetype = vim.tbl_extend("force", filetype, { guifg = c.grey_dim })
+          -- end
+
+          local dname = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":p:h:t") .. "/"
+          local dirname = { dname, guifg = c.grey_dim }
+          -- if props.focused then
+          --   dirname = vim.tbl_extend("force", dirname, { guifg = c.blue })
+          -- else
+          --   dirname = vim.tbl_extend("force", dirname, { guifg = c.grey_dim })
+          -- end
+
+          local modified_icon = {}
+          if vim.api.nvim_get_option_value("modified", { buf = props.buf }) then
+            modified_icon = vim.tbl_extend("force", { "● " }, { guifg = c.yellow })
+          end
+
+          local grapple_icon = {}
+          local key = require("grapple").key({ buffer = props.buf })
+          if key then
+            grapple_icon = vim.tbl_extend("force", grapple_icon, { modeline_icons.tag .. " [" .. key .. "] " })
+          else
+            grapple_icon = { "" }
+          end
+          if props.focused then
+            grapple_icon = vim.tbl_extend("force", grapple_icon, { guifg = c.blue })
+          else
+            grapple_icon = vim.tbl_extend("force", grapple_icon, { guifg = c.grey_dim })
+          end
+
+          -- function()
+          --   local key = require("grapple").key()
+          --   return modeline_icons.tag .. " [" .. key .. "]"
+          -- end,
+          -- cond = require("grapple").exists,
+          -- color = { fg = c.blue, bg = c.bg0 },
+
+          local buffer = {
+            { get_diagnostic_label(props) },
+            -- filetype,
+            -- { components.diff[1]() },
+            grapple_icon,
+            dirname,
+            filename,
+            -- { filename, gui = modified },
+            { " " },
+            modified_icon,
+          }
+          return buffer
+        end,
+      }
+    end,
+  },
+  {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = function(plugin)
@@ -572,16 +713,16 @@ return {
         sections = {
           lualine_a = { components.gutter, components.mode, components.search_count },
           lualine_b = {
-            components.buf_size,
+            -- components.buf_size,
             components.toggleterm,
-            components.grapple,
-            components.buf_modified,
-            components.dir,
-            components.filename,
+            -- components.grapple,
+            -- components.buf_modified,
+            -- components.dir,
+            -- components.filename,
           },
           lualine_c = {
-            components.location,
-            components.progress,
+            -- components.location,
+            -- components.progress,
             components.showcmd,
             -- components.showmode,
             components.showmacro,
@@ -591,7 +732,7 @@ return {
             -- },
           },
           lualine_x = {
-            components.diagnostics,
+            -- components.diagnostics,
             -- components.overseer,
             components.lsp,
             -- { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = fg("Special") },

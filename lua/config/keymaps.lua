@@ -86,9 +86,9 @@ map({ "i" }, "<cr>", "<cr><c-g>u", { desc = "" })
 map({ "i" }, "<space>", "<space><c-g>u", { desc = "" })
 
 -- vv selects the whole line
-map({ "n" }, "vv", "V", { desc = "Select whole line" })
+-- map({ "n" }, "vv", "V", { desc = "Select whole line" })
 -- V select until the end of the line
-map({ "n" }, "V", "v$", { desc = "Select to end of line" })
+-- map({ "n" }, "V", "v$", { desc = "Select to end of line" })
 
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
 
