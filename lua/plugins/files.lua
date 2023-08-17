@@ -2,22 +2,16 @@ local shared = require("shared")
 local modeline_icons = shared.modeline_icons
 
 return {
-  -- {
-  --   "echasnovski/mini.misc",
-  --   version = false,
-  --   config = function(_, opts)
-  --     require("mini.misc").setup(opts)
-  --     require("mini.misc").setup_auto_root()
-  --   end,
-  -- },
   {
     "nvim-neo-tree/neo-tree.nvim",
     -- dependencies = { { "prncss-xyz/neo-tree-zk.nvim" }, { "mickael-menu/zk-nvim" } },
     keys = {
       { "<leader>fe", false },
       { "<leader>fE", false },
-      { "<leader>e", "<cmd>Neotree toggle reveal=true position=float dir=./<cr>", desc = "File tree (cwd)" },
-      { "<leader>E", "<cmd>Neotree toggle reveal=true position=float dir=~/<cr>", desc = "File tree (home)" },
+      { "<leader>e", false },
+      { "<leader>E", false },
+      { "<leader>l", "<cmd>Neotree toggle reveal=true position=float dir=./<cr>", desc = "File tree (cwd)" },
+      { "<leader>L", "<cmd>Neotree toggle reveal=true position=float dir=~/<cr>", desc = "File tree (home)" },
       -- { "<leader>ne", "<cmd>Neotree toggle source=zk position=float<cr>", desc = "Explore notes" },
     },
     opts = {
@@ -246,25 +240,33 @@ return {
       { "<leader>fS", ":SudaRead ", desc = "Sudo read file" },
     },
   },
-  -- {
-  --   -- Lets you use your favorite terminal file managers
-  --   "is0n/fm-nvim",
-  --   opts = { mappings = { q = ":q<CR>" } },
-  --   keys = {
-  --     {
-  --       "<leader>E",
-  --       -- doing it like this makes it so I can open Lf in my dashboard
-  --       function()
-  --         local filename = vim.fn.expand("%")
-  --         vim.cmd([[Lf ]] .. filename)
-  --       end,
-  --       desc = "Lf file manager",
-  --     },
-  --   },
-  -- },
+  {
+    -- Lets you use your favorite terminal file managers
+    "is0n/fm-nvim",
+    opts = { ui = { float = { border = "rounded", blend = 15 }, mappings = { q = ":q<CR>" } } },
+    keys = {
+      {
+        "<leader>e",
+        -- doing it like this makes it so I can open Lf in my dashboard
+        function()
+          local filename = vim.fn.expand("%")
+          vim.cmd([[Lf ]] .. filename)
+        end,
+        desc = "File manager (Lf)",
+      },
+    },
+  },
   -- {
   --   "stevearc/oil.nvim",
   --   opts = {},
-  --   keys = { { "<leader>E", "<cmd>lua require('oil').open()<cr>", desc = "File manager" } },
+  --   keys = { { "<leader>E", "<cmd>lua require('oil').open()<cr>", desc = "File manager (oil)" } },
+  -- },
+  -- {
+  --   "echasnovski/mini.misc",
+  --   version = false,
+  --   config = function(_, opts)
+  --     require("mini.misc").setup(opts)
+  --     require("mini.misc").setup_auto_root()
+  --   end,
   -- },
 }

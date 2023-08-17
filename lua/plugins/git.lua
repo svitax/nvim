@@ -55,14 +55,7 @@ return {
       { "<leader>gsr", "<cmd>AdvancedGitSearch checkout_reflog<cr>", desc = "Checkout from reflog" },
     },
   },
-  -- {
-  --   "kdheepak/lazygit.nvim",
-  --   init = function()
-  --     vim.g.lazygit_floating_window_winblend = 5
-  --   end,
-  --   cmd = { "LazyGit", "LazyGitFilter", "LazyGitFilterCurrentFile" },
-  --   keys = { { "<leader>gg", "<cmd>LazyGitCurrentFile<cr>", desc = "Lazygit" } },
-  -- },
+  { "is0n/fm-nvim", keys = { { "<leader>gl", "<cmd>Lazygit<cr>", desc = "Git status (Lazygit)" } } },
   {
     "NeogitOrg/neogit",
     dependencies = "nvim-lua/plenary.nvim",
@@ -93,7 +86,7 @@ return {
       mappings = { status = { ["l"] = "Toggle", ["h"] = "Toggle" } },
       -- use_telescope = true,
     },
-    keys = { { "<leader>gn", "<cmd>Neogit<cr>", desc = "Neogit" } },
+    keys = { { "<leader>gg", "<cmd>Neogit<cr>", desc = "Git status (Neogit)" } },
   },
   {
     "sindrets/diffview.nvim",
@@ -141,4 +134,12 @@ return {
     },
     keys = { { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Diffview" } },
   },
+  -- {
+  --   "kdheepak/lazygit.nvim",
+  --   init = function()
+  --     vim.g.lazygit_floating_window_winblend = 5
+  --   end,
+  --   cmd = { "LazyGit", "LazyGitFilter", "LazyGitFilterCurrentFile" },
+  --   keys = { { "<leader>gg", "<cmd>LazyGitCurrentFile<cr>", desc = "Lazygit" } },
+  -- },
 }

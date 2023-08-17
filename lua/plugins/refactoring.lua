@@ -1,11 +1,19 @@
 return {
   -- <leader>lr for incremental LSP renaming based on Neovim's command-preview feature.
   { "smjonas/inc-rename.nvim", config = true, cmd = "IncRename" },
-  -- structural search and replace
   {
+    -- Structural search and replace
     "cshuaimin/ssr.nvim",
     config = true,
-    keys = { { "<leader>sr", "<cmd>lua require('ssr').open()<cr>", mode = { "n", "x" }, desc = "Replace in files" } },
+    keys = { { "<leader>sR", "<cmd>lua require('ssr').open()<cr>", mode = { "n", "x" }, desc = "Structural replace" } },
+  },
+  {
+    -- Use lua patterns instead of vim regex for vim's :substitute
+    "chrisgrieser/nvim-alt-substitute",
+    opts = true,
+    -- lazy-loading with `cmd =` does not work well with incremental preview
+    event = "CmdlineEnter",
+    keys = { { "<leader>sr", [[:S ///g<Left><Left><Left>]], desc = ":AltSubstitute", mode = { "n", "x" } } },
   },
   {
     "ThePrimeagen/refactoring.nvim",

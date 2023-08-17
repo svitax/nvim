@@ -4,12 +4,6 @@
 local u = require("utils")
 return {
   {
-    "sustech-data/wildfire.nvim",
-    event = "VeryLazy",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    opts = { keymaps = { init_selection = "<CR>", node_incremental = "<CR>", node_decremental = "<S-CR>" } },
-  },
-  {
     -- Macro manager
     "ecthelionvi/NeoComposer.nvim",
     dependencies = { "kkharji/sqlite.lua" },

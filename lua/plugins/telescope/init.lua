@@ -66,7 +66,7 @@ return {
         lv_utils.telescope("files", { prompt_title = "Find files (git)" }),
         desc = "Find file (cwd)",
       },
-      { "<leader>l", "<cmd>Lazy<cr>", desc = "Plugins" },
+      { "<leader>P", "<cmd>Lazy<cr>", desc = "Plugins" },
 
       {
         "<leader>bb",
@@ -152,7 +152,7 @@ return {
       { "<leader>gc" },
       { "<leader>gC" },
       { "<leader>gs" },
-      { "<leader>gS" },
+      -- { "<leader>gS" },
 
       { "<leader>hA", "<cmd>Telescope autocommands<cr>", desc = "Autocommands" },
       { "<leader>hc", "<cmd>Telescope command_history<cr>", desc = "Command history" },
@@ -426,7 +426,7 @@ return {
       "DevdocsOpen",
       "DevdocsOpenFloat",
       "DevdocsUpdate",
-      'DevdocsUpdateAll',
+      "DevdocsUpdateAll",
     },
     opts = { previewer_cmd = "glow", cmd_args = { "-s", "dark", "-w", "80" } },
     keys = {

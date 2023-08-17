@@ -1,4 +1,13 @@
 return {
+  {
+    "gennaro-tedesco/nvim-jqx",
+    ft = { "json", "yaml", "qf" },
+    cmd = { "JqxList", "JqxQuery" },
+    keys = {
+      { "<leader>mjl", "<cmd>JqxList<cr>", desc = "jqx list" },
+      { "<leader>mjs", "<cmd>JqxQuery<cr>", desc = "jqx query" },
+    },
+  },
   -- add json to treesitter
   {
     "nvim-treesitter/nvim-treesitter",

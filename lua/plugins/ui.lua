@@ -98,8 +98,8 @@ return {
       show_sign = true,
     },
   },
-  --   -- TODO: kinda jittery. look into fixing that
   {
+    -- TODO: kinda jittery. look into fixing that
     "luukvbaal/statuscol.nvim",
     event = "UIEnter",
     -- event = "VeryLazy",
@@ -162,9 +162,11 @@ return {
         ["<leader>hd"] = { name = "+devdocs" },
         ["<leader>m"] = { name = "+<localleader>" },
         ["<leader>me"] = { name = "+evaluate" },
+        ["<leader>mj"] = { name = "+jqx" },
         ["<leader>ml"] = { name = "+logs" },
         ["<leader>mg"] = { name = "+goto" },
-        ["<leader>mr"] = { name = "+reset" },
+        -- ["<leader>mr"] = { name = "+reset" },
+        ["<leader>mr"] = { name = "+rest" },
         ["<leader>mc"] = { name = "+python repl" },
         ["<leader>mei"] = { name = "interrupt command" },
         ["<leader>n"] = { name = "+notes" },

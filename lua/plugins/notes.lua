@@ -1,5 +1,5 @@
 return {
-  { "opdavies/toggle-checkbox.nvim", ft = { "markdown" } },
+  -- { "opdavies/toggle-checkbox.nvim", ft = { "markdown" } },
   {
     "quarto-dev/quarto-nvim",
     dev = false,
@@ -186,54 +186,54 @@ return {
       },
     },
   },
-  {
-    "gaoDean/autolist.nvim",
-    ft = { "markdown", "text", "tex", "plaintex" },
-    config = function()
-      local autolist = require("autolist")
-      autolist.setup()
-      vim.keymap.set("i", "<tab>", "<cmd>AutolistTab<cr>")
-      vim.keymap.set("i", "<s-tab>", "<cmd>AutolistShiftTab<cr>")
-      vim.keymap.set("i", "<CR>", "<CR><cmd>AutolistNewBullet<cr>")
-      vim.keymap.set("n", "o", "o<cmd>AutolistNewBullet<cr>")
-      vim.keymap.set("n", "O", "O<cmd>AutolistNewBulletBefore<cr>")
-      vim.keymap.set("n", "<CR>", "<cmd>AutolistToggleCheckbox<cr><CR>")
-      vim.keymap.set("n", "<A-r>", "<cmd>AutolistRecalculate<cr>")
-
-      -- cycle list types with dot-repeat
-      vim.keymap.set("n", "<leader>ncn", require("autolist").cycle_next_dr, { expr = true })
-      vim.keymap.set("n", "<leader>ncp", require("autolist").cycle_prev_dr, { expr = true })
-
-      -- if you don't want dot-repeat
-      -- vim.keymap.set("n", "<leader>cn", "<cmd>AutolistCycleNext<cr>")
-      -- vim.keymap.set("n", "<leader>cp", "<cmd>AutolistCycleNext<cr>")
-
-      -- functions to recalculate list on edit
-      vim.keymap.set("n", ">>", ">><cmd>AutolistRecalculate<cr>")
-      vim.keymap.set("n", "<<", "<<<cmd>AutolistRecalculate<cr>")
-      vim.keymap.set("n", "dd", "dd<cmd>AutolistRecalculate<cr>")
-      vim.keymap.set("v", "d", "d<cmd>AutolistRecalculate<cr>")
-
-      -- autolist.create_mapping_hook("i", "<CR>", autolist.new)
-      -- autolist.create_mapping_hook("i", "<Tab>", autolist.indent)
-      -- autolist.create_mapping_hook("i", "<S-Tab>", autolist.indent, "<C-D>")
-      -- autolist.create_mapping_hook("n", "o", autolist.new)
-      -- autolist.create_mapping_hook("n", "O", autolist.new_before)
-      -- autolist.create_mapping_hook("n", ">>", autolist.indent)
-      -- autolist.create_mapping_hook("n", "<<", autolist.indent)
-      -- autolist.create_mapping_hook("n", "<C-r>", autolist.force_recalculate)
-      -- autolist.create_mapping_hook("n", "<leader>x", autolist.invert_entry, "")
-
-      -- TODO: autolist has a bug where it adds a space to the end of new list items
-      -- this autocmd (from the readme) makes it so I can't auto-format that away
-      -- vim.api.nvim_create_autocmd("TextChanged", {
-      --   pattern = "*",
-      --   callback = function()
-      --     vim.cmd.normal({ autolist.force_recalculate(nil, nil), bang = false })
-      --   end,
-      -- })
-    end,
-  },
+  -- {
+  --   "gaoDean/autolist.nvim",
+  --   ft = { "markdown", "text", "tex", "plaintex" },
+  --   config = function()
+  --     local autolist = require("autolist")
+  --     autolist.setup()
+  --     vim.keymap.set("i", "<tab>", "<cmd>AutolistTab<cr>")
+  --     vim.keymap.set("i", "<s-tab>", "<cmd>AutolistShiftTab<cr>")
+  --     vim.keymap.set("i", "<CR>", "<CR><cmd>AutolistNewBullet<cr>")
+  --     vim.keymap.set("n", "o", "o<cmd>AutolistNewBullet<cr>")
+  --     vim.keymap.set("n", "O", "O<cmd>AutolistNewBulletBefore<cr>")
+  --     vim.keymap.set("n", "<CR>", "<cmd>AutolistToggleCheckbox<cr><CR>")
+  --     vim.keymap.set("n", "<A-r>", "<cmd>AutolistRecalculate<cr>")
+  --
+  --     -- cycle list types with dot-repeat
+  --     vim.keymap.set("n", "<leader>ncn", require("autolist").cycle_next_dr, { expr = true })
+  --     vim.keymap.set("n", "<leader>ncp", require("autolist").cycle_prev_dr, { expr = true })
+  --
+  --     -- if you don't want dot-repeat
+  --     -- vim.keymap.set("n", "<leader>cn", "<cmd>AutolistCycleNext<cr>")
+  --     -- vim.keymap.set("n", "<leader>cp", "<cmd>AutolistCycleNext<cr>")
+  --
+  --     -- functions to recalculate list on edit
+  --     vim.keymap.set("n", ">>", ">><cmd>AutolistRecalculate<cr>")
+  --     vim.keymap.set("n", "<<", "<<<cmd>AutolistRecalculate<cr>")
+  --     vim.keymap.set("n", "dd", "dd<cmd>AutolistRecalculate<cr>")
+  --     vim.keymap.set("v", "d", "d<cmd>AutolistRecalculate<cr>")
+  --
+  --     -- autolist.create_mapping_hook("i", "<CR>", autolist.new)
+  --     -- autolist.create_mapping_hook("i", "<Tab>", autolist.indent)
+  --     -- autolist.create_mapping_hook("i", "<S-Tab>", autolist.indent, "<C-D>")
+  --     -- autolist.create_mapping_hook("n", "o", autolist.new)
+  --     -- autolist.create_mapping_hook("n", "O", autolist.new_before)
+  --     -- autolist.create_mapping_hook("n", ">>", autolist.indent)
+  --     -- autolist.create_mapping_hook("n", "<<", autolist.indent)
+  --     -- autolist.create_mapping_hook("n", "<C-r>", autolist.force_recalculate)
+  --     -- autolist.create_mapping_hook("n", "<leader>x", autolist.invert_entry, "")
+  --
+  --     -- TODO: autolist has a bug where it adds a space to the end of new list items
+  --     -- this autocmd (from the readme) makes it so I can't auto-format that away
+  --     -- vim.api.nvim_create_autocmd("TextChanged", {
+  --     --   pattern = "*",
+  --     --   callback = function()
+  --     --     vim.cmd.normal({ autolist.force_recalculate(nil, nil), bang = false })
+  --     --   end,
+  --     -- })
+  --   end,
+  -- },
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
@@ -259,7 +259,11 @@ return {
       )
       table.insert(
         opts.sources,
-        nls.builtins.formatting.trim_whitespace.with({ filetypes = { "markdown", "text", "quarto" } })
+        nls.builtins.formatting.trim_whitespace.with({ filetypes = { "markdown", "text", "quarto", "http" } })
+      )
+      table.insert(
+        opts.sources,
+        nls.builtins.formatting.trim_newlines.with({ filetypes = { "markdown", "text", "quarto", "http" } })
       )
       -- table.insert(opts.sources, nls.builtins.formatting.mdformat)
       -- table.insert(opts.sources, nls.builtins.formatting.cbfmt)

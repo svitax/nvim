@@ -48,10 +48,22 @@ augroup("close_with_q", { clear = true })
 autocmd("FileType", {
   desc = "Close certain filetypes with 'q'",
   group = "close_with_q",
-  pattern = { "noice", "toggleterm", "neotest-output", "neotest-summary", "git", "dap-float" },
+  pattern = { "noice", "toggleterm", "neotest-output", "neotest-summary", "git", "dap-float", "oil", "httpResult" },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
     vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+  end,
+})
+
+-- NOTE: when I close a jqx filetype, it puts me in my incline buffer. need to quit twice.
+augroup("jqx_close_with_q", { clear = true })
+autocmd("FileType", {
+  desc = "Close jqx filetypes with 'q'",
+  group = "jqx_close_with_q",
+  pattern = { "jqx" },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.keymap.set("n", "q", "<cmd>close<cr><cmd>close<cr>", { buffer = event.buf, silent = true })
   end,
 })
 
@@ -67,20 +79,20 @@ autocmd("FileType", {
 })
 
 -- term keymaps
-augroup("terminal_keymappings", { clear = true })
-autocmd("TermOpen", {
-  desc = "Keymappings for the terminal filetype",
-  group = "terminal_keymappings",
-  callback = function(event)
-    vim.keymap.set("t", "<c-j>", [[<Cmd>wincmd j<CR>]], { buffer = true, desc = "Switch window down" })
-    vim.keymap.set("t", "<c-k>", [[<Cmd>wincmd k<CR>]], { buffer = true, desc = "Switch window up" })
-    vim.keymap.set("t", "<c-l>", [[<Cmd>wincmd h<CR>]], { buffer = true, desc = "Switch window left" })
-    vim.keymap.set("t", "<c-h>", [[<Cmd>wincmd l<CR>]], { buffer = true, desc = "Switch window right" })
-    vim.keymap.set("t", "<ESC>", [[<c-\><c-n>]], { buffer = true, desc = "Exit terminal mode" })
-    vim.keymap.set("t", "<C-h>", "<C-w>", { buffer = true, desc = "Delete previous word (<C-bs>)" })
-    vim.keymap.set("t", "<C-bs>", "<C-w>", { buffer = true, desc = "Delete previous word (<C-bs>)" })
-  end,
-})
+-- augroup("terminal_keymappings", { clear = true })
+-- autocmd("TermOpen", {
+--   desc = "Keymappings for the terminal filetype",
+--   group = "terminal_keymappings",
+--   callback = function(event)
+--     vim.keymap.set("t", "<c-j>", [[<Cmd>wincmd j<CR>]], { buffer = true, desc = "Switch window down" })
+--     vim.keymap.set("t", "<c-k>", [[<Cmd>wincmd k<CR>]], { buffer = true, desc = "Switch window up" })
+--     vim.keymap.set("t", "<c-l>", [[<Cmd>wincmd h<CR>]], { buffer = true, desc = "Switch window left" })
+--     vim.keymap.set("t", "<c-h>", [[<Cmd>wincmd l<CR>]], { buffer = true, desc = "Switch window right" })
+--     vim.keymap.set("t", "<ESC>", [[<c-\><c-n>]], { buffer = true, desc = "Exit terminal mode" })
+--     vim.keymap.set("t", "<C-h>", "<C-w>", { buffer = true, desc = "Delete previous word (<C-bs>)" })
+--     vim.keymap.set("t", "<C-bs>", "<C-w>", { buffer = true, desc = "Delete previous word (<C-bs>)" })
+--   end,
+-- })
 
 -- wrap and check for spell in text filetypes
 -- vim.api.nvim_create_autocmd("FileType", {

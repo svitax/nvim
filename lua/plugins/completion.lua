@@ -1,4 +1,12 @@
 return {
+  {
+    -- Annotation generator
+    "danymat/neogen",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = { snippet_engine = "luasnip" },
+    cmd = { "Neogen" },
+    keys = { { "<leader>cg", "<cmd>Neogen<cr>", desc = "Generate doc" } },
+  },
   -- Use <tab> for completion and snippets (supertab)
   -- first: disable default <tab> and <s-tab> behavior in LuaSnip
   {
@@ -30,6 +38,7 @@ return {
     dependencies = {
       "FelipeLema/cmp-async-path",
       "hrsh7th/cmp-cmdline",
+      -- "dmitmel/cmp-cmdline-history",
       -- { "jcdickinson/codeium.nvim", dependencies = { "jcdickinson/http.nvim" }, config = true },
       -- vim.call('coc#rpc#ready')
       -- "PaterJason/cmp-conjure",
@@ -64,6 +73,7 @@ return {
         async_path = "(path)",
         buffer = "(buffer)",
         cmdline = "(cmd)",
+        cmdline_history = "(history)",
         -- conjure = "(conjure)",
         emmet_vim = "(emmet)",
         luasnip = "(snippet)",
@@ -95,21 +105,37 @@ return {
       --   })
       -- )
 
-      cmp.setup.cmdline(":", {
+      opts.cmdline_sources = {
         -- mapping = cmp.mapping.preset.cmdline(),
         -- cmp groups. if we can't find anything in one group, look in the next
-        sources = { { name = "cmdline", max_item_count = 30 }, { name = "async_path", max_item_count = 20 } },
+        sources = {
+          { name = "cmdline", max_item_count = 30 },
+          { name = "async_path", max_item_count = 20 },
+          -- { name = "cmdline_history", max_item_count = 10 },
+        },
         formatting = { max_width = 30 },
-      })
+        -- enabled = function()
+        --   -- Disable cmp-cmdline-history for AltSubstitute and S commands
+        --   -- Set of commands where cmp will be disabled
+        --   local disabled = { AltSubstitute = true, S = true }
+        --   -- Get first word of cmdline
+        --   local cmd = vim.fn.getcmdline():match("%S+")
+        --   -- Return true if cmd isn't disabled
+        --   -- else call/return cmp.close(), which returns false
+        --   return not disabled[cmd] or cmp.close()
+        -- end,
+      }
+      cmp.setup.cmdline(":", opts.cmdline_sources)
 
-      cmp.setup.cmdline({ "/", "?", "@" }, {
+      opts.cmdline_search_sources = {
         -- mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources(
           -- { { name = "nvim_lsp_document_symbol" } },
           { { name = "buffer" } }
         ),
         formatting = { max_width = 30 },
-      })
+      }
+      cmp.setup.cmdline({ "/", "?", "@" }, opts.cmdline_search_sources)
 
       -- opts.sources = cmp.config.sources(vim.list_extend(opts.sources,))
       opts.sources = {
@@ -257,13 +283,5 @@ return {
         end, { "i", "s", "c" }),
       })
     end,
-  },
-  {
-    -- Annotation generator
-    "danymat/neogen",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    opts = { snippet_engine = "luasnip" },
-    cmd = { "Neogen" },
-    keys = { { "<leader>cg", "<cmd>Neogen<cr>", desc = "Generate doc" } },
   },
 }

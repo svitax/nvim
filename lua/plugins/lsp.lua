@@ -44,7 +44,11 @@ return {
       },
     },
   },
-  { "williamboman/mason.nvim", cmd = "Mason", keys = { { "<leader>cM", "<cmd>Mason<cr>", desc = "Mason" } } },
+  {
+    "williamboman/mason.nvim",
+    cmd = "Mason",
+    keys = { { "<leader>cM", "<cmd>Mason<cr>", desc = "Mason" }, { "<leader>cm", false } },
+  },
   {
     "adoyle-h/lsp-toggle.nvim",
     event = "LspAttach",
@@ -96,59 +100,6 @@ return {
       { "<leader>ci", "<cmd>Glance implementations<cr>", desc = "Find implementations" },
     },
   },
-  -- NOTE: nvim-navbuddy
-  -- {
-  --   "neovim/nvim-lspconfig",
-  --   dependencies = {
-  --     {
-  --       "SmiteshP/nvim-navbuddy",
-  --       dependencies = { "SmiteshP/nvim-navic", "MunifTanjim/nui.nvim" },
-  --       opts = { lsp = { auto_attach = true } },
-  --       config = function(_, opts)
-  --         local navbuddy = require("nvim-navbuddy")
-  --         local actions = require("nvim-navbuddy.actions")
-  --         opts.mappings = {
-  --           ["l"] = actions.parent(), -- move to left panel
-  --           [";"] = actions.children(), -- move to right panel
-  --         }
-  --         navbuddy.setup(opts)
-  --       end,
-  --       keys = { { "<leader>co", "<cmd>Navbuddy<cr>", desc = "Symbols outline" } },
-  --     },
-  --   },
-  -- },
-  -- {
-  --   "hrsh7th/nvim-gtd",
-  --   event = { "BufReadPre", "BufNewFile" },
-  --   dependencies = "neovim/nvim-lspconfig",
-  --   keys = {
-  --     {
-  --       "gf",
-  --       function()
-  --         require("gtd").exec({ command = "edit" })
-  --       end,
-  --       desc = "Go to definition or file",
-  --     },
-  --   },
-  --   ---@type gtd.kit.App.Config.Schema
-  --   opts = {
-  --     sources = {
-  --       { name = "findup" },
-  --       {
-  --         name = "walk",
-  --         root_markers = {
-  --           ".git",
-  --           ".neoconf.json",
-  --           "Makefile",
-  --           "tsconfig.json",
-  --           "package.json",
-  --         },
-  --         ignore_patterns = { "/node_modules", "/.git" },
-  --       },
-  --       { name = "lsp" },
-  --     },
-  --   },
-  -- },
   {
     "lvimuser/lsp-inlayhints.nvim",
     init = function()
@@ -169,18 +120,4 @@ return {
     end,
     opts = {},
   },
-  -- {
-  --   "kosayoda/nvim-lightbulb",
-  --   event = { "BufReadPre", "BufNewFile" },
-  --   opts = { ignore = { "null-ls" } },
-  --   config = function(_, opts)
-  --     require("nvim-lightbulb").setup(opts)
-  --     vim.api.nvim_create_autocmd("CursorHold", {
-  --       group = vim.api.nvim_create_augroup("lightbulb", {}),
-  --       callback = function()
-  --         require("nvim-lightbulb").update_lightbulb()
-  --       end,
-  --     })
-  --   end,
-  -- },
 }

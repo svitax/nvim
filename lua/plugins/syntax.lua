@@ -21,6 +21,10 @@ return {
         --   vim.g.matchup_matchparen_offscreen = { method = "status_manual" }
         -- end,
       },
+      {
+        "sustech-data/wildfire.nvim",
+        opts = { keymaps = { init_selection = "<CR>", node_incremental = "<CR>", node_decremental = "<S-CR>" } },
+      },
     },
     opts = {
       endwise = { enable = true }, -- See: https://github.com/RRethy/nvim-treesitter-endwise
@@ -142,5 +146,11 @@ return {
       },
       { "<leader>sT", false },
     },
+  },
+  {
+    "cameron-wags/rainbow_csv.nvim",
+    config = true,
+    ft = { "csv", "tsv", "csv_semicolon", "csv_whitespace", "csv_pipe", "rfc_csv", "rfc_semicolon" },
+    cmd = { "RainbowDelim", "RainbowDelimSimple", "RainbowDelimQuoted", "RainbowMultiDelim", "CSVLint" },
   },
 }

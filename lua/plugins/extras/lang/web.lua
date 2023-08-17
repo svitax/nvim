@@ -1,12 +1,28 @@
 -- stylua: ignore
-if true then return {} end
+-- if true then return {} end
 
 return {
   {
     "rest-nvim/rest.nvim",
     ft = "http",
-    keys = { { "<leader>mh", "<Plug>RestNvim", desc = "Execute HTTP request" } },
+    cmd = { "RestNvim", "RestNvimPreview", "RestNvimLast" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    -- cmd = { "RestSelectEnv" },
+    keys = {
+      { "<leader>mre", "<Plug>RestNvim", desc = "Execute HTTP request" },
+      { "<leader>mrp", "<Plug>RestNvimPreview", desc = "Preview HTTP request" },
+      { "<leader>mrl", "<Plug>RestNvimLast", desc = "Re-run last HTTP request" },
+    },
     opts = { skip_ssl_verification = true },
+  },
+  -- add http to treesitter
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function(_, opts)
+      if type(opts.ensure_installed) == "table" then
+        vim.list_extend(opts.ensure_installed, { "json", "http" }, 1, #opts.ensure_installed)
+      end
+    end,
   },
 }
 -- return {
