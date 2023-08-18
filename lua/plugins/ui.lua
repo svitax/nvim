@@ -152,6 +152,7 @@ return {
         ["]"] = { name = "+next" },
         ["["] = { name = "+prev" },
         ["<leader><tab>"] = { name = "+tabs" },
+        ["<leader>a"] = { name = "+ai" },
         ["<leader>bx"] = { name = "+scratch" },
         ["<leader>c"] = { name = "+code" },
         ["<leader>d"] = { name = "+debug" },

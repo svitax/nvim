@@ -48,7 +48,17 @@ augroup("close_with_q", { clear = true })
 autocmd("FileType", {
   desc = "Close certain filetypes with 'q'",
   group = "close_with_q",
-  pattern = { "noice", "toggleterm", "neotest-output", "neotest-summary", "git", "dap-float", "oil", "httpResult" },
+  pattern = {
+    "noice",
+    "toggleterm",
+    "neotest-output",
+    "neotest-summary",
+    "git",
+    "dap-float",
+    "oil",
+    "httpResult",
+    "",
+  },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
     vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })

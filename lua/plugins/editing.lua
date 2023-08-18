@@ -3,6 +3,19 @@
 
 local u = require("utils")
 return {
+  -- {
+  --   -- BUG: doesn't currently support nvim-cmp
+  --   "smoka7/multicursors.nvim",
+  --   event = "VeryLazy",
+  --   dependencies = {
+  --     "nvim-treesitter/nvim-treesitter",
+  --     "smoka7/hydra.nvim",
+  --     -- "anuvyklack/hydra.nvim",
+  --   },
+  --   opts = {},
+  --   cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
+  --   keys = { { mode = { "v", "n" }, "<Leader>mm", "<cmd>MCstart<cr>", desc = "Multicursor" } },
+  -- },
   {
     -- Macro manager
     "ecthelionvi/NeoComposer.nvim",

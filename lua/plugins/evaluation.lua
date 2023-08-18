@@ -1,7 +1,13 @@
 return {
   {
     "GCBallesteros/NotebookNavigator.nvim",
-    dependencies = { "echasnovski/mini.comment", "echasnovski/mini.ai", "Vigemus/iron.nvim", "anuvyklack/hydra.nvim" },
+    dependencies = {
+      "echasnovski/mini.comment",
+      "echasnovski/mini.ai",
+      "Vigemus/iron.nvim",
+      -- "anuvyklack/hydra.nvim",
+      "smoka7/hydra.nvim",
+    },
     keys = {
       {
         "]h",
