@@ -20,6 +20,8 @@ return {
       -- keys[#keys + 1] = { "K", require("utils").keyword, desc = "Hover" }
     end,
     opts = {
+      -- if config.autocmds FennecFormat doesn't work, enable LazyVim's autoformat instead
+      -- Enabling this means if there are null-ls formatters available only those will format, no other language server will
       autoformat = true,
       diagnostics = {
         underline = true,

@@ -15,40 +15,40 @@ return {
     event = "CmdlineEnter",
     keys = { { "<leader>sr", [[:S ///g<Left><Left><Left>]], desc = ":AltSubstitute", mode = { "n", "x" } } },
   },
-  {
-    "ThePrimeagen/refactoring.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" },
-    opts = {
-      -- prompt for return type
-      -- prompt_func_return_type = {
-      --   go = true,
-      --   java = true,
-      --
-      --   c = true,
-      --   h = true,
-      --   cpp = true,
-      --   hpp = true,
-      --   cxx = true,
-      -- },
-      -- prompt for function parameters
-      -- prompt_func_param_type = {
-      --   go = true,
-      --   java = true,
-      --
-      --   c = true,
-      --   h = true,
-      --   cpp = true,
-      --   hpp = true,
-      --   cxx = true,
-      -- },
-    },
-    keys = {
-      {
-        "<leader>ce",
-        [[ <Esc><Cmd>lua require('refactoring').select_refactor()<CR>]],
-        mode = { "n", "v" },
-        desc = "Refactor",
-      },
-    },
-  },
+  -- {
+  --   "ThePrimeagen/refactoring.nvim",
+  --   dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-lua/plenary.nvim" },
+  --   opts = {
+  --     -- prompt for return type
+  --     -- prompt_func_return_type = {
+  --     --   go = true,
+  --     --   java = true,
+  --     --
+  --     --   c = true,
+  --     --   h = true,
+  --     --   cpp = true,
+  --     --   hpp = true,
+  --     --   cxx = true,
+  --     -- },
+  --     -- prompt for function parameters
+  --     -- prompt_func_param_type = {
+  --     --   go = true,
+  --     --   java = true,
+  --     --
+  --     --   c = true,
+  --     --   h = true,
+  --     --   cpp = true,
+  --     --   hpp = true,
+  --     --   cxx = true,
+  --     -- },
+  --   },
+  --   keys = {
+  --     {
+  --       "<leader>ce",
+  --       [[ <Esc><Cmd>lua require('refactoring').select_refactor()<CR>]],
+  --       mode = { "n", "v" },
+  --       desc = "Refactor",
+  --     },
+  --   },
+  -- },
 }

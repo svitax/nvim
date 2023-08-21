@@ -399,6 +399,10 @@ local components = {
           if client_name_target == client_name_compare then
             is_duplicate = true
           end
+          -- mark ruff_lsp and ruff from null-ls as duplicates
+          if client_name_target == "ruff" and client_name_compare == "ruff_lsp" then
+            is_duplicate = true
+          end
         end
         if not is_duplicate then
           table.insert(unique_client_names, client_name_target)

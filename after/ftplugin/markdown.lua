@@ -30,19 +30,8 @@ if require("zk.util").notebook_root(vim.fn.expand("%:p")) ~= nil then
     { buffer = true, silent = false, desc = "New note (cwd) with selection as content" }
   )
 else
-  vim.notify("zk-nvim not found")
-end
-
-local ok, _ = pcall(require, "toggle-checkbox")
-if ok then
-  vim.keymap.set(
-    "n",
-    "<A-cr>",
-    "<cmd>lua require('toggle-checkbox').toggle()<cr>",
-    { desc = "Toggle checkbox", buffer = true, silent = true }
-  )
-else
-  vim.notify("toggle-checkbox not loaded")
+  vim.notify("")
+  -- vim.notify("zk-nvim not found", vim.log.levels.TRACE)
 end
 
 vim.cmd("setlocal wrap")

@@ -243,7 +243,24 @@ return {
   {
     -- Lets you use your favorite terminal file managers
     "is0n/fm-nvim",
-    opts = { ui = { float = { border = "rounded", blend = 15 }, mappings = { q = ":q<CR>" } } },
+    opts = {
+      -- on_close = {
+      --   -- If file deleted on disk, close buffer
+      --   -- TODO: Ideally want this to work even if we don't have the deleted file open in the current buffer
+      --   function()
+      --     local bufnr = vim.api.nvim_get_current_buf()
+      --     local filepath = vim.api.nvim_buf_get_name(bufnr)
+      --     local stat = vim.loop.fs_stat(filepath)
+      --     if not (stat and stat.type == "file") then
+      --       require("utils").close_buffer()
+      --     end
+      --   end,
+      -- },
+      ui = {
+        float = { border = "rounded", blend = 15 },
+        mappings = { q = ":q<CR>" },
+      },
+    },
     keys = {
       {
         "<leader>e",

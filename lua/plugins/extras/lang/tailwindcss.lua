@@ -58,7 +58,7 @@ return {
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
-      { "roobert/tailwindcss-colorizer-cmp.nvim", config = true },
+      { "roobert/tailwindcss-colorizer-cmp.nvim", opts = { color_square_width = 2 } },
       { "jcha0713/cmp-tw2css" },
     },
     opts = function(_, opts)

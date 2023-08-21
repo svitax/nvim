@@ -105,6 +105,7 @@ return {
         consumers = {
           overseer = require("neotest.consumers.overseer"),
         },
+        overseer = { enabled = true },
         summary = {
           mappings = {
             attach = "a",

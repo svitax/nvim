@@ -294,3 +294,30 @@ autocmd("BufEnter", {
     -- end
   end,
 })
+
+-- augroup("FennecFormat", {})
+-- autocmd("BufWritePre", {
+--   group = "FennecFormat",
+--   callback = function()
+--     -- vim.lsp.buf.format({ async = true })
+--     require("lazyvim.plugins.lsp.format").format({ force = true, async = true })
+--   end,
+-- })
+
+-- augroup("delete_nonexist", { clear = true })
+-- autocmd({ "FocusGained" }, {
+--   desc = "Wipeout buffer if file deleted from disk",
+--   group = "delete_nonexist",
+--   callback = function()
+--     -- Get the current buffer
+--     local bufnr = vim.api.nvim_get_current_buf()
+--     -- Get the file path of the buffer
+--     local filepath = vim.api.nvim_buf_get_name(bufnr)
+--     -- Check if the file exists
+--     local stat = vim.loop.fs_stat(filepath)
+--     if not (stat and stat.type == "file") then
+--       -- require("utils").close_buffer()
+--       vim.api.nvim_buf_delete(0, {})
+--     end
+--   end,
+-- })

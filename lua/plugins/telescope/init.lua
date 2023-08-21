@@ -1,6 +1,69 @@
 local utils = require("utils")
 local lv_utils = require("lazyvim.util")
 
+local M = {}
+
+function M.flash(prompt_bufnr)
+  require("flash").jump({
+    pattern = "^",
+    highlight = { label = { after = { 0, 0 } } },
+    search = {
+      mode = "search",
+      exclude = {
+        function(win)
+          return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults"
+        end,
+      },
+    },
+    action = function(match)
+      local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+      picker:set_selection(match.pos[1] - 1)
+    end,
+  })
+end
+
+function M.multiopen(prompt_bufnr, open_cmd)
+  local actions = require("telescope.actions")
+  local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+
+  local num_selections = table.getn(picker:get_multi_selection())
+  local border_contents = picker.prompt_border.contents[1]
+  if not (string.find(border_contents, "Find Files") or string.find(border_contents, "Git Files")) then
+    actions.select_default(prompt_bufnr)
+    return
+  end
+  if num_selections > 1 then
+    vim.cmd("bw!")
+    for _, entry in ipairs(picker:get_multi_selection()) do
+      vim.cmd(string.format("%s %s", open_cmd, entry.value))
+    end
+    vim.cmd("stopinsert")
+  else
+    if open_cmd == "vsplit" then
+      actions.file_vsplit(prompt_bufnr)
+    elseif open_cmd == "split" then
+      actions.file_split(prompt_bufnr)
+    elseif open_cmd == "tabe" then
+      actions.file_tab(prompt_bufnr)
+    else
+      actions.file_edit(prompt_bufnr)
+    end
+  end
+end
+
+function M.multi_selection_open_vsplit(prompt_bufnr)
+  M.multiopen(prompt_bufnr, "vsplit")
+end
+function M.multi_selection_open_split(prompt_bufnr)
+  M.multiopen(prompt_bufnr, "split")
+end
+function M.multi_selection_open_tab(prompt_bufnr)
+  M.multiopen(prompt_bufnr, "tabe")
+end
+function M.multi_selection_open(prompt_bufnr)
+  M.multiopen(prompt_bufnr, "edit")
+end
+
 return {
   {
     "nvim-telescope/telescope.nvim",
@@ -224,9 +287,29 @@ return {
       defaults = require("telescope.themes").get_ivy({
         -- wrap_results = true,
         mappings = {
+          n = {
+            s = M.flash,
+            [";"] = function(...)
+              return require("telescope.actions").select_default(...)
+            end,
+            ["<cr>"] = function(...)
+              -- return require("telescope.actions").select_default(...)
+              return M.multi_selection_open(...)
+            end,
+          },
           i = {
-            ["<c-h>"] = function()
-              vim.api.nvim_feedkeys(utils.termcodes("<c-s-w>"), "i", true)
+            -- ["<cr>"] = function(...)
+            --   -- return require("telescope.actions").select_default(...)
+            --   return M.multi_selection_open(...)
+            -- end,
+            -- ["<c-h>"] = function()
+            --   vim.api.nvim_feedkeys(utils.termcodes("<c-s-w>"), "i", true)
+            -- end,
+            ["<c-o>"] = function()
+              return require("telescope.actions").preview_scrolling_left()
+            end,
+            ["<c-i>"] = function()
+              return require("telescope.actions").preview_scrolling_right()
             end,
             ["<c-j>"] = function(...)
               return require("telescope.actions").move_selection_next(...)
