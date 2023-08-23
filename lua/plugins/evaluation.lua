@@ -21,8 +21,8 @@ return {
           require("notebook-navigator").move_cell("u")
         end,
       },
-      { "<leader>meX", "<cmd>lua require('notebook-navigator').run_cell()<cr>" },
-      { "<leader>mex", "<cmd>lua require('notebook-navigator').run_and_move()<cr>" },
+      { "<leader>meX", "<cmd>lua require('notebook-navigator').run_cell()<cr>", desc = "Run cell" },
+      { "<leader>mex", "<cmd>lua require('notebook-navigator').run_and_move()<cr>", desc = "Run cell and move" },
     },
     config = function()
       local nn = require("notebook-navigator")

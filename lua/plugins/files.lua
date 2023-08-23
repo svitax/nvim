@@ -10,18 +10,51 @@ return {
       { "<leader>fE", false },
       { "<leader>e", false },
       { "<leader>E", false },
-      { "<leader>l", "<cmd>Neotree toggle reveal=true position=float dir=./<cr>", desc = "File tree (cwd)" },
-      { "<leader>L", "<cmd>Neotree toggle reveal=true position=float dir=~/<cr>", desc = "File tree (home)" },
+      -- { "<leader>l", "<cmd>Neotree toggle reveal=true position=float dir=./<cr>", desc = "File tree (cwd)" },
+      -- { "<leader>L", "<cmd>Neotree toggle reveal=true position=float dir=~/<cr>", desc = "File tree (home)" },
+      {
+        "<leader>l",
+        function()
+          require("neo-tree.command").execute({
+            toggle = true,
+            position = "float",
+            reveal = true,
+            -- follow_current_file = { enabled = true },
+            dir = vim.loop.cwd(),
+          })
+        end,
+        desc = "File tree (cwd)",
+      },
+      {
+        "<leader>L",
+        function()
+          require("neo-tree.command").execute({
+            toggle = true,
+            position = "float",
+            reveal = true,
+            dir = require("lazyvim.util").get_root(),
+          })
+        end,
+        desc = "File tree (root dir)",
+      },
       -- { "<leader>ne", "<cmd>Neotree toggle source=zk position=float<cr>", desc = "Explore notes" },
     },
     opts = {
+      event_handlers = {
+        {
+          event = "after_render",
+          handler = function()
+            local state = require("neo-tree.sources.manager").get_state("filesystem")
+            if not require("neo-tree.sources.common.preview").is_active() then
+              state.config = { use_float = true } -- or whatever your config is
+              state.commands.toggle_preview(state)
+            end
+          end,
+        },
+      },
       close_if_last_window = true,
       enable_normal_mode_for_inputs = true,
-      sources = {
-        "filesystem",
-        "buffers",
-        "git_status",
-      },
+      sources = { "filesystem", "buffers", "git_status" },
       window = {
         mappings = {
           ["e"] = "switch_to_filesystem",
@@ -35,6 +68,11 @@ return {
           ["<c-c>"] = "clear_filter",
           ["/"] = "filter_on_submit",
           ["f"] = "fuzzy_finder",
+          ["c"] = { "copy", config = { show_path = "relative" } },
+          ["a"] = { "add", config = { show_path = "relative" } },
+          ["m"] = { "move", config = { show_path = "relative" } },
+          ["P"] = { "toggle_preview", config = { use_float = true } },
+          ["<c-p>"] = "focus_preview",
           -- ["dd"] = "delete_node_without_confirm",
           -- ["d"] = "none",
           -- ["yy"] = "copy_to_clipboard",
@@ -52,7 +90,12 @@ return {
       },
 
       filesystem = {
-        follow_current_file = { enabled = true },
+
+        follow_current_file = {
+          enabled = true, -- This will find and focus the file in the active buffer every time
+          --               -- the current file is changed while the tree is open.
+          leave_dirs_open = true, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+        },
         use_libuv_file_watcher = true,
 
         hijack_netrw_behavior = "open_current",
