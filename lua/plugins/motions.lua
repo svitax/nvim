@@ -47,6 +47,7 @@ return {
   --   end,
   -- },
   {
+    -- TODO: <A-j> and <A-n> in normal mode to move lines
     "ziontee113/syntax-tree-surfer",
     config = true,
     dependencies = { "nvim-treesitter" },
@@ -96,6 +97,8 @@ return {
   --   -- end,
   -- },
   {
+    -- TODO: Do i need urlview if I can get this functionality through tmux?
+    -- do I have a plugin or autocmd that needs this?
     "axieax/urlview.nvim",
     opts = { jump = { prev = "[u", next = "]u" } },
     cmd = "UrlView",

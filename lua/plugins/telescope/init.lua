@@ -350,7 +350,7 @@ return {
     config = function()
       require("telescope").load_extension("lazy")
     end,
-    keys = { { "<leader>sl", "<cmd>Telescope lazy<cr>", desc = "Search plugins" } },
+    keys = { { "<leader>sP", "<cmd>Telescope lazy<cr>", desc = "Search plugins" } },
   },
   {
     "debugloop/telescope-undo.nvim",

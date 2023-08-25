@@ -34,7 +34,11 @@ return {
       }, 1, #opts.sources))
     end,
   },
-  { "folke/which-key.nvim", optional = true, opts = { defaults = { ["<leader>gs"] = { name = "+git search" } } } },
+  {
+    "folke/which-key.nvim",
+    optional = true,
+    opts = { defaults = { ["<leader>gs"] = { name = "+git search" }, ["<leader>gh"] = { name = "+git hunks" } } },
+  },
   {
     "aaronhallaert/advanced-git-search.nvim",
     dependencies = { "nvim-telescope/telescope.nvim", "sindrets/diffview.nvim" },
@@ -133,6 +137,16 @@ return {
       },
     },
     keys = { { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Diffview" } },
+  },
+  {
+    "pwntester/octo.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim", "nvim-tree/nvim-web-devicons" },
+    opts = function()
+      vim.treesitter.language.register("markdown", "octo")
+      return {}
+    end,
+    cmd = { "Octo" },
+    keys = { { "<leader>go", "<cmd>Octo actions<cr>", desc = "Octo actions" } },
   },
   -- {
   --   "kdheepak/lazygit.nvim",

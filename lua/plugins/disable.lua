@@ -9,7 +9,7 @@ return {
   { "catppuccin", enabled = false },
   { "lukas-reineke/indent-blankline.nvim", enabled = false },
   { "echasnovski/mini.indentscope", enabled = false },
-  { "folke/flash.nvim", keys = { { "R", mode = { "o", "x" }, false } } },
+  { "folke/flash.nvim", keys = { { "R", mode = { "o", "x" }, false }, { "S", mode = { "n", "o", "x" }, false } } },
   { "LazyVim/LazyVim", opts = { defaults = { keymaps = false } } },
   -- { "folke/noice.nvim", enabled = false },
 }

@@ -22,8 +22,9 @@ return {
       end,
     },
   },
-  {
-    "neovim/nvim-lspconfig",
-    opts = { servers = { dockerls = {}, docker_compose_language_service = {} } },
-  },
+  -- {
+  --   "neovim/nvim-lspconfig",
+  --   -- TODO: add root dir config for docker_compose_language_service
+  --   opts = { servers = { dockerls = {}, docker_compose_language_service = {} } },
+  -- },
 }

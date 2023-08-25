@@ -91,6 +91,8 @@ return {
       },
     },
   },
+  -- TODO: replace typescript.nvim with typescrip-tools
+  -- https://github.com/pmizio/typescript-tools.nvim
   -- Setup typescripts.nvim to lazy load when in a typescript file.
   -- We don't add it as an lspconfig dependency as it will always get loaded with lspconfig.
   -- The lspconfig server settings are added to the opts and used to setup typescript.

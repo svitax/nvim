@@ -24,11 +24,13 @@ return {
       { "<C-j>", "<cmd>lua require('windex').switch_window('down')<cr>", desc = "Switch window down" },
       { "<C-k>", "<cmd>lua require('windex').switch_window('up')<cr>", desc = "Switch window up" },
       { "<C-;>", "<cmd>lua require('windex').switch_window('right')<cr>", desc = "Switch window right" },
+      { "<C-h>", "<cmd>lua require('windex').switch_window('right')<cr>", desc = "Switch window right" },
 
       { "<leader>wl", "<cmd>lua require('windex').switch_window('left')<cr>", desc = "Switch window left" },
       { "<leader>wj", "<cmd>lua require('windex').switch_window('down')<cr>", desc = "Switch window down" },
       { "<leader>wk", "<cmd>lua require('windex').switch_window('up')<cr>", desc = "Switch window up" },
       { "<leader>w;", "<cmd>lua require('windex').switch_window('up')<cr>", desc = "Switch window right" },
+      { "<leader>wh", "<cmd>lua require('windex').switch_window('up')<cr>", desc = "Switch window right" },
 
       -- { "<leader>wz", "<cmd>lua require('windex').toggle_maximize()<cr>", desc = "Maximize window" },
 
@@ -45,6 +47,7 @@ return {
       { "<leader>wJ", "<cmd>WinShift down<cr>", desc = "Shift window down" },
       { "<leader>wK", "<cmd>WinShift up<cr>", desc = "Shift window up" },
       { "<leader>w:", "<cmd>WinShift right<cr>", desc = "Shift window right" },
+      { "<leader>wH", "<cmd>WinShift right<cr>", desc = "Shift window right" },
     },
   },
   {

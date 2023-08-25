@@ -102,6 +102,7 @@ return {
       { "<leader>ci", "<cmd>Glance implementations<cr>", desc = "Find implementations" },
     },
   },
+  -- TODO: do I still need lsp-inlayhints.nvim if nvim has builtin inlay hints?
   {
     "lvimuser/lsp-inlayhints.nvim",
     init = function()

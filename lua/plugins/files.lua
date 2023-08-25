@@ -273,16 +273,16 @@ return {
       -- zk = { follow_current_file = true, window = { mappings = { ["n"] = "change_query" } } },
     },
   },
-  {
-    -- Read and write files with sudo
-    "lambdalisue/suda.vim",
-    event = "BufRead",
-    cmd = { "SudaRead", "SudaWrite" },
-    keys = {
-      { "<leader>fs", ":SudaWrite ", desc = "Sudo write file" },
-      { "<leader>fS", ":SudaRead ", desc = "Sudo read file" },
-    },
-  },
+  -- {
+  --   -- Read and write files with sudo
+  --   "lambdalisue/suda.vim",
+  --   event = "BufRead",
+  --   cmd = { "SudaRead", "SudaWrite" },
+  --   keys = {
+  --     { "<leader>fs", ":SudaWrite ", desc = "Sudo write file" },
+  --     { "<leader>fS", ":SudaRead ", desc = "Sudo read file" },
+  --   },
+  -- },
   {
     -- Lets you use your favorite terminal file managers
     "is0n/fm-nvim",

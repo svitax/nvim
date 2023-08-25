@@ -4,14 +4,14 @@ return {
   -- NOTE: I need this for overseer to work properly
   -- { "ahmedkhalf/project.nvim", name = "project_nvim", lazy = false, config = true },
   -- { "notjedi/nvim-rooter.lua", event = "VeryLazy", config = true },
-  {
-    "chomosuke/term-edit.nvim",
-    ft = { "toggleterm", "ugaterm" },
-    opts = {
-      -- prompt_end = "%$ " -- bash/zsh
-      prompt_end = "> ", -- powershell/fish
-    },
-  },
+  -- {
+  --   "chomosuke/term-edit.nvim",
+  --   ft = { "toggleterm", "ugaterm" },
+  --   opts = {
+  --     -- prompt_end = "%$ " -- bash/zsh
+  --     prompt_end = "> ", -- powershell/fish
+  --   },
+  -- },
   -- { "rebelot/terminal.nvim", opts = {}, cmd = { "TermOpen" } },
   {
     "akinsho/toggleterm.nvim",
@@ -82,43 +82,43 @@ return {
       -- { "<leader>tv", "<cmd>ToggleTerm direction='vertical'<cr>", desc = "Toggle terminal vertical" },
     },
   },
-  {
-    "willothy/flatten.nvim",
-    lazy = false,
-    priority = 1001,
-    opts = {
-      window = { open = "alternate" },
-      callbacks = {
-        pre_open = function()
-          require("toggleterm").toggle(0) -- Close toggleterm when an external open request is received
-        end,
-        post_open = function(bufnr, winnr, ft)
-          if ft == "gitcommit" then
-            -- If the file is a git commit, create one-shot autocmd to delete it on write
-            -- If you just want the toggleable terminal integration, ignore this bit and only use the
-            -- code in the else block
-            vim.api.nvim_create_autocmd("BufWritePost", {
-              buffer = bufnr,
-              once = true,
-              callback = function()
-                -- This is a bit of a hack, but if you run bufdelete immediately
-                -- the shell can occasionally freeze
-                vim.defer_fn(function()
-                  vim.api.nvim_buf_delete(bufnr, {})
-                end, 50)
-              end,
-            })
-          else
-            -- If it's a normal file, then reopen the terminal, then switch back to the newly opened window
-            -- This gives the appearance of the window opening independently of the terminal
-            require("toggleterm").toggle(0)
-            vim.api.nvim_set_current_win(winnr)
-          end
-        end,
-        block_end = function()
-          require("toggleterm").toggle(0) -- After blocking ends (for a git commit, etc), reopen the terminal
-        end,
-      },
-    },
-  },
+  -- {
+  --   "willothy/flatten.nvim",
+  --   lazy = false,
+  --   priority = 1001,
+  --   opts = {
+  --     window = { open = "alternate" },
+  --     callbacks = {
+  --       pre_open = function()
+  --         require("toggleterm").toggle(0) -- Close toggleterm when an external open request is received
+  --       end,
+  --       post_open = function(bufnr, winnr, ft)
+  --         if ft == "gitcommit" then
+  --           -- If the file is a git commit, create one-shot autocmd to delete it on write
+  --           -- If you just want the toggleable terminal integration, ignore this bit and only use the
+  --           -- code in the else block
+  --           vim.api.nvim_create_autocmd("BufWritePost", {
+  --             buffer = bufnr,
+  --             once = true,
+  --             callback = function()
+  --               -- This is a bit of a hack, but if you run bufdelete immediately
+  --               -- the shell can occasionally freeze
+  --               vim.defer_fn(function()
+  --                 vim.api.nvim_buf_delete(bufnr, {})
+  --               end, 50)
+  --             end,
+  --           })
+  --         else
+  --           -- If it's a normal file, then reopen the terminal, then switch back to the newly opened window
+  --           -- This gives the appearance of the window opening independently of the terminal
+  --           require("toggleterm").toggle(0)
+  --           vim.api.nvim_set_current_win(winnr)
+  --         end
+  --       end,
+  --       block_end = function()
+  --         require("toggleterm").toggle(0) -- After blocking ends (for a git commit, etc), reopen the terminal
+  --       end,
+  --     },
+  --   },
+  -- },
 }

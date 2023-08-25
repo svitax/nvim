@@ -4,9 +4,7 @@
 return {
   { "gabenespoli/vim-jupycent", ft = { "json" } },
   {
-    -- "linux-cultist/venv-selector.nvim",
-    "svitax/venv-selector.nvim",
-    branch = "pylance",
+    "linux-cultist/venv-selector.nvim",
     dependencies = {
       "neovim/nvim-lspconfig",
       "nvim-telescope/telescope.nvim", --[["mfussenegger/nvim-dap-python"]]
