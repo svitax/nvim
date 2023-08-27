@@ -5,6 +5,7 @@ local u = require("utils")
 return {
   -- {
   --   -- BUG: doesn't currently support nvim-cmp
+  --   -- BUG: can't change highlights?
   --   "smoka7/multicursors.nvim",
   --   event = "VeryLazy",
   --   dependencies = {
@@ -12,10 +13,39 @@ return {
   --     "smoka7/hydra.nvim",
   --     -- "anuvyklack/hydra.nvim",
   --   },
-  --   opts = {},
+  --   opts = { generate_hints = { normal = true, insert = true, extend = true } },
   --   cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
   --   keys = { { mode = { "v", "n" }, "<Leader>mm", "<cmd>MCstart<cr>", desc = "Multicursor" } },
   -- },
+  {
+    "mg979/vim-visual-multi",
+    keys = {
+      { "<A-y>", mode = { "n", "x" }, desc = "Multi-Cursor" },
+      { "<A-a>", mode = { "n", "x" }, desc = "Multi-Cursor" },
+    },
+    init = function()
+      vim.g.VM_set_statusline = 0 -- already using my version via lualine component
+      vim.g.VM_show_warnings = 0
+      vim.g.VM_silent_exit = 1
+      vim.g.VM_quit_after_leaving_insert_mode = 1 -- can use "reselect last" to restore
+      -- DOCS https://github.com/mg979/vim-visual-multi/blob/master/doc/vm-mappings.txt
+      vim.g.VM_maps = {
+        -- Enter Visual-Multi-Mode
+        ["Find Under"] = "<A-y>", -- select word under cursor
+        ["Reselect Last"] = "gV",
+        ["Visual Add"] = "<A-y>",
+        ["Select All"] = "<A-a>",
+        ["Visual All"] = "<A-a>",
+
+        -- Visual-Multi-Mode Mappings
+        ["Find Next"] = "y", -- [y]es & find next
+        ["Skip Region"] = "n", -- [n]o & find next
+        ["Find Operator"] = "s", -- operator, selects all regions found in textobj
+        ["Motion $"] = "L", -- use my HL motions here as well
+        ["Motion ^"] = "H",
+      }
+    end,
+  },
   {
     -- Macro manager
     "ecthelionvi/NeoComposer.nvim",

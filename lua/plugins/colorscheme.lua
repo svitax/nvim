@@ -72,7 +72,8 @@ return {
             fg3 = "#c5a774", -- Darker fg (line numbers, fold colums)
 
             sel0 = "#2F3132", -- Popup bg, visual selection bg
-            sel1 = "#C7B68A", -- Popup sel bg, search bg
+            -- sel1 = "#C7B68A", -- Popup sel bg, search bg
+            sel1 = "#d8a657", -- Popup sel bg, search bg
           },
           -- carbonfox = {
           --   -- cyan = "#08bdba",
@@ -205,6 +206,31 @@ return {
             NeogitHunkHeaderHighlight = { bg = "palette.magenta", fg = "palette.bg1", gui = "bold" },
 
             HighlightUndo = { bg = "palette.magenta", fg = "palette.bg1" },
+
+            TelescopeBorder = { bg = "palette.bg0" },
+            TelescopeNormal = { bg = "palette.bg0" },
+
+            -- Nvchad Telescope theme
+            TelescopePreviewBorder = { fg = "palette.bg0", bg = "palette.bg0" },
+            TelescopePreviewNormal = { bg = "palette.bg0" },
+            TelescopePreviewTitle = { fg = "palette.bg0", bg = "palette.green" },
+            TelescopePromptBorder = { fg = "palette.bg3", bg = "palette.bg3" },
+            TelescopePromptNormal = { fg = "palette.fg1", bg = "palette.bg3" },
+            TelescopePromptPrefix = { fg = "palette.red", bg = "palette.bg3" },
+            TelescopePromptTitle = { fg = "palette.bg0", bg = "palette.red" },
+            TelescopeResultsBorder = { fg = "palette.bg0", bg = "palette.bg0" },
+            TelescopeResultsNormal = { bg = "palette.bg0" },
+            TelescopeResultsTitle = { fg = "palette.bg0", bg = "palette.bg0" },
+
+            GlancePreviewNormal = { bg = "palette.bg0" },
+            GlanceWinBarFilename = { fg = "palette.sel1", bg = "palette.bg3" },
+            GlanceWinBarFilepath = { fg = "palette.sel1", bg = "palette.bg3" },
+            GlanceWinBarTitle = { fg = "palette.sel1", bg = "palette.bg3" },
+            GlanceListNormal = { bg = "palette.bg0" },
+            GlanceListEndOfBuffer = { bg = "palette.bg0" },
+
+            MultiCursor = { fg = "palette.fg1", bg = "palette.bg3" },
+            MultiCursorMain = { fg = "palette.fg1", bg = "palette.bg3" },
 
             ["@text.strong"] = { fg = "palette.orange", style = "bold" },
             ["@text.emphasis"] = { fg = "palette.orange", style = "italic" },

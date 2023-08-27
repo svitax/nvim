@@ -483,7 +483,7 @@ function M.check_json_key_exists(filename, key)
   return json[key] ~= nil
 end
 
-function M.get_attached_clients(msg)
+function M.old_get_attached_clients(msg)
   -- Returns a string with a list of attached LSP clients, including
   -- formatters and linters from null-ls
 
@@ -608,6 +608,116 @@ function M.qftf(info)
     table.insert(ret, str)
   end
   return ret
+end
+
+function M.get_attached_clients()
+  local buf_clients = vim.lsp.get_active_clients({ bufnr = 0 })
+  -- don't show anything if buffer is special/invalid filetype
+  if vim.tbl_contains(M.special_filetypes, vim.bo.filetype) then
+    -- return ""
+    return {}
+  end
+  if #buf_clients == 0 then
+    -- return "LS Inactive"
+    return {}
+  end
+
+  local buf_ft = vim.bo.filetype
+  local buf_client_names = {}
+
+  -- add client
+  for _, client in pairs(buf_clients) do
+    if client.name ~= "copilot" and client.name ~= "null-ls" then
+      table.insert(buf_client_names, client.name)
+    end
+  end
+
+  -- Generally, you should use either null-ls or nvim-lint + formatter.nvim, not both.
+
+  -- Add sources (from null-ls)
+  -- null-ls registers each source as a separate attached client, so we need to filter for unique names down below.
+  local null_ls_s, null_ls = pcall(require, "null-ls")
+  if null_ls_s then
+    local sources = null_ls.get_sources()
+    for _, source in ipairs(sources) do
+      if source._validated then
+        for ft_name, ft_active in pairs(source.filetypes) do
+          if ft_name == buf_ft and ft_active then
+            table.insert(buf_client_names, source.name)
+          end
+        end
+      end
+    end
+  end
+
+  -- Add linters (from nvim-lint)
+  local lint_s, lint = pcall(require, "lint")
+  if lint_s then
+    for ft_k, ft_v in pairs(lint.linters_by_ft) do
+      if type(ft_v) == "table" then
+        for _, linter in ipairs(ft_v) do
+          if buf_ft == ft_k then
+            table.insert(buf_client_names, linter)
+          end
+        end
+      elseif type(ft_v) == "string" then
+        if buf_ft == ft_k then
+          table.insert(buf_client_names, ft_v)
+        end
+      end
+    end
+  end
+
+  -- Add formatters (from formatter.nvim)
+  local formatter_s, _ = pcall(require, "formatter")
+  if formatter_s then
+    local formatter_util = require("formatter.util")
+    for _, formatter in ipairs(formatter_util.get_available_formatters_for_ft(buf_ft)) do
+      if formatter then
+        table.insert(buf_client_names, formatter)
+      end
+    end
+  end
+
+  -- This needs to be a string only table so we can use concat below
+  local unique_client_names = {}
+  for _, client_name_target in ipairs(buf_client_names) do
+    local is_duplicate = false
+    for _, client_name_compare in ipairs(unique_client_names) do
+      if client_name_target == client_name_compare then
+        is_duplicate = true
+      end
+      -- mark ruff_lsp and ruff from null-ls as duplicates
+      if client_name_target == "ruff" and client_name_compare == "ruff_lsp" then
+        is_duplicate = true
+      end
+    end
+    if not is_duplicate then
+      table.insert(unique_client_names, client_name_target)
+    end
+  end
+
+  -- local client_names_str = table.concat(unique_client_names, ", ")
+  -- local language_servers = string.format("[%s]", client_names_str)
+  -- return language_servers
+
+  return unique_client_names
+end
+
+function M.is_client_attached(client_names)
+  local attached_clients = M.get_attached_clients()
+  local names_to_check = {}
+  if type(client_names) == "string" then
+    names_to_check = { client_names }
+  elseif type(client_names) == "table" then
+    names_to_check = client_names
+  end
+  for _, name in ipairs(names_to_check) do
+    if vim.tbl_contains(attached_clients, name) then
+      return true
+    end
+  end
+  return false
 end
 
 return M

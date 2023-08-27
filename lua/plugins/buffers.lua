@@ -2,11 +2,11 @@ vim.keymap.set("n", "<leader>bs", "<cmd>up!<cr>", { desc = "Save buffer" })
 vim.keymap.set("n", "<c-s>", "<cmd>up!<cr>", { desc = "Save buffer" })
 
 return {
-  {
-    "folke/which-key.nvim",
-    optional = true,
-    opts = { defaults = { ["<leader>t"] = { name = "+test" }, ["<leader>bx"] = { name = "+scratch" } } },
-  },
+  -- {
+  --   "folke/which-key.nvim",
+  --   optional = true,
+  --   opts = { defaults = { ["<leader>t"] = { name = "+test" }, ["<leader>bx"] = { name = "+scratch" } } },
+  -- },
   {
     -- Unlist hidden buffers matching specified ignore sources
     "sQVe/bufignore.nvim",

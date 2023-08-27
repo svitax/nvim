@@ -7,6 +7,13 @@ if require("zk.util").notebook_root(vim.fn.expand("%:p")) ~= nil then
   --   "<Cmd>lua vim.lsp.buf.definition()<CR>",
   --   { buffer = true, silent = false, desc = "Follow link" }
   -- )
+  -- KostkaBrukowa/definition-or-references.nvim breaks gd for zk markdown links
+  vim.keymap.set(
+    "n",
+    "gd",
+    "<Cmd>lua vim.lsp.buf.definition()<cr>",
+    { buffer = true, silent = false, desc = "Follow link" }
+  )
   -- Create a new note after asking for its title.
   -- This overrides the global `<leader>nN` mapping to create the note in the same directory as the current buffer.
   vim.keymap.set(

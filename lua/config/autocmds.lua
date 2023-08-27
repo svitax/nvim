@@ -295,12 +295,20 @@ autocmd("BufEnter", {
   end,
 })
 
--- augroup("FennecFormat", {})
--- autocmd("BufWritePre", {
---   group = "FennecFormat",
+-- augroup("auto_open_telescope", {})
+-- autocmd("VimEnter", {
+--   desc = "Auto open Telescope on VimEnter if buffer is a directory",
+--   group = "auto_open_telescope",
 --   callback = function()
---     -- vim.lsp.buf.format({ async = true })
---     require("lazyvim.plugins.lsp.format").format({ force = true, async = true })
+--     local bufferPath = vim.fn.expand("%:p")
+--     local lv_utils = require("lazyvim.util")
+--     local ts_builtin = require("telescope.builtin")
+--
+--     if vim.fn.isdirectory(bufferPath) ~= 0 then
+--       vim.api.nvim_buf_delete(0, { force = true })
+--       -- ts_builtin.find_files({ show_untracked = true })
+--       lv_utils.telescope("git_files", { cwd = false, show_untracked = true })()
+--     end
 --   end,
 -- })
 

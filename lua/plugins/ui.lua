@@ -1,4 +1,4 @@
--- local shared = require("shared")
+-- local shared = require("shared")ui
 
 return {
   {
@@ -79,23 +79,6 @@ return {
       },
       -- override_by_extension = {},
       -- override_by_filename = {},
-    },
-  },
-  {
-    "dgagn/diagflow.nvim",
-    event = { "LspAttach" },
-    opts = {
-      format = function(diagnostic)
-        local code = diagnostic.code or (diagnostic.user_data and diagnostic.user_data.lsp.code)
-        if code then
-          return string.format("%s [%s]", diagnostic.message, code):gsub("1. ", "")
-        end
-        return diagnostic.message
-      end,
-      scope = "line",
-      -- NOTE: doesn't entirely work. maybe is fixed in future
-      toggle_event = { "InsertEnter" },
-      show_sign = true,
     },
   },
   {
@@ -184,7 +167,6 @@ return {
   },
   {
     "folke/noice.nvim",
-    -- enabled = false,
     opts = {
       messages = {
         enabled = true,
@@ -284,11 +266,12 @@ return {
   },
   {
     "tzachar/highlight-undo.nvim",
-    event = "VeryLazy",
+    keys = { "u", "U" },
     opts = {
-      duration = 300,
-      undo = { hlgroup = "HighlightUndo", mode = "n", lhs = "u", map = "undo", opts = {} },
-      redo = { hlgroup = "HighlightUndo", mode = "n", lhs = "<C-r>", map = "redo", opts = {} },
+      duration = 250,
+      undo = { hlgroup = "HighlightUndo", mode = "n", lhs = "u", map = "silent undo", opts = { desc = "Undo" } },
+      redo = { hlgroup = "HighlightUndo", mode = "n", lhs = "U", map = "silent redo", opts = { desc = "Redo" } },
     },
   },
+  -- { "lewis6991/whatthejump.nvim", keys = { "<c-i>", "<c-o>" } },
 }

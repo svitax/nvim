@@ -18,6 +18,29 @@ return {
       keys[#keys + 1] = { "<leader>cA", vim.lsp.codelens.run, desc = "Codelens", mode = "n" }
       keys[#keys + 1] = { "gl", vim.diagnostic.open_float, desc = "Line diagnostics", mode = "n" }
       -- keys[#keys + 1] = { "K", require("utils").keyword, desc = "Hover" }
+      keys[#keys + 1] =
+        { "gr", "<cmd>lua require('glance').open('references')<cr>", desc = "Goto references", mode = "n" }
+      keys[#keys + 1] =
+        { "gD", "<cmd>lua require('glance').open('definitions')<cr>", desc = "Goto definitions", mode = "n" }
+      keys[#keys + 1] =
+        { "gI", "<cmd>lua require('glance').open('implementations')<cr>", desc = "Goto implementations", mode = "n" }
+      keys[#keys + 1] =
+        { "gy", "<cmd>lua require('glance').open('type_definitions')<cr>", desc = "Goto type definitions", mode = "n" }
+      keys[#keys + 1] = {
+        "gd",
+        function()
+          -- NOTE: definition-or-references breaks zk markdown links with 1 reference
+          -- better to use vim.lsp.buf.definition whenever we have zk attached
+          local utils = require("utils")
+          if utils.is_client_attached("zk") then
+            vim.lsp.buf.definition()
+          else
+            require("definition-or-references").definition_or_references()
+          end
+        end,
+        desc = "Goto definition or references",
+        silent = true,
+      }
     end,
     opts = {
       -- if config.autocmds FennecFormat doesn't work, enable LazyVim's autoformat instead
@@ -93,8 +116,33 @@ return {
     },
   },
   {
+    "KostkaBrukowa/definition-or-references.nvim",
+    opts = function(_, opts)
+      local function glance_handle_references_response(result)
+        require("glance").open("references")
+      end
+      opts.on_references_result = glance_handle_references_response
+      return opts
+    end,
+  },
+  {
     "DNLHC/glance.nvim",
-    config = true,
+    opts = function(_, opts)
+      -- opts.theme = { enable = true, mode = "darken" }
+      opts.mappings = {
+        list = {
+          ["l"] = require("glance").actions.close_fold,
+          [";"] = require("glance").actions.open_fold,
+          ["<c-l>"] = require("glance").actions.enter_win("preview"),
+        },
+        preview = {
+          ["q"] = require("glance").actions.close,
+          ["<c-;>"] = require("glance").actions.enter_win("list"),
+          ["<c-h>"] = require("glance").actions.enter_win("list"),
+        },
+      }
+      return opts
+    end,
     keys = {
       { "<leader>cd", "<cmd>Glance definitions<cr>", desc = "Jump to definition" },
       { "<leader>cm", "<cmd>Glance references<cr>", desc = "Jump to references" },
@@ -102,8 +150,27 @@ return {
       { "<leader>ci", "<cmd>Glance implementations<cr>", desc = "Find implementations" },
     },
   },
-  -- TODO: do I still need lsp-inlayhints.nvim if nvim has builtin inlay hints?
+  { "VidocqH/lsp-lens.nvim", event = "LspAttach", cmd = { "LspLensOn", "LspLensOff", "LspLensToggle" }, opts = {} },
   {
+    "dgagn/diagflow.nvim",
+    event = { "LspAttach" },
+    opts = {
+      format = function(diagnostic)
+        local code = diagnostic.code or (diagnostic.user_data and diagnostic.user_data.lsp.code)
+        if code then
+          return string.format("%s [%s]", diagnostic.message, code):gsub("1. ", "")
+        end
+        return diagnostic.message
+      end,
+      scope = "line",
+      -- NOTE: doesn't entirely work. maybe is fixed in future
+      toggle_event = { "InsertEnter" },
+      update_event = { "DiagnosticChanged" },
+      show_sign = true,
+    },
+  },
+  {
+    -- TODO: do I still need lsp-inlayhints.nvim if nvim has builtin inlay hints?
     "lvimuser/lsp-inlayhints.nvim",
     init = function()
       vim.api.nvim_create_autocmd("LspAttach", {

@@ -17,9 +17,6 @@ return {
           vim.g.matchup_text_obj_enabled = 0
           vim.g.matchup_matchparen_enabled = 1
         end,
-        -- config = function()
-        --   vim.g.matchup_matchparen_offscreen = { method = "status_manual" }
-        -- end,
       },
       {
         "sustech-data/wildfire.nvim",
@@ -29,7 +26,7 @@ return {
     opts = {
       endwise = { enable = true }, -- See: https://github.com/RRethy/nvim-treesitter-endwise
       -- indent = { enable = false },
-      indent = { enable = true, disable = { "yaml", "python", "typescriptreact", "typescript" } },
+      indent = { enable = true, disable = { "yaml", "python", "typescriptreact", "typescript", "lua" } },
       -- incremental_selection = {
       --   enable = true,
       --   keymaps = {
@@ -98,10 +95,12 @@ return {
       require("mini.trailspace").setup()
     end,
   },
-  -- { "NMAC427/guess-indent.nvim", event = "BufReadPost", config = true },
+  -- Automatically set correct indent for file
+  { "NMAC427/guess-indent.nvim", event = "BufReadPre", opts = { override_editorconfig = false } },
+  -- Dim unused variables
   { "zbirenbaum/neodim", event = "LspAttach", opts = { alpha = 0.60, update_in_insert = { enable = false } } },
+  -- Highlight arguments' definitions and usages
   {
-    -- highlight arguments' definitions and usages
     "m-demare/hlargs.nvim",
     dependencies = { "nvim-treesitter" },
     event = "BufReadPost",
@@ -146,11 +145,5 @@ return {
       },
       { "<leader>sT", false },
     },
-  },
-  {
-    "cameron-wags/rainbow_csv.nvim",
-    config = true,
-    ft = { "csv", "tsv", "csv_semicolon", "csv_whitespace", "csv_pipe", "rfc_csv", "rfc_semicolon" },
-    cmd = { "RainbowDelim", "RainbowDelimSimple", "RainbowDelimQuoted", "RainbowMultiDelim", "CSVLint" },
   },
 }

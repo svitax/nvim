@@ -15,9 +15,10 @@ return {
       { "<leader>pV", "<cmd>lua require('venv-selector').deactivate_venv()<cr>", desc = "Deactivate venv" },
     },
     opts = {
-      search = false,
+      auto_refresh = true,
+      search_venv_managers = true,
       search_workspace = true,
-      -- search_venv_managers = true,
+      search = false,
       -- search_workspace = true,
       -- search = true, --[[dap_enabled = true,]]
       name = { "env", "venv", ".venv" },

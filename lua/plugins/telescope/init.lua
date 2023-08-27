@@ -201,10 +201,13 @@ return {
       -- { "<leader>fc", desc = "Open project editorconfig" },
       {
         "<leader>fe",
-        lv_utils.telescope("git_files", { cwd = "~/.config/nvim/", show_untracked = true }),
+        lv_utils.telescope(
+          "git_files",
+          { cwd = "~/.config/nvim/", show_untracked = true, prompt_title = "Find in Neovim config" }
+        ),
         desc = "Find file in .config/nvim",
       },
-      { "<leader>ff", lv_utils.telescope("files"), desc = "Find file (cwd)" },
+      { "<leader>ff", lv_utils.telescope("files", { prompt_title = "Find files (git)" }), desc = "Find file (cwd)" },
       { "<leader>fF", false },
       -- { "<leader>fn", lv_utils.telescope("git_files", { cwd = "~/Desktop/notes" }), desc = "Find notes" },
       -- { "<leader>fp", "<cmd>Telescope projections<cr>", desc = "Find project" },

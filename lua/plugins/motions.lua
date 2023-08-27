@@ -23,29 +23,7 @@ return {
     },
   },
   { "folke/flash.nvim", opts = { modes = { char = { keys = { "f", "F", "t", "T", [";"] = "L", [","] = "H" } } } } },
-  -- {
-  --   "ggandor/flit.nvim",
-  --   commit = "5c9a78b97f7f4301473ea5e37501b5b1d4da167b", -- BUG: This fixes Too many arguments for function: strcharpart
-  -- },
-  -- {
-  --   "ggandor/leap.nvim",
-  --   commit = "8facf2eb6a378fd7691dce8c8a7b2726823e2408", -- BUG: This fixes Too many arguments for function: strcharpart
-  --   config = function(_, opts)
-  --     local leap = require("leap")
-  --     for k, v in pairs(opts) do
-  --       leap.opts[k] = v
-  --     end
-  --     leap.add_default_mappings(true)
-  --     vim.keymap.del({ "x", "o" }, "x")
-  --     vim.keymap.del({ "x", "o" }, "X")
-  --     vim.keymap.del({ "n", "x", "o" }, "S")
-  --     vim.keymap.set({ "n", "x", "o" }, "s", function()
-  --       require("leap").leap({ target_windows = { vim.fn.win_getid() } })
-  --     end, { desc = "Leap" })
-  --     -- override any colorschemes highlights for leap (nightfox doesn't let me change it for some reason)
-  --     leap.init_highlight(true)
-  --   end,
-  -- },
+  { "chrishrb/gx.nvim", event = { "BufEnter" }, dependencies = { "nvim-lua/plenary.nvim" }, opts = {} },
   {
     -- TODO: <A-j> and <A-n> in normal mode to move lines
     "ziontee113/syntax-tree-surfer",
@@ -82,6 +60,29 @@ return {
       { "<A-K>", "<cmd>STSSwapPrevVisual<cr>", mode = { "v" }, desc = "Swap with previous node" },
     },
   },
+  --   "ggandor/flit.nvim",
+  --   commit = "5c9a78b97f7f4301473ea5e37501b5b1d4da167b", -- BUG: This fixes Too many arguments for function: strcharpart
+  -- },
+  -- {
+  --   "ggandor/leap.nvim",
+  --   commit = "8facf2eb6a378fd7691dce8c8a7b2726823e2408", -- BUG: This fixes Too many arguments for function: strcharpart
+  --   config = function(_, opts)
+  --     local leap = require("leap")
+  --     for k, v in pairs(opts) do
+  --       leap.opts[k] = v
+  --     end
+  --     leap.add_default_mappings(true)
+  --     vim.keymap.del({ "x", "o" }, "x")
+  --     vim.keymap.del({ "x", "o" }, "X")
+  --     vim.keymap.del({ "n", "x", "o" }, "S")
+  --     vim.keymap.set({ "n", "x", "o" }, "s", function()
+  --       require("leap").leap({ target_windows = { vim.fn.win_getid() } })
+  --     end, { desc = "Leap" })
+  --     -- override any colorschemes highlights for leap (nightfox doesn't let me change it for some reason)
+  --     leap.init_highlight(true)
+  --   end,
+  -- },
+  -- {
   -- {
   --   -- TODO: better ftype local mapping with after/ftplugin
   --   "harrisoncramer/jump-tag",
@@ -96,12 +97,12 @@ return {
   --   --   )
   --   -- end,
   -- },
-  {
-    -- TODO: Do i need urlview if I can get this functionality through tmux?
-    -- do I have a plugin or autocmd that needs this?
-    "axieax/urlview.nvim",
-    opts = { jump = { prev = "[u", next = "]u" } },
-    cmd = "UrlView",
-    keys = { { "<leader>sU", "<cmd>UrlView<cr>", desc = "Search URLs" } },
-  },
+  -- {
+  --   -- TODO: Do i need urlview if I can get this functionality through tmux?
+  --   -- do I have a plugin or autocmd that needs this?
+  --   "axieax/urlview.nvim",
+  --   opts = { jump = { prev = "[u", next = "]u" } },
+  --   cmd = "UrlView",
+  --   keys = { { "<leader>sU", "<cmd>UrlView<cr>", desc = "Search URLs" } },
+  -- },
 }
