@@ -1,4 +1,7 @@
+local Util = require("lazy.core.util")
+
 local M = {}
+M.opts = {}
 
 M.special_filetypes = {
   "noice",
@@ -718,6 +721,15 @@ function M.is_client_attached(client_names)
     end
   end
   return false
+end
+
+function M.toggle_lsp_in_modeline()
+  vim.g.show_lsp = not vim.g.show_lsp
+  if vim.g.show_lsp then
+    Util.info("Enabled show lsp in modeline", { title = "Modeline" })
+  else
+    Util.warn("Disabled show lsp in modeline", { title = "Modeline" })
+  end
 end
 
 return M

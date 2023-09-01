@@ -97,7 +97,6 @@ return {
           leave_dirs_open = true, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
         },
         use_libuv_file_watcher = true,
-
         hijack_netrw_behavior = "open_current",
         window = { mappings = { ["o"] = "system_open" } },
         components = {

@@ -265,6 +265,7 @@ return {
         opts.sources,
         nls.builtins.formatting.trim_newlines.with({ filetypes = { "markdown", "text", "quarto", "http" } })
       )
+      -- table.insert(opts.sources, nls.builtins.formatting.bibclean)
       -- table.insert(opts.sources, nls.builtins.formatting.mdformat)
       -- table.insert(opts.sources, nls.builtins.formatting.cbfmt)
       -- table.insert(opts.sources, nls.builtins.diagnostics.codespell.with({ filetypes = { "text", "markdown" } }))

@@ -2,12 +2,16 @@ return {
   gruvfox = {
     black = "#171a1a",
     bg0 = "#171a1a", -- Dark bg (status line and float)
-    bg = "#1d2021",
+    bg = "#1d2021", -- Default bg
     bg1 = "#1d2021", -- Default bg
     bg2 = "#252323", -- Lighter bg (colorcolm folds)
     bg3 = "#32302f", -- Lighter bg (cursor line)
     bg4 = "#504945", -- Conceal, border fg
+    bg_statusline1 = "#282828",
+    bg_statusline2 = "#32302f",
+    bg_statusline3 = "#504945",
     grey_dim = "#665c54",
+    comment = "#665c54",
     -- grey = "NONE",
     -- grey_light = "NONE",
     fg = "#d4be98",

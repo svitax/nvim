@@ -43,6 +43,7 @@ return {
     removed = "",
     bold_added = "",
     bold_modified = "",
+    -- bold_modified = "󱗜",
     bold_removed = "",
     copied = ">",
     renamed = "➡",

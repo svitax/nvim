@@ -295,6 +295,17 @@ autocmd("BufEnter", {
   end,
 })
 
+augroup("clear_cmd_message", {})
+autocmd({ "CmdlineLeave" }, {
+  desc = "Automatically clear cmd message.",
+  group = "clear_cmd_message",
+  callback = function()
+    vim.fn.timer_start(5000, function()
+      vim.cmd([[echon '']])
+    end)
+  end,
+})
+
 -- augroup("auto_open_telescope", {})
 -- autocmd("VimEnter", {
 --   desc = "Auto open Telescope on VimEnter if buffer is a directory",

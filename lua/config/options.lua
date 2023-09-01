@@ -13,3 +13,10 @@ vim.opt.listchars:append("trail:⋅")
 vim.opt.listchars:append("eol:󰌑")
 vim.opt.listchars:append("tab:» ")
 vim.opt.colorcolumn = "120"
+vim.opt.cmdheight = 1
+
+-- backup
+vim.opt.backup = false
+vim.opt.swapfile = false
+vim.opt.undodir = os.getenv("HOME") .. "/.local/state/nvim/undo"
+vim.opt.undofile = true

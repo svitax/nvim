@@ -26,6 +26,6 @@ return {
         mode = modes,
       },
     },
-    opts = {},
+    opts = { chat = { keymaps = { new_session = "<A-n>", cycle_modes = "<A-f>", stop_generating = "<A-x>" } } },
   },
 }

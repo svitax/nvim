@@ -8,7 +8,7 @@ return {
       -- wisely add "end" in ruby, lua, vimscript, etc. treesitter aware.
       "RRethy/nvim-treesitter-endwise",
       -- Sticky headers
-      { "nvim-treesitter/nvim-treesitter-context", config = true },
+      { "nvim-treesitter/nvim-treesitter-context", opts = { max_lines = 4 } },
       {
         "andymass/vim-matchup",
         event = "BufReadPost", -- other lazyloading methods do not seem to work
@@ -20,7 +20,7 @@ return {
       },
       {
         "sustech-data/wildfire.nvim",
-        opts = { keymaps = { init_selection = "<CR>", node_incremental = "<CR>", node_decremental = "<S-CR>" } },
+        opts = { keymaps = { init_selection = "<CR>", node_incremental = "<CR>", node_decremental = "<BS>" } },
       },
     },
     opts = {
@@ -98,7 +98,13 @@ return {
   -- Automatically set correct indent for file
   { "NMAC427/guess-indent.nvim", event = "BufReadPre", opts = { override_editorconfig = false } },
   -- Dim unused variables
-  { "zbirenbaum/neodim", event = "LspAttach", opts = { alpha = 0.60, update_in_insert = { enable = false } } },
+  {
+    -- BUG: Newest versions requires nvim 0.10
+    "zbirenbaum/neodim",
+    branch = "v2",
+    event = "LspAttach",
+    opts = { alpha = 0.60, update_in_insert = { enable = false } },
+  },
   -- Highlight arguments' definitions and usages
   {
     "m-demare/hlargs.nvim",

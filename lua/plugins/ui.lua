@@ -165,11 +165,12 @@ return {
       },
     },
   },
+  { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", opts = {} },
   {
     "folke/noice.nvim",
     opts = {
       messages = {
-        enabled = true,
+        enabled = false,
         view = "mini",
         view_warn = "mini",
         view_error = "mini",
@@ -177,6 +178,7 @@ return {
         view_search = false,
       },
       cmdline = {
+        enabled = true,
         view = "cmdline",
         opts = {
           win_options = {
@@ -196,7 +198,8 @@ return {
         { filter = { event = "msg_show", find = "%d+ more lines" }, { opts = { skip = true } } },
       },
       lsp = {
-        progress = { enabled = true },
+        -- NOTE: fidget.nvim behaves and looks nicer
+        progress = { enabled = false },
         hover = {
           enabled = true,
           view = "cmdline",
@@ -210,10 +213,10 @@ return {
             border = { padding = { top = 1, left = 0 } },
           },
         },
+
         signature = { enabled = true, view = "cmdline", opts = { size = { height = 1 } } },
       },
-      notify = { enabled = true, view = "mini" },
-      views = { cmdline_popup = { position = { row = 0, col = "50%" }, size = { width = "98%" } } },
+      notify = { enabled = true, view = "notify" },
       presets = {
         bottom_search = true,
         long_message_to_split = true,
@@ -222,6 +225,13 @@ return {
         command_palette = false,
       },
       popupmenu = { backend = "cmp" },
+      views = {
+        cmdline_popup = { position = { row = 0, col = "50%" }, size = { width = "98%" } },
+        -- NOTE: if you have cmdheight>0, mini will overlap with the statusbar.
+        -- offset the default row position for mini (-1) by your cmdheight
+        mini = { position = { row = -2 } },
+        notify = { merge = true, replace = true },
+      },
     },
     keys = {
       { "<leader>sna", false },
@@ -266,11 +276,11 @@ return {
   },
   {
     "tzachar/highlight-undo.nvim",
-    keys = { "u", "U" },
+    keys = { "u", "<C-r>" },
     opts = {
       duration = 250,
       undo = { hlgroup = "HighlightUndo", mode = "n", lhs = "u", map = "silent undo", opts = { desc = "Undo" } },
-      redo = { hlgroup = "HighlightUndo", mode = "n", lhs = "U", map = "silent redo", opts = { desc = "Redo" } },
+      redo = { hlgroup = "HighlightUndo", mode = "n", lhs = "<C-r>", map = "silent redo", opts = { desc = "Redo" } },
     },
   },
   -- { "lewis6991/whatthejump.nvim", keys = { "<c-i>", "<c-o>" } },

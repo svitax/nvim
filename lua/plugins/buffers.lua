@@ -1,5 +1,5 @@
-vim.keymap.set("n", "<leader>bs", "<cmd>up!<cr>", { desc = "Save buffer" })
-vim.keymap.set("n", "<c-s>", "<cmd>up!<cr>", { desc = "Save buffer" })
+vim.keymap.set("n", "<leader>bs", "<cmd>silent up!<cr>", { desc = "Save buffer" })
+vim.keymap.set("n", "<c-s>", "<cmd>silent up!<cr>", { desc = "Save buffer" })
 
 return {
   -- {

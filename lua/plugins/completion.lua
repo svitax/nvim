@@ -232,10 +232,9 @@ return {
       }
 
       opts.mapping = vim.tbl_extend("force", opts.mapping, {
-        ["<C-f>"] = cmp.mapping(cmp.mapping.complete({
-          config = { sources = cmp.config.sources({ { name = "codeium" } }) },
-        })),
-
+        -- ["<C-f>"] = cmp.mapping(cmp.mapping.complete({
+        --   config = { sources = cmp.config.sources({ { name = "codeium" } }) },
+        -- })),
         ["<C-u>"] = cmp.mapping.scroll_docs(-4),
         ["<C-d>"] = cmp.mapping.scroll_docs(4),
         ["<C-j>"] = {

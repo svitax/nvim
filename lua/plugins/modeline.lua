@@ -29,6 +29,7 @@ end
 local modeline_icons = shared.modeline_icons
 local git_icons = shared.git_icons
 local diagnostic_icons = shared.diagnostic_icons
+local misc_icons = shared.misc
 
 -- local function fg(name)
 --   return function()
@@ -39,28 +40,13 @@ local diagnostic_icons = shared.diagnostic_icons
 -- end
 
 local function mode_color()
+  -- stylua: ignore start
   local color_table = {
-    n = c.green,
-    i = c.blue,
-    v = c.purple,
-    [""] = c.purple,
-    V = c.purple,
-    c = c.orange,
-    no = c.red,
-    s = c.orange,
-    S = c.orange,
-    [""] = c.orange,
-    ic = c.yellow,
-    R = c.red,
-    Rv = c.red,
-    cv = c.red,
-    ce = c.red,
-    r = c.red,
-    rm = c.red,
-    ["r?"] = c.cyan,
-    ["!"] = c.red,
-    t = c.yellow,
+    n = c.green, i = c.blue, v = c.purple, [""] = c.purple, V = c.purple, c = c.orange, no = c.red, s = c.orange,
+    S = c.orange, [""] = c.orange, ic = c.yellow, R = c.red, Rv = c.red, cv = c.red, ce = c.red, r = c.red,
+    rm = c.red, ["r?"] = c.cyan, ["!"] = c.red, t = c.yellow,
   }
+  -- stylua: ignore end
 
   return { fg = color_table[vim.fn.mode()], bg = c.bg0 }
 end
@@ -72,7 +58,6 @@ local components = {
     end,
     padding = { left = 0, right = 1 },
     color = mode_color,
-    -- color = { fg = colors.red, bg = colors.bg },
     -- color = function(_)
     --   return { fg = get_spec("syntax.builtin0"), bg = get_spec("bg0") }
     -- end,
@@ -152,86 +137,30 @@ local components = {
     --   return { fg = get_spec("syntax.ident") }
     -- end,
   },
-  buf_modified = {
+  modified = {
     function(props)
       if vim.api.nvim_get_option_value("modified", { buf = props.buf }) then
         return "● "
-      else
-        return ""
       end
-      -- -- local fg = ""
-      -- local mod = ""
-      -- if vim.bo.modified then
-      --   mod = modeline_icons.save
-      -- end
-      -- if not vim.bo.modifiable then
-      --   mod = modeline_icons.lock
-      -- end
-      -- if utils.is_buf_newfile() then
-      --   mod = modeline_icons.new_file
-      -- end
-      -- if utils.is_buf_unnamed() then
-      --   mod = modeline_icons.checkbox_blank
-      -- end
-      -- if utils.is_buf_filetype("alpha") then
-      --   mod = modeline_icons.evil
-      -- end
-      -- -- vim.cmd("hi! lualine_filename_status gui=bold guifg=" .. fg)
-      -- return mod
-    end,
-    -- color = "lualine_filename_status"
-    -- color = function(_)
-    --   return {
-    --     fg = (vim.bo.modified and get_spec("syntax.builtin0"))
-    --       or (not vim.bo.modifiable and get_spec("syntax.keyword"))
-    --       or (utils.is_buf_newfile() and get_spec("syntax.ident"))
-    --       or (utils.is_buf_unnamed() and get_spec("syntax.ident")),
-    --   }
-    -- end,
-    color = function(_)
-      return { fg = c.yellow }
-      -- return {
-      --   fg = (vim.bo.modified and c.red)
-      --     or (not vim.bo.modifiable and c.green)
-      --     or (utils.is_buf_newfile() and c.blue)
-      --     or (utils.is_buf_unnamed() and c.blue),
-      --   bg = c.bg0,
-      -- }
+      return ""
     end,
     cond = function()
-      return utils.is_buf_filetype("NeogitCommitMessage")
+      -- return utils.is_buf_filetype("NeogitCommitMessage")
       -- not a toggleterm buf
-      -- return not utils.is_buf_filetype("toggleterm")
+      return not utils.is_buf_filetype("toggleterm")
     end,
+    padding = { left = 1, right = 0 },
+    color = { fg = c.yellow, bg = c.bg0 },
   },
   dir = {
     function()
       return vim.fn.expand("%:p:h:t") .. "/"
     end,
     padding = { left = 1, right = 0 },
-    -- color = "lualine_filename_status",
-    -- color = function(_)
-    --   return {
-    --     fg = (vim.bo.modified and get_spec("syntax.builtin0"))
-    --       or (not vim.bo.modifiable and get_spec("syntax.keyword"))
-    --       or (utils.is_buf_newfile() and get_spec("syntax.ident"))
-    --       or (utils.is_buf_unnamed() and get_spec("syntax.ident"))
-    --       or get_spec("syntax.string"),
-    --   }
-    -- end,
-    color = function(_)
-      return {
-        fg = (vim.bo.modified and c.red)
-          or (not vim.bo.modifiable and c.green)
-          or (utils.is_buf_newfile() and c.blue)
-          or (utils.is_buf_unnamed() and c.blue)
-          or c.green,
-        bg = c.bg0,
-      }
-    end,
+    color = { fg = c.grey_dim, bg = c.bg0 },
     cond = function()
       -- not a toggleterm buf
-      return not utils.is_buf_filetype("toggleterm")
+      return not utils.is_buf_filetype({ "toggleterm", "TelescopePrompt" })
     end,
   },
   -- { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
@@ -415,6 +344,9 @@ local components = {
       return language_servers
     end,
     color = { fg = c.fg, bg = c.bg0, gui = "bold" },
+    cond = function()
+      return vim.g.show_lsp
+    end,
   },
   filetype = {
     "filetype",
@@ -604,101 +536,101 @@ end
 
 return {
   -- { "Bekaboo/dropbar.nvim", event = "VeryLazy", opts = {} },
-  {
-    "b0o/incline.nvim",
-    event = "VeryLazy",
-    opts = function()
-      local function get_diagnostic_label(props)
-        -- local icons = { error = "", warn = "", info = "", hint = "" }
-        local icons = { error = "", warn = "" }
-        local label = {}
-
-        for severity, icon in pairs(icons) do
-          local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })
-          if n > 0 then
-            if props.focused then
-              table.insert(label, { icon .. " " .. n .. " ", group = "DiagnosticSign" .. severity })
-            else
-              table.insert(label, { icon .. " " .. n .. " ", group = "Comment" })
-            end
-          end
-        end
-        if #label > 0 then
-          if props.focused then
-            table.insert(label, { "| " })
-          else
-            table.insert(label, { "| ", group = "Comment" })
-          end
-        end
-        return label
-      end
-
-      return {
-        render = function(props)
-          local fname = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
-          local modified = vim.api.nvim_buf_get_option(props.buf, "modified") and "bold,italic" or "bold"
-          local filename = { fname, gui = modified }
-          if props.focused == false then
-            filename = vim.tbl_extend("force", filename, { guifg = c.grey_dim })
-          end
-
-          -- local ft_icon, ft_color = require("nvim-web-devicons").get_icon_color(fname)
-          -- local filetype = { ft_icon }
-          -- if props.focused then
-          --   filetype = vim.tbl_extend("force", filetype, { guifg = ft_color })
-          -- else
-          --   filetype = vim.tbl_extend("force", filetype, { guifg = c.grey_dim })
-          -- end
-
-          local dname = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":p:h:t") .. "/"
-          local dirname = { dname, guifg = c.grey_dim }
-          -- if props.focused then
-          --   dirname = vim.tbl_extend("force", dirname, { guifg = c.blue })
-          -- else
-          --   dirname = vim.tbl_extend("force", dirname, { guifg = c.grey_dim })
-          -- end
-
-          local modified_icon = {}
-          if vim.api.nvim_get_option_value("modified", { buf = props.buf }) then
-            modified_icon = vim.tbl_extend("force", { "● " }, { guifg = c.yellow })
-          end
-
-          local grapple_icon = {}
-          local key = require("grapple").key({ buffer = props.buf })
-          if key then
-            grapple_icon = vim.tbl_extend("force", grapple_icon, { modeline_icons.tag .. " [" .. key .. "] " })
-          else
-            grapple_icon = { "" }
-          end
-          if props.focused then
-            grapple_icon = vim.tbl_extend("force", grapple_icon, { guifg = c.blue })
-          else
-            grapple_icon = vim.tbl_extend("force", grapple_icon, { guifg = c.grey_dim })
-          end
-
-          -- function()
-          --   local key = require("grapple").key()
-          --   return modeline_icons.tag .. " [" .. key .. "]"
-          -- end,
-          -- cond = require("grapple").exists,
-          -- color = { fg = c.blue, bg = c.bg0 },
-
-          local buffer = {
-            { get_diagnostic_label(props) },
-            -- filetype,
-            -- { components.diff[1]() },
-            grapple_icon,
-            dirname,
-            filename,
-            -- { filename, gui = modified },
-            { " " },
-            modified_icon,
-          }
-          return buffer
-        end,
-      }
-    end,
-  },
+  -- {
+  --   "b0o/incline.nvim",
+  --   event = "VeryLazy",
+  --   opts = function()
+  --     local function get_diagnostic_label(props)
+  --       -- local icons = { error = "", warn = "", info = "", hint = "" }
+  --       local icons = { error = "", warn = "" }
+  --       local label = {}
+  --
+  --       for severity, icon in pairs(icons) do
+  --         local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })
+  --         if n > 0 then
+  --           if props.focused then
+  --             table.insert(label, { icon .. " " .. n .. " ", group = "DiagnosticSign" .. severity })
+  --           else
+  --             table.insert(label, { icon .. " " .. n .. " ", group = "Comment" })
+  --           end
+  --         end
+  --       end
+  --       if #label > 0 then
+  --         if props.focused then
+  --           table.insert(label, { "| " })
+  --         else
+  --           table.insert(label, { "| ", group = "Comment" })
+  --         end
+  --       end
+  --       return label
+  --     end
+  --
+  --     return {
+  --       render = function(props)
+  --         local fname = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
+  --         local modified = vim.api.nvim_buf_get_option(props.buf, "modified") and "bold,italic" or "bold"
+  --         local filename = { fname, gui = modified }
+  --         if props.focused == false then
+  --           filename = vim.tbl_extend("force", filename, { guifg = c.grey_dim })
+  --         end
+  --
+  --         -- local ft_icon, ft_color = require("nvim-web-devicons").get_icon_color(fname)
+  --         -- local filetype = { ft_icon }
+  --         -- if props.focused then
+  --         --   filetype = vim.tbl_extend("force", filetype, { guifg = ft_color })
+  --         -- else
+  --         --   filetype = vim.tbl_extend("force", filetype, { guifg = c.grey_dim })
+  --         -- end
+  --
+  --         local dname = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":p:h:t") .. "/"
+  --         local dirname = { dname, guifg = c.grey_dim }
+  --         -- if props.focused then
+  --         --   dirname = vim.tbl_extend("force", dirname, { guifg = c.blue })
+  --         -- else
+  --         --   dirname = vim.tbl_extend("force", dirname, { guifg = c.grey_dim })
+  --         -- end
+  --
+  --         local modified_icon = {}
+  --         if vim.api.nvim_get_option_value("modified", { buf = props.buf }) then
+  --           modified_icon = vim.tbl_extend("force", { "● " }, { guifg = c.yellow })
+  --         end
+  --
+  --         local grapple_icon = {}
+  --         local key = require("grapple").key({ buffer = props.buf })
+  --         if key then
+  --           grapple_icon = vim.tbl_extend("force", grapple_icon, { modeline_icons.tag .. " [" .. key .. "] " })
+  --         else
+  --           grapple_icon = { "" }
+  --         end
+  --         if props.focused then
+  --           grapple_icon = vim.tbl_extend("force", grapple_icon, { guifg = c.blue })
+  --         else
+  --           grapple_icon = vim.tbl_extend("force", grapple_icon, { guifg = c.grey_dim })
+  --         end
+  --
+  --         -- function()
+  --         --   local key = require("grapple").key()
+  --         --   return modeline_icons.tag .. " [" .. key .. "]"
+  --         -- end,
+  --         -- cond = require("grapple").exists,
+  --         -- color = { fg = c.blue, bg = c.bg0 },
+  --
+  --         local buffer = {
+  --           { get_diagnostic_label(props) },
+  --           -- filetype,
+  --           -- { components.diff[1]() },
+  --           grapple_icon,
+  --           dirname,
+  --           filename,
+  --           -- { filename, gui = modified },
+  --           { " " },
+  --           modified_icon,
+  --         }
+  --         return buffer
+  --       end,
+  --     }
+  --   end,
+  -- },
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
@@ -728,9 +660,12 @@ return {
             -- components.buf_size,
             components.toggleterm,
             -- components.grapple,
-            components.buf_modified,
-            -- components.dir,
-            -- components.filename,
+            -- components.buf_modified,
+            components.dir,
+            components.filename,
+            components.modified,
+            components.grapple,
+            components.python_env,
           },
           lualine_c = {
             -- components.location,
@@ -751,12 +686,14 @@ return {
           },
           lualine_y = {
             components.filetype,
-            components.python_env,
+            -- components.python_env,
+            components.progress,
+            components.location,
             -- { "progress", separator = "", padding = { left = 1, right = 0 } },
             -- { "location", padding = { left = 0, right = 1 } },
           },
           lualine_z = {
-            components.branch,
+            -- components.branch,
             -- function()
             --   return " " .. os.date("%R")
             -- end,
