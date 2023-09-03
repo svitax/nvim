@@ -123,6 +123,17 @@ return {
     opts = { select = { telescope = require("telescope.themes").get_ivy({ ... }) }, input = { enabled = false } },
   },
   {
+    "FeiyouG/commander.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    opts = {
+      integration = {
+        lazy = { enable = true },
+        -- telescope = { enable = true, theme = require("telescope.themes").get_ivy },
+      },
+    },
+    keys = { { "<leader>hk", "<cmd>lua require('commander').show()<cr>", desc = "Show keymaps" } },
+  },
+  {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {

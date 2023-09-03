@@ -54,14 +54,14 @@ return {
     keys = {
       { "q", desc = "Toggle record macro" },
       { "Q", desc = "Play macro" },
-      { "<A-q>", desc = "Toggle macro menu" },
+      { "<C-q>", desc = "Toggle macro menu" },
       { "cq", desc = "Stop macro" },
       { "yg", desc = "Yank macro" },
       { "]Q", desc = "Cycle macro forward" },
       { "[Q", desc = "Cycle macro backward" },
       { "<Leader>sM", "<cmd>Telescope macros<cr>", desc = "Search macros" },
     },
-    opts = { keymaps = { toggle_macro_menu = "<A-q>", cycle_next = "]Q", cycle_previous = "[Q" } },
+    opts = { keymaps = { toggle_macro_menu = "<C-q>", cycle_next = "]Q", cycle_previous = "[Q" } },
     config = function(_, opts)
       require("NeoComposer").setup(opts)
       require("telescope").load_extension("macros")

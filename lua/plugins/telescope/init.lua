@@ -225,7 +225,7 @@ return {
       { "<leader>hC", "<cmd>Telescope commands<cr>", desc = "Commands" },
       { "<leader>hH", "<cmd>Telescope help_tags<cr>", desc = "Help pages" },
       { "<leader>hg", "<cmd>Telescope highlights<cr>", desc = "Highlight groups" },
-      { "<leader>hk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
+      -- { "<leader>hk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
       { "<leader>hM", "<cmd>Telescope man_pages<cr>", desc = "Man pages" },
       { "<leader>ho", "<cmd>Telescope vim_options<cr>", desc = "Options" },
 

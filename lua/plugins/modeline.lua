@@ -147,7 +147,7 @@ local components = {
     cond = function()
       -- return utils.is_buf_filetype("NeogitCommitMessage")
       -- not a toggleterm buf
-      return not utils.is_buf_filetype("toggleterm")
+      return not utils.is_buf_filetype({ "toggleterm", "TelescopePrompt" })
     end,
     padding = { left = 1, right = 0 },
     color = { fg = c.yellow, bg = c.bg0 },
@@ -239,18 +239,18 @@ local components = {
     -- color = fg("Constant"),
     color = { fg = c.red, bg = c.bg0 },
   },
-  -- diagnostics = {
-  --   "diagnostics",
-  --   sources = { "nvim_diagnostic" },
-  --   symbols = {
-  --     error = diagnostic_icons.bold_error .. " ",
-  --     warn = diagnostic_icons.bold_warning .. " ",
-  --     info = diagnostic_icons.bold_info .. " ",
-  --     hint = diagnostic_icons.bold_hint .. " ",
-  --   },
-  --   cond = hide_in_width,
-  --   color = { bg = c.bg0 },
-  -- },
+  diagnostics = {
+    "diagnostics",
+    sources = { "nvim_diagnostic" },
+    symbols = {
+      error = diagnostic_icons.bold_error .. " ",
+      warn = diagnostic_icons.bold_warning .. " ",
+      info = diagnostic_icons.bold_info .. " ",
+      hint = diagnostic_icons.bold_hint .. " ",
+    },
+    cond = hide_in_width,
+    color = { bg = c.bg0 },
+  },
   -- { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
   lsp = {
     function()
@@ -679,7 +679,7 @@ return {
             -- },
           },
           lualine_x = {
-            -- components.diagnostics,
+            components.diagnostics,
             -- components.overseer,
             components.lsp,
             -- { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = fg("Special") },

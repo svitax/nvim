@@ -2,7 +2,7 @@
 -- local autocmd = vim.api.nvim_create_autocmd
 
 return {
-  { "gabenespoli/vim-jupycent", ft = { "json" } },
+  { "gabenespoli/vim-jupycent", ft = { "json" }, event = "VeryLazy" },
   {
     "linux-cultist/venv-selector.nvim",
     dependencies = {

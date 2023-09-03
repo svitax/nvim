@@ -247,8 +247,8 @@ local mappings = {
     ["("] = { "()<left>", { silent = false } },
     ["["] = { "[]<left>", { silent = false } },
     ["{"] = { "{}<left>", { silent = false } },
-    ["'"] = { [[""<left>]], { silent = false } },
-    ['"'] = { [[''<left>]], { silent = false } },
+    ['"'] = { [[""<left>]], { silent = false } },
+    ["'"] = { [[''<left>]], { silent = false } },
 
     -- Feeds absolute filepath of current buffer into cmd
     ["%%"] = {
