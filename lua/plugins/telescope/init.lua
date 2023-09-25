@@ -459,7 +459,7 @@ return {
         function()
           require("telescope").extensions.live_grep_args.live_grep_args({
             -- cwd = "~/Dropbox/notes",
-            cwd = "~/Drive/notes",
+            cwd = "~/OneDrive/notes",
             prompt_title = "Search notes (args)",
             attach_mappings = function(_, map)
               map("i", "<c-l>", require("telescope-live-grep-args.actions").quote_prompt())

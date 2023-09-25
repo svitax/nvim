@@ -121,6 +121,7 @@ return {
             MatchParen = { fg = "palette.magenta" }, -- The character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
             Search = { fg = "palette.fg1", bg = "palette.bg4" }, -- Last search pattern highlighting (see 'hlsearch').  Also used for similar items that need to stand out.
             WinSeparator = { fg = "palette.comment" }, -- Column separting windows
+            FoldColumn = { fg = "palette.comment" },
 
             Function = { fg = "palette.yellow" },
 
@@ -222,12 +223,14 @@ return {
             TelescopeResultsNormal = { bg = "palette.bg0" },
             TelescopeResultsTitle = { fg = "palette.bg0", bg = "palette.bg0" },
 
-            GlancePreviewNormal = { bg = "palette.bg0" },
-            GlanceWinBarFilename = { fg = "palette.sel1", bg = "palette.bg3" },
-            GlanceWinBarFilepath = { fg = "palette.sel1", bg = "palette.bg3" },
-            GlanceWinBarTitle = { fg = "palette.sel1", bg = "palette.bg3" },
-            GlanceListNormal = { bg = "palette.bg0" },
-            GlanceListEndOfBuffer = { bg = "palette.bg0" },
+            -- MoreMsg = { fg = "palette.comment", bg = "palette.bg1" },
+
+            -- GlancePreviewNormal = { bg = "palette.bg0" },
+            -- GlanceWinBarFilename = { fg = "palette.sel1", bg = "palette.bg3" },
+            -- GlanceWinBarFilepath = { fg = "palette.sel1", bg = "palette.bg3" },
+            -- GlanceWinBarTitle = { fg = "palette.sel1", bg = "palette.bg3" },
+            -- GlanceListNormal = { bg = "palette.bg0" },
+            -- GlanceListEndOfBuffer = { bg = "palette.bg0" },
 
             MultiCursor = { fg = "palette.fg1", bg = "palette.bg3" },
             MultiCursorMain = { fg = "palette.fg1", bg = "palette.bg3" },

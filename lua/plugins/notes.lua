@@ -1,31 +1,92 @@
 return {
-  -- { "opdavies/toggle-checkbox.nvim", ft = { "markdown" } },
   {
-    "quarto-dev/quarto-nvim",
-    dev = false,
-    dependencies = {
-      {
-        "jmbuhr/otter.nvim",
-        dev = false,
-        config = function()
-          require("otter").setup({})
-        end,
-      },
+    "epwalsh/obsidian.nvim",
+    event = {
+      "BufReadPre " .. vim.fn.expand("~") .. "/OneDrive/obsidian-vault/**.md",
+      "BufNewFile " .. vim.fn.expand("~") .. "/OneDrive/obsidian-vault/**.md",
     },
-    ft = { "quarto", "markdown" },
-    config = function()
-      require("quarto").setup({
-        lspFeatures = {
-          enabled = true,
-          languages = { "r", "python", "julia", "bash", "lua" },
-          chunks = "curly", -- 'curly' or 'all'
-          diagnostics = { enabled = true, triggers = { "BufWritePost" } },
-          completion = { enabled = true },
-        },
-        keymap = { hover = "K", definition = "gd" },
-      })
-      vim.keymap.set("n", "<leader>nQ", "<cmd>QuartoActivate<cr>", { desc = "Quarto activate" })
-    end,
+    opts = { dir = "~/OneDrive/obsidian-vault/", mappings = {} },
+    keys = {
+      { "<leader>fn", "<cmd>ObsidianQuickSwitch<cr>", desc = "Find notes" },
+      { "<leader>nf", "<cmd>ObsidianQuickSwitch<cr>", desc = "Find notes" },
+      { "<leader>nN", "<cmd>ObsidianNew<cr>", desc = "New note" },
+      -- { "<leader>sn", "<cmd>ObsidianSearch<cr>", desc = "Search in notes" },
+      { "<leader>ns", "<cmd>ObsidianSearch<cr>", desc = "Search in notes" },
+      { "<leader>nl", "<cmd>ObsidianLink<cr>", desc = "Link selection" },
+      { "<leader>nL", "<cmd>ObsidianLinkNew<cr>", desc = "Link selection (new)" },
+      --     { "<leader>fn", "<cmd>ZkNotes { sort = {'modified'}}<cr>", desc = "Find notes" },
+      --     { "<leader>nn", "<cmd>ZkNotes { sort = {'modified'}}<cr>", desc = "Find notes" },
+      --     -- Search for the notes matching the current visual selection.
+      --     {
+      --       "<leader>nF",
+      --       "<cmd><,'>ZkMatch<cr>",
+      --       mode = "v",
+      --       desc = "Find note (selection)",
+      --     },
+      --     -- "Refresh zk index"
+      --     { "<leader>ni", "<cmd>ZkIndex<cr>", desc = "Refresh index" },
+      --     -- Create a new note after asking for its title.
+      --     { "<leader>nN", "<Cmd>ZkNew { title = vim.fn.input('Title: ') }<CR>", desc = "New note", silent = false },
+      --     -- Create a new Quarto note after asking for its title.
+      --     {
+      --       "<leader>nq",
+      --       function()
+      --         local temp_title = vim.fn.input("Title: ")
+      --         -- local temp_template = vim.ui.select(
+      --         --   vim.fn.systemlist("ls -A $ZK_NOTEBOOK_DIR/.zk/templates/"),
+      --         --   { prompt = "Select template: " },
+      --         --   function(choice)
+      --         --     return choice
+      --         --   end
+      --         -- )
+      --         -- local temp_usertags = vim.fn.input("Additional Tags: ")
+      --         require("zk").new({
+      --           dir = vim.fn.expand("$ZK_NOTEBOOK_DIR/quarto"),
+      --           group = "quarto",
+      --           title = temp_title,
+      --           -- template = temp_template,
+      --           -- extra = { ["user-tags"] = temp_usertags },
+      --         })
+      --       end,
+      --       desc = "New quarto note",
+      --       silent = false,
+      --     },
+      --     {
+      --       "<leader>nj",
+      --       function()
+      --         require("zk").new({
+      --           dir = vim.fn.expand("$ZK_NOTEBOOK_DIR/journal"),
+      --           group = "journal",
+      --           extra = { ["user-tags"] = "journal" },
+      --           -- template = temp_template,
+      --           -- extra = { ["user-tags"] = temp_usertags },
+      --         })
+      --       end,
+      --       desc = "New journal note",
+      --       silent = false,
+      --     },
+      --     -- Open notes linked by the current buffer.
+      --     { "<leader>nl", "<cmd>ZkLinks<cr>", desc = "Find links" },
+      --     -- Open notes linking to the current buffer.
+      --     { "<leader>nL", "<cmd>ZkBacklinks<cr>", desc = "Find backlinks" },
+      --     -- Open notes associated with the selected tag.
+      --     { "<leader>ng", "<cmd>ZkTags<cr>", desc = "Find tags" },
+      --     -- Create a new note in the same directory as the current buffer, using the current selection for title.
+      --     {
+      --       "<leader>nT",
+      --       ":'<,'>ZkNewFromTitleSelection<CR>",
+      --       mode = "v",
+      --       desc = "New note with selection as title",
+      --     },
+      --     -- Create a new note in the same directory as the current buffer, using the current selection for note content and asking for its title.
+      --     {
+      --       "<leader>nC",
+      --       ":'<,'>ZkNewFromContentSelection { title = vim.fn.input('Title: ') }<CR>",
+      --       mode = "v",
+      --       desc = "New note with selection as content",
+      --     },
+      --   },
+    },
   },
   {
     "hrsh7th/nvim-cmp",
@@ -37,7 +98,7 @@ return {
     opts = function(_, opts)
       local cmp = require("cmp")
 
-      opts.cmp_source_names["otter"] = "(otter)"
+      -- opts.cmp_source_names["otter"] = "(otter)"
       -- opts.cmp_source_names["latex_symbols"] = "(latex)"
       opts.cmp_source_names["lua-latex-symbols"] = "(latex)"
       opts.cmp_source_names["pandoc_references"] = "(ref)"
@@ -49,88 +110,6 @@ return {
         })),
       })
     end,
-  },
-  {
-    "mickael-menu/zk-nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    name = "zk",
-    -- ft = "markdown",
-    cmd = { "ZkNew", "ZkNotes", "ZkTags", "ZkMatch" },
-    opts = { picker = "telescope", lsp = { auto_attach = { filetypes = { "markdown", "quarto" } } } },
-    keys = {
-      -- Find notes.
-      { "<leader>fn", "<cmd>ZkNotes { sort = {'modified'}}<cr>", desc = "Find notes" },
-      { "<leader>nn", "<cmd>ZkNotes { sort = {'modified'}}<cr>", desc = "Find notes" },
-      -- Search for the notes matching the current visual selection.
-      {
-        "<leader>nF",
-        "<cmd><,'>ZkMatch<cr>",
-        mode = "v",
-        desc = "Find note (selection)",
-      },
-      -- "Refresh zk index"
-      { "<leader>ni", "<cmd>ZkIndex<cr>", desc = "Refresh index" },
-      -- Create a new note after asking for its title.
-      { "<leader>nN", "<Cmd>ZkNew { title = vim.fn.input('Title: ') }<CR>", desc = "New note", silent = false },
-      -- Create a new Quarto note after asking for its title.
-      {
-        "<leader>nq",
-        function()
-          local temp_title = vim.fn.input("Title: ")
-          -- local temp_template = vim.ui.select(
-          --   vim.fn.systemlist("ls -A $ZK_NOTEBOOK_DIR/.zk/templates/"),
-          --   { prompt = "Select template: " },
-          --   function(choice)
-          --     return choice
-          --   end
-          -- )
-          -- local temp_usertags = vim.fn.input("Additional Tags: ")
-          require("zk").new({
-            dir = vim.fn.expand("$ZK_NOTEBOOK_DIR/quarto"),
-            group = "quarto",
-            title = temp_title,
-            -- template = temp_template,
-            -- extra = { ["user-tags"] = temp_usertags },
-          })
-        end,
-        desc = "New quarto note",
-        silent = false,
-      },
-      {
-        "<leader>nj",
-        function()
-          require("zk").new({
-            dir = vim.fn.expand("$ZK_NOTEBOOK_DIR/journal"),
-            group = "journal",
-            extra = { ["user-tags"] = "journal" },
-            -- template = temp_template,
-            -- extra = { ["user-tags"] = temp_usertags },
-          })
-        end,
-        desc = "New journal note",
-        silent = false,
-      },
-      -- Open notes linked by the current buffer.
-      { "<leader>nl", "<cmd>ZkLinks<cr>", desc = "Find links" },
-      -- Open notes linking to the current buffer.
-      { "<leader>nL", "<cmd>ZkBacklinks<cr>", desc = "Find backlinks" },
-      -- Open notes associated with the selected tag.
-      { "<leader>ng", "<cmd>ZkTags<cr>", desc = "Find tags" },
-      -- Create a new note in the same directory as the current buffer, using the current selection for title.
-      {
-        "<leader>nT",
-        ":'<,'>ZkNewFromTitleSelection<CR>",
-        mode = "v",
-        desc = "New note with selection as title",
-      },
-      -- Create a new note in the same directory as the current buffer, using the current selection for note content and asking for its title.
-      {
-        "<leader>nC",
-        ":'<,'>ZkNewFromContentSelection { title = vim.fn.input('Title: ') }<CR>",
-        mode = "v",
-        desc = "New note with selection as content",
-      },
-    },
   },
   {
     "nvim-telescope/telescope-bibtex.nvim",
@@ -186,54 +165,6 @@ return {
       },
     },
   },
-  -- {
-  --   "gaoDean/autolist.nvim",
-  --   ft = { "markdown", "text", "tex", "plaintex" },
-  --   config = function()
-  --     local autolist = require("autolist")
-  --     autolist.setup()
-  --     vim.keymap.set("i", "<tab>", "<cmd>AutolistTab<cr>")
-  --     vim.keymap.set("i", "<s-tab>", "<cmd>AutolistShiftTab<cr>")
-  --     vim.keymap.set("i", "<CR>", "<CR><cmd>AutolistNewBullet<cr>")
-  --     vim.keymap.set("n", "o", "o<cmd>AutolistNewBullet<cr>")
-  --     vim.keymap.set("n", "O", "O<cmd>AutolistNewBulletBefore<cr>")
-  --     vim.keymap.set("n", "<CR>", "<cmd>AutolistToggleCheckbox<cr><CR>")
-  --     vim.keymap.set("n", "<A-r>", "<cmd>AutolistRecalculate<cr>")
-  --
-  --     -- cycle list types with dot-repeat
-  --     vim.keymap.set("n", "<leader>ncn", require("autolist").cycle_next_dr, { expr = true })
-  --     vim.keymap.set("n", "<leader>ncp", require("autolist").cycle_prev_dr, { expr = true })
-  --
-  --     -- if you don't want dot-repeat
-  --     -- vim.keymap.set("n", "<leader>cn", "<cmd>AutolistCycleNext<cr>")
-  --     -- vim.keymap.set("n", "<leader>cp", "<cmd>AutolistCycleNext<cr>")
-  --
-  --     -- functions to recalculate list on edit
-  --     vim.keymap.set("n", ">>", ">><cmd>AutolistRecalculate<cr>")
-  --     vim.keymap.set("n", "<<", "<<<cmd>AutolistRecalculate<cr>")
-  --     vim.keymap.set("n", "dd", "dd<cmd>AutolistRecalculate<cr>")
-  --     vim.keymap.set("v", "d", "d<cmd>AutolistRecalculate<cr>")
-  --
-  --     -- autolist.create_mapping_hook("i", "<CR>", autolist.new)
-  --     -- autolist.create_mapping_hook("i", "<Tab>", autolist.indent)
-  --     -- autolist.create_mapping_hook("i", "<S-Tab>", autolist.indent, "<C-D>")
-  --     -- autolist.create_mapping_hook("n", "o", autolist.new)
-  --     -- autolist.create_mapping_hook("n", "O", autolist.new_before)
-  --     -- autolist.create_mapping_hook("n", ">>", autolist.indent)
-  --     -- autolist.create_mapping_hook("n", "<<", autolist.indent)
-  --     -- autolist.create_mapping_hook("n", "<C-r>", autolist.force_recalculate)
-  --     -- autolist.create_mapping_hook("n", "<leader>x", autolist.invert_entry, "")
-  --
-  --     -- TODO: autolist has a bug where it adds a space to the end of new list items
-  --     -- this autocmd (from the readme) makes it so I can't auto-format that away
-  --     -- vim.api.nvim_create_autocmd("TextChanged", {
-  --     --   pattern = "*",
-  --     --   callback = function()
-  --     --     vim.cmd.normal({ autolist.force_recalculate(nil, nil), bang = false })
-  --     --   end,
-  --     -- })
-  --   end,
-  -- },
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
@@ -341,5 +272,163 @@ return {
   --     vim.api.nvim_set_hl(0, "Headline6", { fg = "#d3869b", bg = "#6b454f", italic = false })
   --     vim.api.nvim_set_hl(0, "CodeBlock", { bg = "#444444" })
   --   end,
+  -- },
+  -- { "opdavies/toggle-checkbox.nvim", ft = { "markdown" } },
+  -- {
+  --   "quarto-dev/quarto-nvim",
+  --   dev = false,
+  --   dependencies = {
+  --     {
+  --       "jmbuhr/otter.nvim",
+  --       dev = false,
+  --       config = function()
+  --         require("otter").setup({})
+  --       end,
+  --     },
+  --   },
+  --   ft = { "quarto", "markdown" },
+  --   config = function()
+  --     require("quarto").setup({
+  --       lspFeatures = {
+  --         enabled = true,
+  --         languages = { "r", "python", "julia", "bash", "lua" },
+  --         chunks = "curly", -- 'curly' or 'all'
+  --         diagnostics = { enabled = true, triggers = { "BufWritePost" } },
+  --         completion = { enabled = true },
+  --       },
+  --       keymap = { hover = "K", definition = "gd" },
+  --     })
+  --     vim.keymap.set("n", "<leader>nQ", "<cmd>QuartoActivate<cr>", { desc = "Quarto activate" })
+  --   end,
+  -- },
+  -- {
+  --   "gaoDean/autolist.nvim",
+  --   ft = { "markdown", "text", "tex", "plaintex" },
+  --   config = function()
+  --     local autolist = require("autolist")
+  --     autolist.setup()
+  --     vim.keymap.set("i", "<tab>", "<cmd>AutolistTab<cr>")
+  --     vim.keymap.set("i", "<s-tab>", "<cmd>AutolistShiftTab<cr>")
+  --     vim.keymap.set("i", "<CR>", "<CR><cmd>AutolistNewBullet<cr>")
+  --     vim.keymap.set("n", "o", "o<cmd>AutolistNewBullet<cr>")
+  --     vim.keymap.set("n", "O", "O<cmd>AutolistNewBulletBefore<cr>")
+  --     vim.keymap.set("n", "<CR>", "<cmd>AutolistToggleCheckbox<cr><CR>")
+  --     vim.keymap.set("n", "<A-r>", "<cmd>AutolistRecalculate<cr>")
+  --
+  --     -- cycle list types with dot-repeat
+  --     vim.keymap.set("n", "<leader>ncn", require("autolist").cycle_next_dr, { expr = true })
+  --     vim.keymap.set("n", "<leader>ncp", require("autolist").cycle_prev_dr, { expr = true })
+  --
+  --     -- if you don't want dot-repeat
+  --     -- vim.keymap.set("n", "<leader>cn", "<cmd>AutolistCycleNext<cr>")
+  --     -- vim.keymap.set("n", "<leader>cp", "<cmd>AutolistCycleNext<cr>")
+  --
+  --     -- functions to recalculate list on edit
+  --     vim.keymap.set("n", ">>", ">><cmd>AutolistRecalculate<cr>")
+  --     vim.keymap.set("n", "<<", "<<<cmd>AutolistRecalculate<cr>")
+  --     vim.keymap.set("n", "dd", "dd<cmd>AutolistRecalculate<cr>")
+  --     vim.keymap.set("v", "d", "d<cmd>AutolistRecalculate<cr>")
+  --
+  --     -- autolist.create_mapping_hook("i", "<CR>", autolist.new)
+  --     -- autolist.create_mapping_hook("i", "<Tab>", autolist.indent)
+  --     -- autolist.create_mapping_hook("i", "<S-Tab>", autolist.indent, "<C-D>")
+  --     -- autolist.create_mapping_hook("n", "o", autolist.new)
+  --     -- autolist.create_mapping_hook("n", "O", autolist.new_before)
+  --     -- autolist.create_mapping_hook("n", ">>", autolist.indent)
+  --     -- autolist.create_mapping_hook("n", "<<", autolist.indent)
+  --     -- autolist.create_mapping_hook("n", "<C-r>", autolist.force_recalculate)
+  --     -- autolist.create_mapping_hook("n", "<leader>x", autolist.invert_entry, "")
+  --
+  --     -- TODO: autolist has a bug where it adds a space to the end of new list items
+  --     -- this autocmd (from the readme) makes it so I can't auto-format that away
+  --     -- vim.api.nvim_create_autocmd("TextChanged", {
+  --     --   pattern = "*",
+  --     --   callback = function()
+  --     --     vim.cmd.normal({ autolist.force_recalculate(nil, nil), bang = false })
+  --     --   end,
+  --     -- })
+  --   end,
+  -- },
+  -- {
+  --   "mickael-menu/zk-nvim",
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   name = "zk",
+  --   -- ft = "markdown",
+  --   cmd = { "ZkNew", "ZkNotes", "ZkTags", "ZkMatch" },
+  --   opts = { picker = "telescope", lsp = { auto_attach = { filetypes = { "markdown", "quarto" } } } },
+  --   keys = {
+  --     -- Find notes.
+  --     { "<leader>fn", "<cmd>ZkNotes { sort = {'modified'}}<cr>", desc = "Find notes" },
+  --     { "<leader>nn", "<cmd>ZkNotes { sort = {'modified'}}<cr>", desc = "Find notes" },
+  --     -- Search for the notes matching the current visual selection.
+  --     {
+  --       "<leader>nF",
+  --       "<cmd><,'>ZkMatch<cr>",
+  --       mode = "v",
+  --       desc = "Find note (selection)",
+  --     },
+  --     -- "Refresh zk index"
+  --     { "<leader>ni", "<cmd>ZkIndex<cr>", desc = "Refresh index" },
+  --     -- Create a new note after asking for its title.
+  --     { "<leader>nN", "<Cmd>ZkNew { title = vim.fn.input('Title: ') }<CR>", desc = "New note", silent = false },
+  --     -- Create a new Quarto note after asking for its title.
+  --     {
+  --       "<leader>nq",
+  --       function()
+  --         local temp_title = vim.fn.input("Title: ")
+  --         -- local temp_template = vim.ui.select(
+  --         --   vim.fn.systemlist("ls -A $ZK_NOTEBOOK_DIR/.zk/templates/"),
+  --         --   { prompt = "Select template: " },
+  --         --   function(choice)
+  --         --     return choice
+  --         --   end
+  --         -- )
+  --         -- local temp_usertags = vim.fn.input("Additional Tags: ")
+  --         require("zk").new({
+  --           dir = vim.fn.expand("$ZK_NOTEBOOK_DIR/quarto"),
+  --           group = "quarto",
+  --           title = temp_title,
+  --           -- template = temp_template,
+  --           -- extra = { ["user-tags"] = temp_usertags },
+  --         })
+  --       end,
+  --       desc = "New quarto note",
+  --       silent = false,
+  --     },
+  --     {
+  --       "<leader>nj",
+  --       function()
+  --         require("zk").new({
+  --           dir = vim.fn.expand("$ZK_NOTEBOOK_DIR/journal"),
+  --           group = "journal",
+  --           extra = { ["user-tags"] = "journal" },
+  --           -- template = temp_template,
+  --           -- extra = { ["user-tags"] = temp_usertags },
+  --         })
+  --       end,
+  --       desc = "New journal note",
+  --       silent = false,
+  --     },
+  --     -- Open notes linked by the current buffer.
+  --     { "<leader>nl", "<cmd>ZkLinks<cr>", desc = "Find links" },
+  --     -- Open notes linking to the current buffer.
+  --     { "<leader>nL", "<cmd>ZkBacklinks<cr>", desc = "Find backlinks" },
+  --     -- Open notes associated with the selected tag.
+  --     { "<leader>ng", "<cmd>ZkTags<cr>", desc = "Find tags" },
+  --     -- Create a new note in the same directory as the current buffer, using the current selection for title.
+  --     {
+  --       "<leader>nT",
+  --       ":'<,'>ZkNewFromTitleSelection<CR>",
+  --       mode = "v",
+  --       desc = "New note with selection as title",
+  --     },
+  --     -- Create a new note in the same directory as the current buffer, using the current selection for note content and asking for its title.
+  --     {
+  --       "<leader>nC",
+  --       ":'<,'>ZkNewFromContentSelection { title = vim.fn.input('Title: ') }<CR>",
+  --       mode = "v",
+  --       desc = "New note with selection as content",
+  --     },
+  --   },
   -- },
 }

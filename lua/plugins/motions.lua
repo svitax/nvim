@@ -30,10 +30,10 @@ return {
     config = true,
     dependencies = { "nvim-treesitter" },
     keys = {
-      { "<A-;>", "<cmd>STSSelectChildNode<cr>", mode = { "v" }, desc = "Select child node" },
-      { "<A-l>", "<cmd>STSSelectParentNode<cr>", mode = { "v" }, desc = "Select parent node" },
-      { "<A-j>", "<cmd>STSSelectNextSiblingNode<cr>", mode = { "v" }, desc = "Select next node" },
-      { "<A-k>", "<cmd>STSSelectPrevSiblingNode<cr>", mode = { "v" }, desc = "Select previous node" },
+      { "<A-l>", "<cmd>STSSelectChildNode<cr>", mode = { "x" }, desc = "Select child node" },
+      { "<A-h>", "<cmd>STSSelectParentNode<cr>", mode = { "x" }, desc = "Select parent node" },
+      { "<A-j>", "<cmd>STSSelectNextSiblingNode<cr>", mode = { "x" }, desc = "Select next node" },
+      { "<A-k>", "<cmd>STSSelectPrevSiblingNode<cr>", mode = { "x" }, desc = "Select previous node" },
       {
         "<A-K>",
         function()
@@ -56,8 +56,8 @@ return {
         expr = true,
         desc = "Swap with next node",
       },
-      { "<A-J>", "<cmd>STSSwapNextVisual<cr>", mode = { "v" }, desc = "Swap with next node" },
-      { "<A-K>", "<cmd>STSSwapPrevVisual<cr>", mode = { "v" }, desc = "Swap with previous node" },
+      { "<A-J>", "<cmd>STSSwapNextVisual<cr>", mode = { "x" }, desc = "Swap with next node" },
+      { "<A-K>", "<cmd>STSSwapPrevVisual<cr>", mode = { "x" }, desc = "Swap with previous node" },
     },
   },
   --   "ggandor/flit.nvim",

@@ -132,8 +132,9 @@ local mappings = {
     -- select all
     ["<A-a>"] = { "ggVG$", { desc = "Select all" } },
 
-    -- quit all
-    ["<leader>qq"] = { "<cmd>qa<cr>", { desc = "Quit all" } },
+    -- cycle buffers
+    ["<A-l>"] = { "<cmd>bnext<cr>", { desc = "Next buffer" } },
+    ["<A-h>"] = { "<cmd>bprevious<cr>", { desc = "Previous buffer" } },
 
     -- ergonomic command mode ':'
     [";"] = { ":", { silent = false, nowait = true } },
@@ -149,6 +150,9 @@ local mappings = {
 
     -- jump list next ('<F13>' is what <c-i> sends, thanks to OS remap. addresses collision with tab)
     ["<F13>"] = "<c-i>",
+
+    -- quit all
+    ["<leader>qq"] = { "<cmd>qa<cr>", { desc = "Quit all" } },
 
     -- lua/config/autocmds.lua
     ["<leader>fM"] = { "<cmd>Rename<cr>", { desc = "Rename this file" } },

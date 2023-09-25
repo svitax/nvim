@@ -39,26 +39,26 @@ return {
     optional = true,
     opts = { defaults = { ["<leader>gs"] = { name = "+git search" }, ["<leader>gh"] = { name = "+git hunks" } } },
   },
-  {
-    "aaronhallaert/advanced-git-search.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim", "sindrets/diffview.nvim" },
-    config = function()
-      require("telescope").load_extension("advanced_git_search")
-    end,
-    keys = {
-      { "<leader>gsc", "<cmd>AdvancedGitSearch search_log_content<cr>", desc = "Search repo log content" },
-      { "<leader>gsC", "<cmd>AdvancedGitSearch search_log_content_file<cr>", desc = "Search file log content" },
-      { "<leader>gsf", "<cmd>AdvancedGitSearch diff_commit_file<cr>", desc = "Diff current file with commit" },
-      {
-        "<leader>gsl",
-        "<cmd>AdvancedGitSearch diff_commit_line<cr>",
-        desc = "Diff current file with selected line history",
-      },
-      { "<leader>gsb", "<cmd>AdvancedGitSearch diff_branch_file<cr>", desc = "Diff file with branch" },
-      { "<leader>gsB", "<cmd>AdvancedGitSearch changed_on_branch<cr>", desc = "Changed on current branch" },
-      { "<leader>gsr", "<cmd>AdvancedGitSearch checkout_reflog<cr>", desc = "Checkout from reflog" },
-    },
-  },
+  -- {
+  --   "aaronhallaert/advanced-git-search.nvim",
+  --   dependencies = { "nvim-telescope/telescope.nvim", "sindrets/diffview.nvim" },
+  --   config = function()
+  --     require("telescope").load_extension("advanced_git_search")
+  --   end,
+  --   keys = {
+  --     { "<leader>gsc", "<cmd>AdvancedGitSearch search_log_content<cr>", desc = "Search repo log content" },
+  --     { "<leader>gsC", "<cmd>AdvancedGitSearch search_log_content_file<cr>", desc = "Search file log content" },
+  --     { "<leader>gsf", "<cmd>AdvancedGitSearch diff_commit_file<cr>", desc = "Diff current file with commit" },
+  --     {
+  --       "<leader>gsl",
+  --       "<cmd>AdvancedGitSearch diff_commit_line<cr>",
+  --       desc = "Diff current file with selected line history",
+  --     },
+  --     { "<leader>gsb", "<cmd>AdvancedGitSearch diff_branch_file<cr>", desc = "Diff file with branch" },
+  --     { "<leader>gsB", "<cmd>AdvancedGitSearch changed_on_branch<cr>", desc = "Changed on current branch" },
+  --     { "<leader>gsr", "<cmd>AdvancedGitSearch checkout_reflog<cr>", desc = "Checkout from reflog" },
+  --   },
+  -- },
   { "is0n/fm-nvim", keys = { { "<leader>gl", "<cmd>Lazygit<cr>", desc = "Git status (Lazygit)" } } },
   {
     "NeogitOrg/neogit",

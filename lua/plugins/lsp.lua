@@ -23,7 +23,7 @@ return {
       keys[#keys + 1] =
         { "gD", "<cmd>lua require('glance').open('definitions')<cr>", desc = "Goto definitions", mode = "n" }
       keys[#keys + 1] =
-        { "gI", "<cmd>lua require('glance').open('implementations')<cr>", desc = "Goto implementations", mode = "n" }
+        { "gi", "<cmd>lua require('glance').open('implementations')<cr>", desc = "Goto implementations", mode = "n" }
       keys[#keys + 1] =
         { "gy", "<cmd>lua require('glance').open('type_definitions')<cr>", desc = "Goto type definitions", mode = "n" }
       keys[#keys + 1] = {
@@ -31,15 +31,15 @@ return {
         function()
           -- NOTE: definition-or-references breaks zk markdown links with 1 reference
           -- better to use vim.lsp.buf.definition whenever we have zk attached
-          local utils = require("utils")
-          if utils.is_client_attached("zk") then
-            vim.lsp.buf.definition()
+          if require("obsidian").util.cursor_on_markdown_link() then
+            return "<cmd>ObsidianFollowLink<cr>"
           else
             require("definition-or-references").definition_or_references()
           end
         end,
         desc = "Goto definition or references",
         silent = true,
+        -- expr = true,
       }
     end,
     opts = {
@@ -128,17 +128,29 @@ return {
   {
     "DNLHC/glance.nvim",
     opts = function(_, opts)
-      -- opts.theme = { enable = true, mode = "darken" }
+      local actions = require("glance").actions
+      opts.theme = { enable = true, mode = "darken" }
+      opts.border = {
+        enable = true, -- Show window borders. Only horizontal borders allowed
+        top_char = "―",
+        bottom_char = "―",
+      }
+      opts.preview_win_opts = { -- Configure preview window options
+        cursorline = false,
+        number = true,
+        wrap = true,
+        statuscolumn = "  %=%l  ",
+      }
+      opts.winbar = { enable = true }
       opts.mappings = {
         list = {
-          ["l"] = require("glance").actions.close_fold,
-          [";"] = require("glance").actions.open_fold,
-          ["<c-l>"] = require("glance").actions.enter_win("preview"),
+          ["h"] = actions.close_fold,
+          ["l"] = actions.open_fold,
+          ["<c-h>"] = actions.enter_win("preview"),
         },
         preview = {
-          ["q"] = require("glance").actions.close,
-          ["<c-;>"] = require("glance").actions.enter_win("list"),
-          ["<c-h>"] = require("glance").actions.enter_win("list"),
+          ["q"] = actions.close,
+          ["<c-l>"] = actions.enter_win("list"),
         },
       }
       return opts
@@ -151,6 +163,41 @@ return {
     },
   },
   { "VidocqH/lsp-lens.nvim", event = "LspAttach", cmd = { "LspLensOn", "LspLensOff", "LspLensToggle" }, opts = {} },
+  -- {
+  --   "Wansmer/symbol-usage.nvim",
+  --   event = "LspAttach", -- need run before LspAttach if you use nvim 0.9. On 0.10 use 'LspAttach'
+  --   opts = {
+  --     -- vt_position = "textwidth",
+  --     -- vt_position = "end_of_line",
+  --     vt_position = "above",
+  --     request_pending_text = false,
+  --     references = { include_declaration = false },
+  --     definition = { enabled = true },
+  --     implementation = { enabled = true },
+  --     ---@type function(symbol: Symbol): string Symbol{ definition = integer|nil, implementation = integer|nil, references = integer|nil }
+  --     text_format = function(symbol)
+  --       local fragments = {}
+  --
+  --       if symbol.references then
+  --         local num = symbol.references
+  --         if num > 0 then
+  --           local usage = symbol.references <= 1 and "Reference:" or "References:"
+  --           table.insert(fragments, ("%s %s"):format(usage, num))
+  --         end
+  --       end
+  --
+  --       if symbol.definition then
+  --         table.insert(fragments, "Definitions: " .. symbol.definition)
+  --       end
+  --
+  --       if symbol.implementation then
+  --         table.insert(fragments, "Implements: " .. symbol.implementation)
+  --       end
+  --
+  --       return table.concat(fragments, " | ")
+  --     end,
+  --   },
+  -- },
   {
     "dgagn/diagflow.nvim",
     event = { "LspAttach" },

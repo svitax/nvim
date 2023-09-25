@@ -24,6 +24,7 @@ return {
       },
     },
     opts = {
+      highlight = { enable = true, additional_vim_regex_highlighting = { "markdown" } },
       endwise = { enable = true }, -- See: https://github.com/RRethy/nvim-treesitter-endwise
       -- indent = { enable = false },
       indent = { enable = true, disable = { "yaml", "python", "typescriptreact", "typescript", "lua" } },
@@ -116,6 +117,13 @@ return {
       paint_catch_blocks = { declarations = false, usages = true },
       extras = { named_parameters = false },
     },
+  },
+  {
+    "chrisgrieser/nvim-puppeteer",
+    ft = {
+      "python", --[["javascript", "typescript", "typescriptreact", "javascriptreact"]]
+    },
+    dependencies = "nvim-treesitter/nvim-treesitter",
   },
   {
     "folke/todo-comments.nvim",

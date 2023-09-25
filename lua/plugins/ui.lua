@@ -88,6 +88,28 @@ return {
     -- event = "VeryLazy",
     opts = function()
       local builtin = require("statuscol.builtin")
+      ---To display pretty fold's icons in `statuscolumn` and show it according to `fillchars`
+      local function foldcolumn()
+        local chars = vim.opt.fillchars:get()
+        local fc = "%#FoldColumn#"
+        local clf = "%#CursorLineFold#"
+        local hl = vim.fn.line(".") == vim.v.lnum and clf or fc
+        local text = " "
+
+        if vim.fn.foldlevel(vim.v.lnum) > vim.fn.foldlevel(vim.v.lnum - 1) then
+          if vim.fn.foldclosed(vim.v.lnum) == -1 then
+            text = hl .. (chars.foldopen or " ")
+          else
+            text = hl .. (chars.foldclose or " ")
+          end
+        elseif vim.fn.foldlevel(vim.v.lnum) == 0 then
+          text = hl .. " "
+        else
+          text = hl .. (chars.foldsep or " ")
+        end
+
+        return text
+      end
       return {
         -- setopt = true,
         relculright = true,
@@ -97,6 +119,7 @@ return {
           -- { sign = { name = { "Diagnostic", "DapBreakpoint" }, maxwidth = 1 }, click = "v:lua.ScSa" },
           { sign = { name = { ".*" }, maxwidth = 1 }, click = "v:lua.ScSa" },
           { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+          { text = { foldcolumn, " " }, click = "v:lua.ScFa" },
         },
       }
     end,
@@ -122,20 +145,88 @@ return {
     "stevearc/dressing.nvim",
     opts = { select = { telescope = require("telescope.themes").get_ivy({ ... }) }, input = { enabled = false } },
   },
+  -- {
+  --   "FeiyouG/commander.nvim",
+  --   dependencies = { "nvim-telescope/telescope.nvim" },
+  --   opts = {
+  --     integration = {
+  --       lazy = { enable = true },
+  --       -- telescope = { enable = true, theme = require("telescope.themes").get_ivy },
+  --     },
+  --   },
+  --   keys = { { "<leader>hk", "<cmd>lua require('commander').show()<cr>", desc = "Show keymaps" } },
+  -- },
   {
-    "FeiyouG/commander.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    opts = {
-      integration = {
-        lazy = { enable = true },
-        -- telescope = { enable = true, theme = require("telescope.themes").get_ivy },
-      },
-    },
-    keys = { { "<leader>hk", "<cmd>lua require('commander').show()<cr>", desc = "Show keymaps" } },
+    "Cassin01/wf.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("wf").setup({ theme = "space" })
+      local which_key = require("wf.builtin.which_key")
+      local register = require("wf.builtin.register")
+      -- local bookmark = require("wf.builtin.bookmark")
+      local mark = require("wf.builtin.mark")
+
+      vim.keymap.set("n", "'", mark(), { nowait = true, noremap = true, silent = true, desc = "[wf.nvim] mark" })
+      vim.keymap.set(
+        "n",
+        '"',
+        register(),
+        { nowait = true, noremap = true, silent = true, desc = "[wf.nvim] register" }
+      )
+      vim.keymap.set(
+        "n",
+        "<leader>",
+        which_key({
+          -- selector = "fuzzy",
+          text_insert_in_advance = "<Space>",
+          key_group_dict = {
+            -- ["g"] = "goto",
+            -- ["ga"] = "text case",
+            -- ["ge"] = "text case op",
+            -- ["gz"] = "surround",
+            -- ["]"] = "next",
+            -- ["["] = "prev",
+            -- ["<Space><tab>"] = "tabs",
+            ["<Space>a"] = "ai",
+            ["<Space>b"] = "buffer",
+            -- ["<Space>bx"] = "scratch",
+            ["<Space>c"] = "code",
+            ["<Space>d"] = "debug",
+            ["<Space>f"] = "file/find",
+            ["<Space>g"] = "git",
+            -- ["<leader>gh"] = { name = "+hunks" },
+            ["<Space>h"] = "help",
+            ["<Space>hd"] = "devdocs",
+            ["<Space>m"] = "<localleader>",
+            ["<Space>me"] = "evaluate",
+            ["<Space>mj"] = "jqx",
+            -- ["<Space>ml"] = "logs",
+            -- ["<Space>mg"] = "goto",
+            -- ["<leader>mr"] = { name = "+reset" },
+            ["<Space>mr"] = "rest",
+            -- ["<Space>mc"] = "python repl",
+            -- ["<Space>mei"] = "interrupt command",
+            ["<Space>n"] = "notes",
+            ["<Space>p"] = "project",
+            ["<Space>q"] = "+quit/session",
+            ["<Space>s"] = "search",
+            -- ["<leader>so"] = { name = "+online" },
+            ["<Space>t"] = "test",
+            ["<Space>u"] = "ui",
+            ["<Space>w"] = "windows",
+            ["<Space>x"] = "diagnostics/quickfix",
+            ["<Space>y"] = "yank",
+            ["<Space>z"] = "leetcode",
+          },
+        }),
+        { noremap = true, silent = true, desc = "[wf.nvim] which-key <leader>" }
+      )
+    end,
   },
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
+    enabled = false,
     opts = {
       key_labels = { ["<space>"] = "<spc>", ["<cr>"] = "<ret>" },
       defaults = {

@@ -13,7 +13,7 @@ return {
       -- { "<leader>l", "<cmd>Neotree toggle reveal=true position=float dir=./<cr>", desc = "File tree (cwd)" },
       -- { "<leader>L", "<cmd>Neotree toggle reveal=true position=float dir=~/<cr>", desc = "File tree (home)" },
       {
-        "<leader>l",
+        "<leader>e",
         function()
           require("neo-tree.command").execute({
             toggle = true,
@@ -26,7 +26,7 @@ return {
         desc = "File tree (cwd)",
       },
       {
-        "<leader>L",
+        "<leader>E",
         function()
           require("neo-tree.command").execute({
             toggle = true,
@@ -54,6 +54,7 @@ return {
       },
       close_if_last_window = true,
       enable_normal_mode_for_inputs = true,
+      bind_to_cwd = true,
       sources = { "filesystem", "buffers", "git_status" },
       window = {
         mappings = {
@@ -92,7 +93,6 @@ return {
       },
 
       filesystem = {
-
         follow_current_file = {
           enabled = true, -- This will find and focus the file in the active buffer every time
           --               -- the current file is changed while the tree is open.
@@ -307,7 +307,7 @@ return {
     },
     keys = {
       {
-        "<leader>e",
+        "<leader>l",
         -- doing it like this makes it so I can open Lf in my dashboard
         function()
           local filename = vim.fn.expand("%")

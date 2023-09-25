@@ -23,6 +23,7 @@ return {
       },
       { "<leader>meX", "<cmd>lua require('notebook-navigator').run_cell()<cr>", desc = "Run cell" },
       { "<leader>mex", "<cmd>lua require('notebook-navigator').run_and_move()<cr>", desc = "Run cell and move" },
+      { "<leader>meh", desc = "NotebookNavigator hydra" },
     },
     config = function()
       local nn = require("notebook-navigator")

@@ -7,6 +7,7 @@ vim.g.maplocalleader = " m"
 vim.o.fillchars = [[diff:╱]]
 vim.o.conceallevel = 1
 vim.o.timeoutlen = 500
+vim.opt.relativenumber = false
 vim.opt.listchars:append("lead:⋅")
 vim.opt.listchars:append("leadmultispace:⋅")
 vim.opt.listchars:append("trail:⋅")
@@ -20,3 +21,16 @@ vim.opt.backup = false
 vim.opt.swapfile = false
 vim.opt.undodir = os.getenv("HOME") .. "/.local/state/nvim/undo"
 vim.opt.undofile = true
+
+-- config folding
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.fillchars:append("fold: ")
+vim.opt.fillchars:append("foldopen:")
+vim.opt.fillchars:append("foldclose:")
+vim.opt.fillchars:append("foldsep: ")
+-- fold settings required for UFO
+vim.opt.foldcolumn = "1"
+vim.opt.foldenable = true
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
