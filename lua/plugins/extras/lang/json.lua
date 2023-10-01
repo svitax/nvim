@@ -4,7 +4,7 @@ return {
     ft = { "json", "yaml", "qf" },
     cmd = { "JqxList", "JqxQuery" },
     keys = {
-      { "<leader>mjl", "<cmd>JqxList<cr>", desc = "jqx list" },
+      { "<leader>mjl", "<cmd>JqxList<cr>",  desc = "jqx list" },
       { "<leader>mjs", "<cmd>JqxQuery<cr>", desc = "jqx query" },
     },
   },
@@ -49,7 +49,7 @@ return {
     end,
   },
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     opts = function(_, opts)
       local nls = require("null-ls")
       table.insert(

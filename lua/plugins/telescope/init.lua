@@ -109,13 +109,13 @@ return {
           -- NOTE: override default lv_utils.telescope cwd opt
           -- cwd = "",
           initial_mode = "normal",
-          -- sort_lastused = false,
-          -- sort_mru = true,
+          sort_lastused = true,
+          sort_mru = true,
           attach_mappings = function(_, map)
             map("i", "<c-x>", require("telescope.actions").delete_buffer)
             map("n", "d", require("telescope.actions").delete_buffer)
             map("n", "q", require("telescope.actions").close)
-            map("n", ";", require("telescope.actions").select_default)
+            map("n", "l", require("telescope.actions").select_default)
             return true
           end,
         }),
@@ -137,13 +137,13 @@ return {
           -- NOTE: override default lv_utils.telescope cwd opt
           -- cwd = "",
           initial_mode = "normal",
-          -- sort_lastused = false,
-          -- sort_mru = true,
+          sort_lastused = true,
+          sort_mru = true,
           attach_mappings = function(_, map)
             map("i", "<c-x>", require("telescope.actions").delete_buffer)
             map("n", "d", require("telescope.actions").delete_buffer)
             map("n", "q", require("telescope.actions").close)
-            map("n", ";", require("telescope.actions").select_default)
+            map("n", "l", require("telescope.actions").select_default)
             return true
           end,
         }),
