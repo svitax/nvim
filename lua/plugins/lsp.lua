@@ -14,6 +14,14 @@ return {
         mode = { "n", "v" },
       }
       keys[#keys + 1] = { "<leader>cd", false, mode = "n" }
+      keys[#keys + 1] = {
+        "<leader>cf",
+        function()
+          require("lazyvim.plugins.lsp.format").format({ force = true })
+        end,
+        mode = "n",
+        desc = "Format",
+      }
 
       keys[#keys + 1] = { "<leader>cA", vim.lsp.codelens.run, desc = "Codelens", mode = "n" }
       keys[#keys + 1] = { "gl", vim.diagnostic.open_float, desc = "Line diagnostics", mode = "n" }
