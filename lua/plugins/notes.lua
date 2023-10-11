@@ -9,11 +9,11 @@ return {
     keys = {
       { "<leader>fn", "<cmd>ObsidianQuickSwitch<cr>", desc = "Find notes" },
       { "<leader>nf", "<cmd>ObsidianQuickSwitch<cr>", desc = "Find notes" },
-      { "<leader>nN", "<cmd>ObsidianNew<cr>",         desc = "New note" },
+      { "<leader>nN", "<cmd>ObsidianNew<cr>", desc = "New note" },
       -- { "<leader>sn", "<cmd>ObsidianSearch<cr>", desc = "Search in notes" },
-      { "<leader>ns", "<cmd>ObsidianSearch<cr>",      desc = "Search in notes" },
-      { "<leader>nl", "<cmd>ObsidianLink<cr>",        desc = "Link selection" },
-      { "<leader>nL", "<cmd>ObsidianLinkNew<cr>",     desc = "Link selection (new)" },
+      { "<leader>ns", "<cmd>ObsidianSearch<cr>", desc = "Search in notes" },
+      { "<leader>nl", "<cmd>ObsidianLink<cr>", desc = "Link selection" },
+      { "<leader>nL", "<cmd>ObsidianLinkNew<cr>", desc = "Link selection (new)" },
       --     { "<leader>fn", "<cmd>ZkNotes { sort = {'modified'}}<cr>", desc = "Find notes" },
       --     { "<leader>nn", "<cmd>ZkNotes { sort = {'modified'}}<cr>", desc = "Find notes" },
       --     -- Search for the notes matching the current visual selection.
@@ -138,9 +138,9 @@ return {
                 for _, line in pairs(entry) do
                   local match_base = "%f[%w]file"
                   local s = line:match(match_base .. "%s*=%s*%b{}")
-                      or line:match(match_base .. '%s*=%s*%b""')
-                      or line:match(match_base .. "%s*=%s*%d+")
-                      or line:match("%s*books/[^\n]+")
+                    or line:match(match_base .. '%s*=%s*%b""')
+                    or line:match(match_base .. "%s*=%s*%d+")
+                    or line:match("%s*books/[^\n]+")
                   if s ~= nil then
                     -- s = s:match("%b{}") or s:match('%b""') or s:match("%d+")
                     -- s = "/home/svitax/Dropbox/docs/" .. (s:match("%{(.-)%}") or s:match("(books/[^\n]+)"))
