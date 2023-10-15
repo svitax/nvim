@@ -277,19 +277,19 @@ local components = {
 
       -- Add sources (from null-ls)
       -- null-ls registers each source as a separate attached client, so we need to filter for unique names down below.
-      local null_ls_s, null_ls = pcall(require, "null-ls")
-      if null_ls_s then
-        local sources = null_ls.get_sources()
-        for _, source in ipairs(sources) do
-          if source._validated then
-            for ft_name, ft_active in pairs(source.filetypes) do
-              if ft_name == buf_ft and ft_active then
-                table.insert(buf_client_names, source.name)
-              end
-            end
-          end
-        end
-      end
+      -- local null_ls_s, null_ls = pcall(require, "null-ls")
+      -- if null_ls_s then
+      --   local sources = null_ls.get_sources()
+      --   for _, source in ipairs(sources) do
+      --     if source._validated then
+      --       for ft_name, ft_active in pairs(source.filetypes) do
+      --         if ft_name == buf_ft and ft_active then
+      --           table.insert(buf_client_names, source.name)
+      --         end
+      --       end
+      --     end
+      --   end
+      -- end
 
       -- Add linters (from nvim-lint)
       local lint_s, lint = pcall(require, "lint")
@@ -305,6 +305,16 @@ local components = {
             if buf_ft == ft_k then
               table.insert(buf_client_names, ft_v)
             end
+          end
+        end
+      end
+
+      -- Add formatters (from conform.nvim)
+      local ok, conform = pcall(require, "conform")
+      if ok then
+        for _, formatter in ipairs(conform.list_formatters()) do
+          if formatter then
+            table.insert(buf_client_names, formatter["name"])
           end
         end
       end

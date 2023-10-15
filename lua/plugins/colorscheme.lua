@@ -134,6 +134,13 @@ return {
             AlphaFooter = { link = "Comment" },
             AlphaShortcut = { fg = "palette.magenta" },
 
+            DashboardDesc = { fg = "palette.red" },
+            DashboardKey = { fg = "palette.magenta" },
+            DashboardIcon = { fg = "palette.red" },
+            -- DashboardShortCut = {},
+            DashboardFooter = { fg = "palette.comment" },
+            DashboardHeader = { fg = "palette.comment" },
+
             -- FIX: Leap highlight groups not being applied.
             LeapBackdrop = { link = "Comment" },
             LeapMatch = { fg = "palette.bg1", bg = "palette.blue" },

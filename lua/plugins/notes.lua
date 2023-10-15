@@ -178,45 +178,45 @@ return {
       }, 0, #opts.ensure_installed)
     end,
   },
-  {
-    "nvimtools/none-ls.nvim",
-    opts = function(_, opts)
-      local nls = require("null-ls")
-      table.insert(
-        opts.sources,
-        nls.builtins.diagnostics.markdownlint.with({
-          extra_args = { "--disable", "trailing-spaces", "no-multiple-blanks", "line-length" },
-        })
-      )
-      table.insert(
-        opts.sources,
-        nls.builtins.formatting.trim_whitespace.with({ filetypes = { "markdown", "text", "quarto", "http" } })
-      )
-      table.insert(
-        opts.sources,
-        nls.builtins.formatting.trim_newlines.with({ filetypes = { "markdown", "text", "quarto", "http" } })
-      )
-      -- table.insert(opts.sources, nls.builtins.formatting.bibclean)
-      -- table.insert(opts.sources, nls.builtins.formatting.mdformat)
-      -- table.insert(opts.sources, nls.builtins.formatting.cbfmt)
-      -- table.insert(opts.sources, nls.builtins.diagnostics.codespell.with({ filetypes = { "text", "markdown" } }))
-      -- table.insert(
-      --   opts.sources,
-      --   nls.builtins.diagnostics.vale.with({
-      --     extra_args = { "--config", vim.fn.expand("$HOME") .. "/.config/vale/.vale.ini" },
-      --     diagnostics_postprocess = function(diagnostic)
-      --      diagnostic.severity = vim.diagnostic.severity.HINT
-      --    end
-      --   })
-      -- )
-      -- table.insert(
-      --   opts.sources,
-      --   nls.builtins.formatting.markdownlint.with({
-      --     extra_args = { "--disable", "trailing-spaces", "no-multiple-blanks", "line-length" },
-      --   })
-      -- )
-    end,
-  },
+  -- {
+  --   "nvimtools/none-ls.nvim",
+  --   opts = function(_, opts)
+  --     local nls = require("null-ls")
+  --     table.insert(
+  --       opts.sources,
+  --       nls.builtins.diagnostics.markdownlint.with({
+  --         extra_args = { "--disable", "trailing-spaces", "no-multiple-blanks", "line-length" },
+  --       })
+  --     )
+  --     table.insert(
+  --       opts.sources,
+  --       nls.builtins.formatting.trim_whitespace.with({ filetypes = { "markdown", "text", "quarto", "http" } })
+  --     )
+  --     table.insert(
+  --       opts.sources,
+  --       nls.builtins.formatting.trim_newlines.with({ filetypes = { "markdown", "text", "quarto", "http" } })
+  --     )
+  --     -- table.insert(opts.sources, nls.builtins.formatting.bibclean)
+  --     -- table.insert(opts.sources, nls.builtins.formatting.mdformat)
+  --     -- table.insert(opts.sources, nls.builtins.formatting.cbfmt)
+  --     -- table.insert(opts.sources, nls.builtins.diagnostics.codespell.with({ filetypes = { "text", "markdown" } }))
+  --     -- table.insert(
+  --     --   opts.sources,
+  --     --   nls.builtins.diagnostics.vale.with({
+  --     --     extra_args = { "--config", vim.fn.expand("$HOME") .. "/.config/vale/.vale.ini" },
+  --     --     diagnostics_postprocess = function(diagnostic)
+  --     --      diagnostic.severity = vim.diagnostic.severity.HINT
+  --     --    end
+  --     --   })
+  --     -- )
+  --     -- table.insert(
+  --     --   opts.sources,
+  --     --   nls.builtins.formatting.markdownlint.with({
+  --     --     extra_args = { "--disable", "trailing-spaces", "no-multiple-blanks", "line-length" },
+  --     --   })
+  --     -- )
+  --   end,
+  -- },
   -- BUG: doesn't detect markdown treesitter parser
   -- {
   --   "lukas-reineke/headlines.nvim",

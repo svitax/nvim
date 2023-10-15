@@ -17,7 +17,8 @@ return {
       keys[#keys + 1] = {
         "<leader>cf",
         function()
-          require("lazyvim.plugins.lsp.format").format({ force = true })
+          -- require("lazyvim.plugins.lsp.format").format({ force = true })
+          require("conform").format({ bufnr = 0 })
         end,
         mode = "n",
         desc = "Format",
@@ -53,7 +54,7 @@ return {
     opts = {
       -- if config.autocmds FennecFormat doesn't work, enable LazyVim's autoformat instead
       -- Enabling this means if there are null-ls formatters available only those will format, no other language server will
-      autoformat = true,
+      -- autoformat = true,
       diagnostics = {
         underline = true,
         update_in_insert = false,

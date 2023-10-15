@@ -114,7 +114,7 @@ return {
         -- setopt = true,
         relculright = true,
         segments = {
-          { sign = { name = { "GitSigns" }, mawidth = 1 }, click = "v:lua.ScSa" },
+          { sign = { namespace = { "gitsigns" }, maxwidth = 1 }, click = "v:lua.ScSa" },
           -- { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
           -- { sign = { name = { "Diagnostic", "DapBreakpoint" }, maxwidth = 1 }, click = "v:lua.ScSa" },
           { sign = { name = { ".*" }, maxwidth = 1 }, click = "v:lua.ScSa" },

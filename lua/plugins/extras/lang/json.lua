@@ -4,7 +4,7 @@ return {
     ft = { "json", "yaml", "qf" },
     cmd = { "JqxList", "JqxQuery" },
     keys = {
-      { "<leader>mjl", "<cmd>JqxList<cr>",  desc = "jqx list" },
+      { "<leader>mjl", "<cmd>JqxList<cr>", desc = "jqx list" },
       { "<leader>mjs", "<cmd>JqxQuery<cr>", desc = "jqx query" },
     },
   },
@@ -48,17 +48,6 @@ return {
       }, 0, #opts.ensure_installed)
     end,
   },
-  {
-    "nvimtools/none-ls.nvim",
-    opts = function(_, opts)
-      local nls = require("null-ls")
-      table.insert(
-        opts.sources,
-        nls.builtins.diagnostics.jsonlint.with({
-          extra_filetypes = { "jsonc" },
-          -- method = nls.methods.DIAGNOSTICS_ON_SAVE,
-        })
-      )
-    end,
-  },
+  { "stevearc/conform.nvim", opts = { formatters_by_ft = { json = { "jq" }, jsonc = { "jq" } } } },
+  { "mfussenegger/nvim-lint", opts = { linters_by_ft = { json = { "jsonlint" }, jsonc = { "jsonlint" } } } },
 }

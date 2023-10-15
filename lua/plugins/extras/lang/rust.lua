@@ -44,28 +44,10 @@ return {
     dependencies = { "simrat39/rust-tools.nvim", "saecki/crates.nvim" },
     opts = {
       -- make sure mason installs the server
-      servers = {
-        ---@type lspconfig.options.rust_analyzer
-        rust_analyzer = {
-          settings = {
-            ["rust-analyzer"] = {
-              cargo = { allFeatures = true },
-              checkOnSave = { allFeatures = true, command = "clippy", extraArgs = { "--no-deps" } },
-              procMacro = {
-                ignored = {
-                  ["async-trait"] = { "async_trait" },
-                  ["napi-derive"] = { "napi" },
-                  ["async-recursion"] = { "async_recursion" },
-                },
-              },
-            },
-          },
-        },
-      },
       setup = {
         rust_analyzer = function(_, opts)
           local rt = require("rust-tools")
-          require("lazyvim.util").on_attach(function(client, buffer)
+          require("lazyvim.util").lsp.on_attach(function(client, buffer)
           -- stylua: ignore
           if client.name == "rust_analyzer" then
             -- vim.keymap.set("n", "K", "<cmd>RustHoverActions<cr>", { buffer = buffer, desc = "Hover Actions (Rust)" })
@@ -107,7 +89,7 @@ return {
               vim.lsp.buf.hover()
             end
           end
-          require("lazyvim.util").on_attach(function(client, buffer)
+          require("lazyvim.util").lsp.on_attach(function(client, buffer)
           -- stylua: ignore
           if client.name == "taplo" then
             vim.keymap.set("n", "K", show_documentation, { buffer = buffer, desc = "Show Crate Documentation" })

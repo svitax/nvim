@@ -18,18 +18,8 @@ return {
       }, 0, #opts.ensure_installed)
     end,
   },
-  {
-    "nvimtools/none-ls.nvim",
-    opts = function(_, opts)
-      local nls = require("null-ls")
-      -- table.insert(opts.sources, nls.builtins.formatting.yamlfmt)
-      table.insert(
-        opts.sources,
-        nls.builtins.diagnostics.yamllint.with({ --[[method = nls.methods.DIAGNOSTICS_ON_SAVE ]]
-        })
-      )
-    end,
-  },
+  -- { "stevearc/conform.nvim", opts = { formatters_by_ft = { yaml = { "yamlfmt" } } } },
+  { "mfussenegger/nvim-lint", opts = { linters_by_ft = { yaml = { "yamllint" } } } },
   {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -54,7 +44,7 @@ return {
       ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
       setup = {
         yamlls = function(_, opts)
-          require("lazyvim.util").on_attach(function(client, buffer)
+          require("lazyvim.util").lsp.on_attach(function(client, buffer)
             if client.name == "yamlls" then
               vim.keymap.set(
                 "n",

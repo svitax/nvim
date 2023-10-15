@@ -58,21 +58,18 @@ return {
     end,
   },
   {
-    "nvimtools/none-ls.nvim",
-    opts = function(_, opts)
-      local nls = require("null-ls")
-      -- table.insert(opts.sources, nls.builtins.diagnostics.beautysh)
-      -- table.insert(
-      --   opts.sources,
-      --   nls.builtins.diagnostics.dotenv_linter.with({ filetypes = "dotenv", extra_args = { "--skip", "UnorderedKey" } })
-      -- )
-      -- table.insert(opts.sources, nls.builtins.diagnostics.shellcheck.with({ diagnostics_format = "SC#{c}:#{m}" }))
-      -- table.insert(opts.sources, nls.builtins.diagnostics.fish)
-      table.insert(opts.sources, nls.builtins.diagnostics.zsh)
-      -- table.insert(opts.sources, nls.builtins.formatting.fish_indent)
-      table.insert(opts.sources, nls.builtins.formatting.shfmt.with({ extra_filetypes = { "zsh" } }))
-      table.insert(opts.sources, nls.builtins.formatting.shellharden.with({ extra_filetypes = { "zsh" } }))
-      -- table.insert(opts.sources, nls.builtins.code_actions.shellcheck)
-    end,
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        sh = { "shfmt", "shellharden" },
+        zsh = { "shfmt", "shellharden" },
+        bash = { "shfmt", "shellharden" },
+        fish = { "fish_indent" },
+      },
+    },
+  },
+  {
+    "mfussenegger/nvim-lint",
+    opts = { linters_by_ft = { sh = { "shellcheck" }, zsh = { "shellcheck" }, bash = { "shellcheck" } } },
   },
 }

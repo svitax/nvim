@@ -4,6 +4,8 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " m"
 
+vim.g.autoformat = true
+
 vim.o.fillchars = [[diff:╱]]
 vim.o.conceallevel = 1
 vim.o.timeoutlen = 500

@@ -385,7 +385,7 @@ return {
       ----@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
       opts.setup = {
         ruff_lsp = function(_, opts)
-          require("lazyvim.util").on_attach(function(client, buffer)
+          require("lazyvim.util").lsp.on_attach(function(client, buffer)
             local sc = client.server_capabilities
             if client.name == "ruff_lsp" then
               sc.hoverProvider = false
@@ -393,7 +393,7 @@ return {
           end)
         end,
         sourcery = function(_, opts)
-          require("lazyvim.util").on_attach(function(client, buffer)
+          require("lazyvim.util").lsp.on_attach(function(client, buffer)
             local sc = client.server_capabilities
             if client.name == "sourcery" then
               sc.hoverProvider = false
@@ -401,7 +401,7 @@ return {
           end)
         end,
         -- pyright = function(_, opts)
-        --   require("lazyvim.util").on_attach(function(client, buffer)
+        --   require("lazyvim.util").lsp.on_attach(function(client, buffer)
         --     local rc = client.server_capabilities
         --     if client.name == "pyright" then
         --       rc.diagnosticProvider = false
@@ -414,7 +414,7 @@ return {
         --   end)
         -- end,
         pylance = function(_, opts)
-          require("lazyvim.util").on_attach(function(client, buffer)
+          require("lazyvim.util").lsp.on_attach(function(client, buffer)
             local sc = client.server_capabilities
             if client.name == "pylance" then
               -- sc.definitionProvider = false
@@ -430,7 +430,7 @@ return {
           end)
         end,
         -- pylsp = function(_, opts)
-        --   require("lazyvim.util").on_attach(function(client, buffer)
+        --   require("lazyvim.util").lsp.on_attach(function(client, buffer)
         --     local sc = client.server_capabilities
         --     if client.name == "pylsp" then
         --       -- sc.renameProvider = false
@@ -448,9 +448,9 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
-        -- "mypy",
+        "mypy",
         "black",
-        "ruff",
+        -- "ruff",
         -- "usort",
         -- "pylint",
         -- "pydocstyle",
@@ -501,25 +501,29 @@ return {
       end)
     end,
   },
+  { "stevearc/conform.nvim", opts = { formatters_by_ft = { python = { "black", "ruff_format" } } } },
   {
-    "nvimtools/none-ls.nvim",
-    opts = function(_, opts)
-      local nls = require("null-ls")
-      -- table.insert(
-      --   opts.sources,
-      --   nls.builtins.diagnostics.mypy.with({
-      --     prefer_local = ".venv/bin",
-      --     extra_args = { "--strict" },
-      --     -- method = nls.methods.DIAGNOSTICS_ON_SAVE,
-      --   })
-      -- )
-      -- TODO: use usort until ruff_lsp supports sorting imports with vim.lsp.buf.format() and not just code actions
-      -- table.insert(opts.sources, nls.builtins.formatting.usort)
-      table.insert(opts.sources, nls.builtins.formatting.ruff)
-      table.insert(opts.sources, nls.builtins.formatting.black)
-      -- table.insert(opts.sources, nls.builtins.diagnostics.pydocstyle)
-      -- table.insert(opts.sources, nls.builtins.diagnostics.pylint)
-    end,
+    "mfussenegger/nvim-lint",
+    opts = {
+      linters_by_ft = { python = { "mypy" } },
+      linters = {
+        mypy = {
+          cmd = "mypy",
+          stdin = false,
+          ignore_exitcode = true,
+          args = {
+            "--show-column-numbers",
+            -- "--hide-error-codes",
+            "--hide-error-context",
+            "--no-color-output",
+            "--no-error-summary",
+            "--no-pretty",
+            "--ignore-missing-imports",
+            -- "--disallow-untyped-defs",
+          },
+        },
+      },
+    },
   },
   -- {
   --   "mfussenegger/nvim-dap",

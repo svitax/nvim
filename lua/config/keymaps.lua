@@ -206,7 +206,7 @@ local mappings = {
 
     -- toggle options
     ["<leader>ul"] = { require("utils").toggle_lsp_in_modeline, { desc = "Toggle show lsp in modeline" } },
-    ["<leader>uf"] = { require("lazyvim.plugins.lsp.format").toggle, { desc = "Toggle format on save" } },
+    -- ["<leader>uf"] = { require("lazyvim.plugins.lsp.format").toggle, { desc = "Toggle format on save" } },
     ["<leader>us"] = {
       function()
         lv_utils.toggle("spell")
@@ -219,8 +219,8 @@ local mappings = {
       end,
       { desc = "Toggle word wrap", expr = true },
     },
-    ["<leader>uL"] = { lv_utils.toggle_number, { desc = "Toggle line numbers" } },
-    ["<leader>ud"] = { lv_utils.toggle_diagnostics, { desc = "Toggle diagnostics" } },
+    ["<leader>uL"] = { lv_utils.toggle.number, { desc = "Toggle line numbers" } },
+    ["<leader>ud"] = { lv_utils.toggle.diagnostics, { desc = "Toggle diagnostics" } },
     ["<leader>uc"] = {
       function()
         local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3

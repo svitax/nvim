@@ -212,7 +212,9 @@ return {
       opts.formatting = {
         fields = { "kind", "abbr", "menu" },
         format = function(entry, item)
-          local icons = require("lazyvim.config").icons.kinds
+          -- local icons = require("lazyvim.config").icons.kinds
+          local icons = require("shared").kinds
+
           if icons[item.kind] then
             item.kind = icons[item.kind]
             item.menu = opts.cmp_source_names[entry.source.name]
