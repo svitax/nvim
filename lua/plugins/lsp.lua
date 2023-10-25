@@ -8,7 +8,7 @@ return {
 
       -- keys[#keys + 1] = { "<leader>ca", false, mode = "n" }
       keys[#keys + 1] = {
-        "<leader>ca",
+        "<leader>cb",
         "<cmd>lua require('actions-preview').code_actions()<cr>",
         desc = "Code actions",
         mode = { "n", "v" },
@@ -92,6 +92,31 @@ return {
       { "<leader>cT", "<cmd>ToggleLSP<cr>", desc = "Toggle NullLSP" },
     },
     opts = {},
+  },
+  {
+    "luckasRanarison/clear-action.nvim",
+    event = "LspAttach",
+    keys = { { "<leader>ca", desc = "Code actions" } },
+    opts = {
+      mappings = { code_action = { "<leader>ca", "Code actions" } },
+      signs = {
+        position = "right_align",
+        -- update_on_insert = true,
+        icons = {
+          quickfix = "  ",
+          refactor = "  ",
+          source = "  ",
+          combined = "  ",
+        },
+        highlights = { -- highlight groups
+          quickfix = "CodeActionLabel",
+          refactor = "CodeActionLabel",
+          source = "CodeActionLabel",
+          combined = "CodeActionLabel",
+          label = "CodeActionLabel",
+        },
+      },
+    },
   },
   {
     "aznhe21/actions-preview.nvim",

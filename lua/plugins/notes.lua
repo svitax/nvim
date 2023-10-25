@@ -178,6 +178,8 @@ return {
       }, 0, #opts.ensure_installed)
     end,
   },
+  { "stevearc/conform.nvim", opts = { formatters_by_ft = { markdown = { "markdownlint" } } } },
+  { "mfussenegger/nvim-lint", opts = { linters_by_ft = { markdown = { "markdownlint" } } } },
   -- {
   --   "nvimtools/none-ls.nvim",
   --   opts = function(_, opts)

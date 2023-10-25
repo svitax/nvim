@@ -242,6 +242,8 @@ return {
             MultiCursor = { fg = "palette.fg1", bg = "palette.bg3" },
             MultiCursorMain = { fg = "palette.fg1", bg = "palette.bg3" },
 
+            CodeActionLabel = { fg = "palette.blue" },
+
             ["@text.strong"] = { fg = "palette.orange", style = "bold" },
             ["@text.emphasis"] = { fg = "palette.orange", style = "italic" },
 

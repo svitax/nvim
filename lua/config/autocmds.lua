@@ -57,6 +57,7 @@ autocmd("FileType", {
     "dap-float",
     "oil",
     "httpResult",
+    "CodeAction",
     "",
   },
   callback = function(event)

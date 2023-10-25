@@ -349,49 +349,49 @@ return {
         end,
       }
 
-      opts.servers.ruff_lsp = {
-        root_dir = util.root_pattern(unpack(root_files)),
-        on_new_config = function(config, new_workspace)
-          config.settings.python.pythonPath = vim.fn.exepath("python") or vim.fn.exepath("python3") or "python"
-          config.cmd_env.PATH = py.env(new_workspace) .. new_workspace.cmd_env.PATH
-          return config
-        end,
-        init_options = { settings = { args = {} } },
-        on_init = function(client)
-          client.config.settings.python.pythonPath = (function(workspace)
-            if vim.env.VIRTUAL_ENV then
-              return path.join(vim.env.VIRTUAL_ENV, "bin", "python")
-            end
-            if vim.fn.filereadable(path.concat({ workspace, "poetry.lock" })) then
-              local venv = vim.fn.trim(vim.fn.system("poetry env info -p"))
-              return path.concat({ venv, "bin", "python" })
-            end
-            local pep582 = py.pep582(client)
-            if pep582 ~= nil then
-              client.config.settings.python.analysis.extraPaths = { pep582 }
-            end
-            return vim.fn.exepath("python3") or vim.fn.exepath("python") or "python"
-          end)(client.config.root_dir)
-        end,
-        before_init = function(_, config)
-          config.settings.python.analysis.stubPath = path.concat({
-            vim.fn.stdpath("data"),
-            "lazy",
-            "python-type-stubs",
-          })
-        end,
-      }
+      -- opts.servers.ruff_lsp = {
+      --   root_dir = util.root_pattern(unpack(root_files)),
+      --   on_new_config = function(config, new_workspace)
+      --     config.settings.python.pythonPath = vim.fn.exepath("python") or vim.fn.exepath("python3") or "python"
+      --     config.cmd_env.PATH = py.env(new_workspace) .. new_workspace.cmd_env.PATH
+      --     return config
+      --   end,
+      --   init_options = { settings = { args = {} } },
+      --   on_init = function(client)
+      --     client.config.settings.python.pythonPath = (function(workspace)
+      --       if vim.env.VIRTUAL_ENV then
+      --         return path.join(vim.env.VIRTUAL_ENV, "bin", "python")
+      --       end
+      --       if vim.fn.filereadable(path.concat({ workspace, "poetry.lock" })) then
+      --         local venv = vim.fn.trim(vim.fn.system("poetry env info -p"))
+      --         return path.concat({ venv, "bin", "python" })
+      --       end
+      --       local pep582 = py.pep582(client)
+      --       if pep582 ~= nil then
+      --         client.config.settings.python.analysis.extraPaths = { pep582 }
+      --       end
+      --       return vim.fn.exepath("python3") or vim.fn.exepath("python") or "python"
+      --     end)(client.config.root_dir)
+      --   end,
+      --   before_init = function(_, config)
+      --     config.settings.python.analysis.stubPath = path.concat({
+      --       vim.fn.stdpath("data"),
+      --       "lazy",
+      --       "python-type-stubs",
+      --     })
+      --   end,
+      -- }
 
       ----@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
       opts.setup = {
-        ruff_lsp = function(_, opts)
-          require("lazyvim.util").lsp.on_attach(function(client, buffer)
-            local sc = client.server_capabilities
-            if client.name == "ruff_lsp" then
-              sc.hoverProvider = false
-            end
-          end)
-        end,
+        -- ruff_lsp = function(_, opts)
+        --   require("lazyvim.util").lsp.on_attach(function(client, buffer)
+        --     local sc = client.server_capabilities
+        --     if client.name == "ruff_lsp" then
+        --       sc.hoverProvider = false
+        --     end
+        --   end)
+        -- end,
         sourcery = function(_, opts)
           require("lazyvim.util").lsp.on_attach(function(client, buffer)
             local sc = client.server_capabilities
@@ -450,7 +450,7 @@ return {
       vim.list_extend(opts.ensure_installed, {
         "mypy",
         "black",
-        -- "ruff",
+        "ruff",
         -- "usort",
         -- "pylint",
         -- "pydocstyle",
@@ -501,11 +501,11 @@ return {
       end)
     end,
   },
-  { "stevearc/conform.nvim", opts = { formatters_by_ft = { python = { "black", "ruff_format" } } } },
+  { "stevearc/conform.nvim", opts = { formatters_by_ft = { python = { "black" } } } },
   {
     "mfussenegger/nvim-lint",
     opts = {
-      linters_by_ft = { python = { "mypy" } },
+      linters_by_ft = { python = { "mypy", "ruff" } },
       linters = {
         mypy = {
           cmd = "mypy",

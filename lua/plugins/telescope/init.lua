@@ -292,9 +292,7 @@ return {
         mappings = {
           n = {
             s = M.flash,
-            [";"] = function(...)
-              return require("telescope.actions").select_default(...)
-            end,
+            [";"] = "select_default",
             ["<cr>"] = function(...)
               -- return require("telescope.actions").select_default(...)
               return M.multi_selection_open(...)
@@ -308,27 +306,14 @@ return {
             -- ["<c-h>"] = function()
             --   vim.api.nvim_feedkeys(utils.termcodes("<c-s-w>"), "i", true)
             -- end,
-            ["<c-o>"] = function()
-              return require("telescope.actions").preview_scrolling_left()
-            end,
-            ["<c-i>"] = function()
-              return require("telescope.actions").preview_scrolling_right()
-            end,
-            ["<c-j>"] = function(...)
-              return require("telescope.actions").move_selection_next(...)
-            end,
-            ["<c-k>"] = function(...)
-              return require("telescope.actions").move_selection_previous(...)
-            end,
-            ["<c-f>"] = function(...)
-              return require("telescope.actions").to_fuzzy_refine(...)
-            end,
-            ["<C-s>"] = function(...)
-              return require("telescope.actions").cycle_previewers_next(...)
-            end,
-            ["<C-a>"] = function(...)
-              return require("telescope.actions").cycle_previewers_prev(...)
-            end,
+            ["<c-o>"] = "preview_scrolling_left",
+            ["<c-i>"] = "preview_scrolling_right",
+            ["<c-j>"] = "move_selection_next",
+            ["<c-k>"] = "move_selection_previous",
+            ["<c-f>"] = "to_fuzzy_refine",
+            ["<C-s>"] = "cycle_previewers_next",
+            ["<C-a>"] = "cycle_previewers_prev",
+            ["<C-c>"] = "close",
           },
         },
       }),
