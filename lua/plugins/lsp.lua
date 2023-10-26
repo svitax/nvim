@@ -6,11 +6,11 @@ return {
       -- change/add/delete lazyvim lsp keymaps
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
 
-      -- keys[#keys + 1] = { "<leader>ca", false, mode = "n" }
+      keys[#keys + 1] = { "<leader>ca", false, mode = "n" }
       keys[#keys + 1] = {
         "<leader>cb",
         "<cmd>lua require('actions-preview').code_actions()<cr>",
-        desc = "Code actions",
+        desc = "Code actions (preview)",
         mode = { "n", "v" },
       }
       keys[#keys + 1] = { "<leader>cd", false, mode = "n" }
@@ -96,7 +96,6 @@ return {
   {
     "luckasRanarison/clear-action.nvim",
     event = "LspAttach",
-    keys = { { "<leader>ca", desc = "Code actions" } },
     opts = {
       mappings = { code_action = { "<leader>ca", "Code actions" } },
       signs = {

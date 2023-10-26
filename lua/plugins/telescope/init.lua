@@ -81,6 +81,10 @@ return {
       vim.keymap.set("n", "<leader>gC", custom.delta_bcommits_picker, { desc = "Checkout Git bcommits" })
       vim.keymap.set("n", "<leader>gt", custom.delta_status_picker, { desc = "Git status" })
       vim.keymap.set("n", "<leader>gT", custom.delta_stash_picker, { desc = "Git stash" })
+
+      vim.api.nvim_create_user_command("GoToFile", function()
+        lv_utils.telescope("files", { prompt_title = "Find files (git)" })()
+      end, {})
     end,
     keys = {
       { "<leader>/", false },
@@ -124,6 +128,7 @@ return {
       -- { "<leader>/", lv_utils.telescope("live_grep"), desc = "Search project" },
       { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command history" },
       -- { "<leader>`", "", desc = "Switch other" },
+
       {
         "<leader><space>",
         lv_utils.telescope("files", { prompt_title = "Find files (git)" }),

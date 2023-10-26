@@ -44,6 +44,16 @@ command("Rename", function()
   end)
 end, { desc = "Rename current file" })
 
+autocmd("BufWritePost", {
+  pattern = { "*tmux.conf" },
+  command = "execute 'silent !tmux source <afile> --silent'",
+})
+
+autocmd("BufWritePost", {
+  pattern = { "config.fish" },
+  command = "execute 'silent !source <afile> --silent'",
+})
+
 augroup("close_with_q", { clear = true })
 autocmd("FileType", {
   desc = "Close certain filetypes with 'q'",
