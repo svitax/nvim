@@ -48,6 +48,8 @@ return {
         end,
         desc = "Goto definition or references",
         silent = true,
+        noremap = false,
+        expr = true,
         -- expr = true,
       }
     end,
@@ -195,7 +197,7 @@ return {
       { "<leader>ci", "<cmd>Glance implementations<cr>", desc = "Find implementations" },
     },
   },
-  { "VidocqH/lsp-lens.nvim", event = "LspAttach", cmd = { "LspLensOn", "LspLensOff", "LspLensToggle" }, opts = {} },
+  -- { "VidocqH/lsp-lens.nvim", event = "LspAttach", cmd = { "LspLensOn", "LspLensOff", "LspLensToggle" }, opts = {} },
   -- {
   --   "Wansmer/symbol-usage.nvim",
   --   event = "LspAttach", -- need run before LspAttach if you use nvim 0.9. On 0.10 use 'LspAttach'
@@ -242,7 +244,8 @@ return {
         end
         return diagnostic.message
       end,
-      scope = "line",
+      -- scope = "line",
+      scope = "cursor",
       -- NOTE: doesn't entirely work. maybe is fixed in future
       toggle_event = { "InsertEnter" },
       update_event = { "DiagnosticChanged" },

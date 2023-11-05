@@ -22,7 +22,12 @@ return {
       { "iw", "<cmd>lua require('various-textobjs').subword(true)<cr>", mode = { "o", "x" }, desc = "inner word" },
     },
   },
-  { "folke/flash.nvim", opts = { modes = { char = { keys = { "f", "F", "t", "T", [";"] = "L", [","] = "H" } } } } },
+  {
+    "folke/flash.nvim",
+    keys = { { "R", mode = { "o", "x" }, false }, { "S", mode = { "n", "o", "x" }, false } },
+    opts = { modes = { search = { enabled = false } } },
+  },
+  { "folke/flash.nvim" },
   { "chrishrb/gx.nvim", event = { "BufEnter" }, dependencies = { "nvim-lua/plenary.nvim" }, opts = {} },
   {
     -- TODO: <A-j> and <A-n> in normal mode to move lines

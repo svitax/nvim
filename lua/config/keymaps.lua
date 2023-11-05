@@ -137,8 +137,8 @@ local mappings = {
     ["<A-h>"] = { "<cmd>bprevious<cr>", { desc = "Previous buffer" } },
 
     -- ergonomic command mode ':'
-    [";"] = { ":", { silent = false, nowait = true } },
-    [":"] = { ";", { silent = false, nowait = true } },
+    -- [";"] = { ":", { silent = false, nowait = true } },
+    -- [":"] = { ";", { silent = false, nowait = true } },
 
     -- use , key for matching parens
     [","] = { "%", { remap = true, desc = "jump to paren (%)" } },

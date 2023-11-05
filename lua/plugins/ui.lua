@@ -156,89 +156,89 @@ return {
   --   },
   --   keys = { { "<leader>hk", "<cmd>lua require('commander').show()<cr>", desc = "Show keymaps" } },
   -- },
-  {
-    "Cassin01/wf.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("wf").setup({ theme = "space" })
-      local which_key = require("wf.builtin.which_key")
-      local register = require("wf.builtin.register")
-      -- local bookmark = require("wf.builtin.bookmark")
-      local mark = require("wf.builtin.mark")
-
-      vim.keymap.set("n", "'", mark(), { nowait = true, noremap = true, silent = true, desc = "[wf.nvim] mark" })
-      vim.keymap.set(
-        "n",
-        '"',
-        register(),
-        { nowait = true, noremap = true, silent = true, desc = "[wf.nvim] register" }
-      )
-      vim.keymap.set(
-        "n",
-        "<leader>",
-        which_key({
-          -- selector = "fuzzy",
-          text_insert_in_advance = "<Space>",
-          key_group_dict = {
-            -- ["g"] = "goto",
-            -- ["ga"] = "text case",
-            -- ["ge"] = "text case op",
-            -- ["gz"] = "surround",
-            -- ["]"] = "next",
-            -- ["["] = "prev",
-            -- ["<Space><tab>"] = "tabs",
-            ["<Space>a"] = "ai",
-            ["<Space>b"] = "buffer",
-            -- ["<Space>bx"] = "scratch",
-            ["<Space>c"] = "code",
-            ["<Space>d"] = "debug",
-            ["<Space>f"] = "file/find",
-            ["<Space>g"] = "git",
-            -- ["<leader>gh"] = { name = "+hunks" },
-            ["<Space>h"] = "help",
-            ["<Space>hd"] = "devdocs",
-            ["<Space>m"] = "<localleader>",
-            ["<Space>me"] = "evaluate",
-            ["<Space>mj"] = "jqx",
-            -- ["<Space>ml"] = "logs",
-            -- ["<Space>mg"] = "goto",
-            -- ["<leader>mr"] = { name = "+reset" },
-            ["<Space>mr"] = "rest",
-            -- ["<Space>mc"] = "python repl",
-            -- ["<Space>mei"] = "interrupt command",
-            ["<Space>n"] = "notes",
-            ["<Space>p"] = "project",
-            ["<Space>q"] = "+quit/session",
-            ["<Space>s"] = "search",
-            -- ["<leader>so"] = { name = "+online" },
-            ["<Space>t"] = "test",
-            ["<Space>u"] = "ui",
-            ["<Space>w"] = "windows",
-            ["<Space>x"] = "diagnostics/quickfix",
-            ["<Space>y"] = "yank",
-            ["<Space>z"] = "leetcode",
-          },
-        }),
-        { noremap = true, silent = true, desc = "[wf.nvim] which-key <leader>" }
-      )
-    end,
-  },
+  -- {
+  --   "Cassin01/wf.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("wf").setup({ theme = "space" })
+  --     local which_key = require("wf.builtin.which_key")
+  --     local register = require("wf.builtin.register")
+  --     -- local bookmark = require("wf.builtin.bookmark")
+  --     local mark = require("wf.builtin.mark")
+  --
+  --     vim.keymap.set("n", "'", mark(), { nowait = true, noremap = true, silent = true, desc = "[wf.nvim] mark" })
+  --     vim.keymap.set(
+  --       "n",
+  --       '"',
+  --       register(),
+  --       { nowait = true, noremap = true, silent = true, desc = "[wf.nvim] register" }
+  --     )
+  --     vim.keymap.set(
+  --       "n",
+  --       "<leader>",
+  --       which_key({
+  --         -- selector = "fuzzy",
+  --         text_insert_in_advance = "<Space>",
+  --         key_group_dict = {
+  --           -- ["g"] = "goto",
+  --           -- ["ga"] = "text case",
+  --           -- ["ge"] = "text case op",
+  --           -- ["gz"] = "surround",
+  --           -- ["]"] = "next",
+  --           -- ["["] = "prev",
+  --           -- ["<Space><tab>"] = "tabs",
+  --           ["<Space>a"] = "ai",
+  --           ["<Space>b"] = "buffer",
+  --           -- ["<Space>bx"] = "scratch",
+  --           ["<Space>c"] = "code",
+  --           ["<Space>d"] = "debug",
+  --           ["<Space>f"] = "file/find",
+  --           ["<Space>g"] = "git",
+  --           -- ["<leader>gh"] = { name = "+hunks" },
+  --           ["<Space>h"] = "help",
+  --           ["<Space>hd"] = "devdocs",
+  --           ["<Space>m"] = "<localleader>",
+  --           ["<Space>me"] = "evaluate",
+  --           ["<Space>mj"] = "jqx",
+  --           -- ["<Space>ml"] = "logs",
+  --           -- ["<Space>mg"] = "goto",
+  --           -- ["<leader>mr"] = { name = "+reset" },
+  --           ["<Space>mr"] = "rest",
+  --           -- ["<Space>mc"] = "python repl",
+  --           -- ["<Space>mei"] = "interrupt command",
+  --           ["<Space>n"] = "notes",
+  --           ["<Space>p"] = "project",
+  --           ["<Space>q"] = "+quit/session",
+  --           ["<Space>s"] = "search",
+  --           -- ["<leader>so"] = { name = "+online" },
+  --           ["<Space>t"] = "test",
+  --           ["<Space>u"] = "ui",
+  --           ["<Space>w"] = "windows",
+  --           ["<Space>x"] = "diagnostics/quickfix",
+  --           ["<Space>y"] = "yank",
+  --           ["<Space>z"] = "leetcode",
+  --         },
+  --       }),
+  --       { noremap = true, silent = true, desc = "[wf.nvim] which-key <leader>" }
+  --     )
+  --   end,
+  -- },
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    enabled = false,
+    -- enabled = false,
     opts = {
       key_labels = { ["<space>"] = "<spc>", ["<cr>"] = "<ret>" },
       defaults = {
         ["g"] = { name = "+goto" },
-        ["ga"] = { name = "+text case" },
-        ["ge"] = { name = "+text case op" },
-        -- ["gz"] = { name = "+surround" },
+        -- ["ga"] = { name = "+text case" },
+        -- ["ge"] = { name = "+text case op" },
+        ["gz"] = { name = "+surround" },
         ["]"] = { name = "+next" },
         ["["] = { name = "+prev" },
-        ["<leader><tab>"] = { name = "+tabs" },
-        ["<leader>a"] = { name = "+ai" },
-        ["<leader>bx"] = { name = "+scratch" },
+        -- ["<leader><tab>"] = { name = "+tabs" },
+        -- ["<leader>a"] = { name = "+ai" },
+        -- ["<leader>bx"] = { name = "+scratch" },
         ["<leader>c"] = { name = "+code" },
         ["<leader>d"] = { name = "+debug" },
         ["<leader>f"] = { name = "+file/find" },

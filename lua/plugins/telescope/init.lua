@@ -82,6 +82,8 @@ return {
       vim.keymap.set("n", "<leader>gt", custom.delta_status_picker, { desc = "Git status" })
       vim.keymap.set("n", "<leader>gT", custom.delta_stash_picker, { desc = "Git stash" })
 
+      -- vim.keymap.set("n", "<leader>.", custom.config_picker, { desc = "Dotfiles" })
+
       vim.api.nvim_create_user_command("GoToFile", function()
         lv_utils.telescope("files", { prompt_title = "Find files (git)" })()
       end, {})

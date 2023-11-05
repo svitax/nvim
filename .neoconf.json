@@ -3,14 +3,22 @@
     "library": {
       "enabled": true,
       "plugins": [
+        "lazy.nvim",
+        "plenary.nvim",
+        "mason-lspconfig",
+        "mason.nvim",
+        "nvim-treesitter",
         "nvim-lspconfig",
-        "lsp",
-        "cmp",
-        "telescope",
+        "which-key.nvim",
+        "nvim-cmp",
+        "telescope.nvim",
         "lazyvim",
         "neo-tree",
-        "conform",
-        "nvim-lint"
+        "conform.nvim",
+        "nvim-lint",
+        "overseer.nvim",
+        "toggleterm.nvim",
+        "noice.nvim"
       ]
     }
   },
@@ -18,72 +26,109 @@
     "plugins": {
       "lua_ls": {
         "enabled": false
+      },
+      "lspconfig": {
+        "enabled": true
       }
     }
   },
-  "gopls": {
-    "gofumpt": true,
-    "usePlaceholders": true,
-    "completeUnimported": true,
-    "staticcheck": true,
-    "directoryFilters": [
-      "-.git",
-      "-.vscode",
-      "-.idea",
-      "-.vscode-test",
-      "-node_modules"
-    ],
-    "semanticTokens": true,
-    "codelenses": {
-      "gc_details": false,
-      "generate": true,
-      "regenerate_cgo": true,
-      "run_govulncheck": true,
-      "test": true,
-      "tidy": true,
-      "upgrade_dependency": true,
-      "vendor": true
+  "lspconfig": {
+    "bashls": {
+      "bashIde": {
+        "includeAllWorkspaceSymbols": true
+      }
     },
-    "analyses": {
-      "fieldalignment": true,
-      "nilness": true,
-      "unusedparams": true,
-      "unusedwrite": true,
-      "useany": true
+    "lua_ls": {
+      "Lua": {
+        "workspace.checkThirdParty": false,
+        "completion.callSnippet": "Disable",
+        "diagnostics": {
+          "enable": true,
+          "unusedLocalExclude": [
+            "_*"
+          ],
+          "globals": [
+            "vim"
+          ]
+        },
+        "format": {
+          "enable": false
+        },
+        "hint": {
+          "enable": true,
+          "setType": true,
+          "arrayIndex": "Disable",
+          "await": true,
+          "paramName": "All",
+          "paramType": true,
+          "semicolon": "SameLine"
+        }
+      }
     },
-    "hints": {
-      "assignVariableTypes": true,
-      "compositeLiteralFields": true,
-      "compositeLiteralTypes": true,
-      "constantValues": true,
-      "functionTypeParameters": true,
-      "parameterNames": true,
-      "rangeVariableTypes": true
-    }
-  },
-  "rust-analyzer": {
-    "cargo": {
-      "allFeatures": true,
-      "loadOutDirsFromCheck": true,
-      "runBuildScripts": true
+    "gopls": {
+      "gofumpt": true,
+      "usePlaceholders": true,
+      "completeUnimported": true,
+      "staticcheck": true,
+      "directoryFilters": [
+        "-.git",
+        "-.vscode",
+        "-.idea",
+        "-.vscode-test",
+        "-node_modules"
+      ],
+      "semanticTokens": true,
+      "codelenses": {
+        "gc_details": false,
+        "generate": true,
+        "regenerate_cgo": true,
+        "run_govulncheck": true,
+        "test": true,
+        "tidy": true,
+        "upgrade_dependency": true,
+        "vendor": true
+      },
+      "analyses": {
+        "fieldalignment": true,
+        "nilness": true,
+        "unusedparams": true,
+        "unusedwrite": true,
+        "useany": true
+      },
+      "hints": {
+        "assignVariableTypes": true,
+        "compositeLiteralFields": true,
+        "compositeLiteralTypes": true,
+        "constantValues": true,
+        "functionTypeParameters": true,
+        "parameterNames": true,
+        "rangeVariableTypes": true
+      }
     },
-    "checkOnSave": {
-      "allFeatures": true,
-      "command": "clippy",
-      "extraArgs": "--no-deps"
-    },
-    "procMacro": {
-      "enable": true,
-      "ignored": {
-        "async-trait": [
-          "async_trait"
-        ],
-        "napi-derive": [
-          "napi"
-        ],
-        "async-recursion": [
-          "async_recursion"
-        ]
+    "rust-analyzer": {
+      "cargo": {
+        "allFeatures": true,
+        "loadOutDirsFromCheck": true,
+        "runBuildScripts": true
+      },
+      "checkOnSave": {
+        "allFeatures": true,
+        "command": "clippy",
+        "extraArgs": "--no-deps"
+      },
+      "procMacro": {
+        "enable": true,
+        "ignored": {
+          "async-trait": [
+            "async_trait"
+          ],
+          "napi-derive": [
+            "napi"
+          ],
+          "async-recursion": [
+            "async_recursion"
+          ]
+        }
       }
     }
   }

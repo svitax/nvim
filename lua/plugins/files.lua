@@ -284,6 +284,7 @@ return {
   --     { "<leader>fS", ":SudaRead ", desc = "Sudo read file" },
   --   },
   -- },
+  { "DreamMaoMao/yazi.nvim", keys = { { "<leader>L", "<cmd>Yazi<cr>", desc = "Yazi" } } },
   {
     -- Lets you use your favorite terminal file managers
     "is0n/fm-nvim",

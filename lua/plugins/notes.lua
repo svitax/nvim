@@ -1,5 +1,5 @@
 return {
-  { "neovim/nvim-lspconfig", opts = { servers = { ltex = {} } } },
+  -- { "neovim/nvim-lspconfig", opts = { servers = { marksman = {} } } },
   { "stevearc/conform.nvim", opts = { formatters_by_ft = { markdown = { "markdownlint" } } } },
   { "mfussenegger/nvim-lint", opts = { linters_by_ft = { markdown = { "markdownlint" } } } },
   {
@@ -17,6 +17,23 @@ return {
       { "<leader>ns", "<cmd>ObsidianSearch<cr>", desc = "Search in notes" },
       { "<leader>nl", "<cmd>ObsidianLink<cr>", desc = "Link selection" },
       { "<leader>nL", "<cmd>ObsidianLinkNew<cr>", desc = "Link selection (new)" },
+      {
+        -- NOTE: if i don't have any lsp attached to markdown files, i need to duplicate this bind to get gd passthrough
+        "gd",
+        function()
+          -- NOTE: definition-or-references breaks zk markdown links with 1 reference
+          -- better to use vim.lsp.buf.definition whenever we have zk attached
+          if require("obsidian").util.cursor_on_markdown_link() then
+            return "<cmd>ObsidianFollowLink<cr>"
+          else
+            require("definition-or-references").definition_or_references()
+          end
+        end,
+        desc = "Goto definition or references",
+        silent = true,
+        noremap = false,
+        expr = true,
+      },
     },
   },
   {

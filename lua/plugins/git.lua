@@ -62,7 +62,7 @@ return {
   { "is0n/fm-nvim", keys = { { "<leader>gl", "<cmd>Lazygit<cr>", desc = "Git status (Lazygit)" } } },
   {
     "NeogitOrg/neogit",
-    dependencies = "nvim-lua/plenary.nvim",
+    -- dependencies = "nvim-lua/plenary.nvim",
     cmd = "Neogit",
     opts = {
       console_timeout = 10000,
@@ -87,8 +87,8 @@ return {
         item = { icons.collapsed, icons.expanded },
       },
       commit_popup = { kind = "auto" },
-      mappings = { status = { ["l"] = "Toggle", ["h"] = "Toggle" } },
-      -- use_telescope = true,
+      -- mappings = { status = { ["l"] = "Toggle", ["h"] = "Toggle" } },
+      use_telescope = true,
     },
     keys = { { "<leader>gg", "<cmd>Neogit<cr>", desc = "Git status (Neogit)" } },
   },

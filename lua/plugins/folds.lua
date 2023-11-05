@@ -14,7 +14,8 @@ return {
       -- local foldIcon = "  "
       ufo.setup({
         provider_selector = function(bufnr, filetype, buftype) ---@diagnostic disable-line: unused-local
-          return { "treesitter", "indent" } -- Use Treesitter as fold provider
+          -- return { "treesitter", "indent" } -- Use Treesitter as fold provider
+          return { "lsp", "indent" } -- Use lsp as fold provider
         end,
         open_fold_hl_timeout = 0,
         fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
@@ -49,6 +50,13 @@ return {
 
       vim.keymap.set("n", "zR", ufo.openAllFolds) -- Using ufo provider need remap `zR` and `zM`
       vim.keymap.set("n", "zM", ufo.closeAllFolds)
+      -- TODO: change to S-Tab eventually
+      vim.keymap.set("n", "zK", function()
+        local winid = ufo.peekFoldedLinesUnderCursor()
+        if not winid then
+          vim.lsp.buf.hover()
+        end
+      end, { desc = "Peek fold" })
 
       -- -- fold settings required for UFO
       -- vim.opt.foldcolumn = "1"
